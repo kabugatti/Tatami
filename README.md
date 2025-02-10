@@ -46,17 +46,17 @@
     
     This will install all the necessary dependencies for the applications within the `apps/*` subdirectories.
 
-### Available Commands
+### ⚙️ Available Commands
 
 - `npm run dev` - Starts the development server of all applications.
 - `npm run build` - Builds the production version of all applications.
 - `npm run lint` - Runs the linter configured of all applications.
 
-### Adding Dependencies
+### 🛠️ Adding Dependencies
 
 If you need to add a dependency to any of the applications within the monorepo, you must navigate to the respective application directory and then install the dependency from there.
     
-### Running Specific Applications
+### 🎯 Running Specific Applications
 
 Run individual applications directly from the root directory:
 
