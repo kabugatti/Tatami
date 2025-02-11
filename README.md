@@ -3,17 +3,68 @@
 
 ## 🚀 Getting Started  
 
-### 📦 Dependencies  
+### 📦 Dependencies
 
-- **Node.js** v14 or later 🖥️
+- **Node.js** version 18.18 or higher
+    - Refer to the [Node.js official documentation](https://nodejs.org/) to download and install the latest version.
+    - To check your installed Node.js version:
+        
+        ```bash
+        node -v
+        ```
+        
+- **npm** version 10.9.2 or higher
+    - Refer to the [npm official documentation](https://docs.npmjs.com/) for detailed instructions.
+    - To check your installed npm version:
+        
+        ```bash
+        npm -v
+        ```
+    - To globally install or update npm to version 10.9.2:
+        
+        ```bash
+        npm install -g npm@10.9.2
+        ```
+
+        After updating, recheck the version using npm -v.
 
 ### 💡 Installation process
 
-Inside the project directory, run the follow command: 
+1. **Clone the Repository**:
+    
+    ```bash
+    git clone https://github.com/your-username/Tatami.git
+    cd Tatami
+    ```
+    
+2. **Install Dependencies**:
+    - Install the global dependencies for the monorepo and its workspaces:
+    
+    ```bash
+    npm install
+    ```
+    
+    This will install all the necessary dependencies for the applications within the `apps/*` subdirectories.
 
-```bash
-npm install 
-```
+### ⚙️ Available Commands
+
+- `npm run dev` - Starts the development server of all applications.
+- `npm run build` - Builds the production version of all applications.
+- `npm run lint` - Runs the linter configured of all applications.
+
+### 🛠️ Adding Dependencies
+
+If you need to add a dependency to any of the applications within the monorepo, you must navigate to the respective application directory and then install the dependency from there.
+    
+### 🎯 Running Specific Applications
+
+Run individual applications directly from the root directory:
+
+1. **Frontend**:
+    
+    ```bash
+    npm run dev:frontend
+    ```
 
 ### 🤝 Contributing  
 

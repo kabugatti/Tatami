@@ -1,0 +1,34 @@
+{
+  "name": "tatami",
+  "version": "1.0.0",
+  "description": "**Tatami** is a project designed to accelerate the development of Dojo Engine games within the Starknet ecosystem. It provides no-code tools to effortlessly create models, visualize entity relationships, and make modifications with just a few clicks. With Tatami, you can master the Dojo and build 10x faster.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+		"build": "turbo build",
+		"lint": "turbo lint",
+		"dev:frontend": "turbo run dev --filter=frontend",
+		"build:frontend": "turbo run build --filter=frontend",
+		"lint:frontend": "turbo run lint --filter=frontend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaizeNodeLabs/Tatami.git"
+  },
+  "keywords": [],
+  "author": "KaizeNode Labs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KaizeNodeLabs/Tatami/issues"
+  },
+  "homepage": "https://github.com/KaizeNodeLabs/Tatami#readme",
+  "workspaces": ["apps/*"],
+	"packageManager": "npm@10.9.2",
+  "devDependencies": {
+    "turbo": "^2.4.0"
+  }
+}
