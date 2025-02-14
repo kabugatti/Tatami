@@ -6,24 +6,56 @@ This document outlines the design system used in Tatami, a project designed to a
 
 The design system is built on top of shadcn/ui components and follows a minimalist, modern aesthetic that aligns with both the landing page and the application UI.
 
+
 ## Design Tokens
 
 ### Colors
 
-Colors are defined as CSS variables using HSL values. This allows for easy manipulation of opacity and ensures consistency across themes.
+Tatami uses a core palette of five brand colors:
+
+| Color   | Hex     | HSL Value        | Usage |
+|---------|---------|------------------|-------|
+| Yellow  | #FEB913 | 47 93% 53%       | Secondary actions, highlights |
+| Red     | #EE2D3F | 354 85% 56%      | Accent, important elements |
+| Blue    | #1040DE | 225 86% 55%      | Primary actions, links |
+| Black   | #1A1A1A | 0 0% 10%         | Text, dark surfaces |
+| White   | #FFFFFF | 0 0% 100%        | Backgrounds, light text |
+
+Colors are defined as CSS variables using HSL values. This allows for easy manipulation of opacity and ensures consistency across themes:
 
 ```css
-/* Light theme colors */
---background: 0 0% 100%
---foreground: 240 10% 3.9%
---primary: 0 0% 9%
---primary-foreground: 0 0% 98%
+/* Brand colors */
+--yellow: 47 93% 53%
+--red: 354 85% 56%
+--blue: 225 86% 55%
+--black: 0 0% 10%
+--white: 0 0% 100%
+
+/* Semantic mappings */
+--background: var(--white)
+--foreground: var(--black)
+--primary: var(--blue)
+--primary-foreground: var(--white)
+--secondary: var(--yellow)
+--secondary-foreground: var(--black)
+--accent: var(--red)
+--accent-foreground: var(--white)
 ```
 
-Access these in Tailwind using:
+Access these in your components using Tailwind classes:
 ```tsx
-<div className="bg-background text-foreground">
+// Using semantic colors (preferred)
+<button className="bg-primary text-primary-foreground">
+  Click me
+</button>
+
+// Using brand colors directly
+<div className="bg-yellow text-black">
+  Highlighted content
+</div>
 ```
+
+[Rest of the document remains the same...]
 
 ### Typography
 
