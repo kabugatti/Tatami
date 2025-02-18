@@ -1,3 +1,4 @@
+![Primary Logo_Yellow on Black](https://github.com/user-attachments/assets/f5c5c67f-2be1-425b-a441-1766d2ee8a4b)
 
 **Tatami** is a project designed to accelerate the development of Dojo Engine games within the Starknet ecosystem. It provides no-code tools to effortlessly create models, visualize entity relationships, and make modifications with just a few clicks. With Tatami, you can master the Dojo and build 10x faster.
 
@@ -77,3 +78,11 @@ We welcome contributions from the community! Whether it's bug fixes, new feature
 *Conquer the Dojo with Tatami* 🥋
 
 Let's build together! 🚀🀄
+
+
+![banner](https://github.com/user-attachments/assets/ae0416c7-eb8f-4b87-80cf-6d3c65bf884c)
+
+
+
+
+
