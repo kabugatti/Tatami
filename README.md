@@ -34,14 +34,16 @@
 
 ### 💡 Installation process
 
-1. **Clone the Repository**:
+1. **Fork the repository**
+   
+2. **Clone the repository**:
     
     ```bash
     git clone https://github.com/your-username/Tatami.git
     cd Tatami
     ```
     
-2. **Install Dependencies**:
+3. **Install dependencies**:
     - Install the global dependencies for the monorepo and its workspaces:
     
     ```bash
