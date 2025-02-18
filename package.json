@@ -8,11 +8,11 @@
   },
   "scripts": {
     "dev": "turbo dev",
-		"build": "turbo build",
-		"lint": "turbo lint",
-		"dev:frontend": "turbo run dev --filter=frontend",
-		"build:frontend": "turbo run build --filter=frontend",
-		"lint:frontend": "turbo run lint --filter=frontend",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "dev:frontend": "turbo run dev --filter=frontend",
+    "build:frontend": "turbo run build --filter=frontend",
+    "lint:frontend": "turbo run lint --filter=frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,9 +26,13 @@
     "url": "https://github.com/KaizeNodeLabs/Tatami/issues"
   },
   "homepage": "https://github.com/KaizeNodeLabs/Tatami#readme",
-  "workspaces": ["apps/*"],
-	"packageManager": "npm@10.9.2",
+  "workspaces": [
+    "apps/*"
+  ],
+  "packageManager": "npm@10.9.2",
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "lefthook": "^1.10.10",
     "turbo": "^2.4.0"
   }
 }
