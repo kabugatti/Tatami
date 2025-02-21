@@ -15,7 +15,7 @@ Tatami uses a core palette of five brand colors:
 
 | Color   | Hex     | HSL Value        | Usage |
 |---------|---------|------------------|-------|
-| Yellow  | #FEB913 | 47 93% 53%       | Primary actions, Secondary actions, highlights, links |
+| Yellow  | #FEB913 | 42 99% 54%       | Primary actions, Secondary actions, highlights, links |
 | Black   | #101010 | 0 0% 6%         | Backgrounds, dark surfaces |
 | White   | #FFFFFF | 0 0% 100%        | Text, light text |
 
@@ -23,7 +23,7 @@ Colors are defined as CSS variables using HSL values. This allows for easy manip
 
 ```css
 /* Brand colors */
---yellow: 47 93% 53%
+--yellow: 42 99% 54%; /* #FEB913 */
 --black: 0 0% 6%
 --white: 0 0% 100%
 
