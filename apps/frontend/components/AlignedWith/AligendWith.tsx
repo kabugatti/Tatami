@@ -34,7 +34,7 @@ const PartnersSection = () => {
   ];
 
   return (
-    <div className="w-full h-screen bg-[#101010] py-20 px-4 md:px-8">
+    <div className="w-full h-screen md:h-[280px] bg-[#101010] text-[#FFFFFF] py-20 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
