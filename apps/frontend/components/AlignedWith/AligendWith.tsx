@@ -41,7 +41,7 @@ const PartnersSection = () => {
           <h2 className="text-4xl font-bold text-white mb-4">
             We are aligned with
           </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto">
+          <p className="text-zinc-400 text-base  md:text-lg max-w-2xl mx-auto">
             Lorem Ipsum dolor sit ammet isterashai yut et mortem lortem vitae lid perplexit
           </p>
         </div>
