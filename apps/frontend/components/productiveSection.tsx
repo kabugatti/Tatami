@@ -27,7 +27,7 @@ export function ProductiveSection() {
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
             Stay productive and build your own game
           </h2>
-          <p className="mx-auto max-w-[700px] text-gray-400 md:text-xl">
+          <p className="mx-auto max-w-[700px] text-secondary md:text-xl">
             Lorem ipsum dolor sit ammet letarsha wut et mortem lortem vitae lid
             perplexit
           </p>
