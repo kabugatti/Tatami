@@ -34,45 +34,55 @@ const PartnersSection = () => {
   ];
 
   return (
-    <div className="w-full h-screen md:h-[280px] bg-[#101010] text-[#FFFFFF] py-20 px-4 md:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            We are aligned with
-          </h2>
-          <p className="text-zinc-400 text-base  md:text-lg max-w-2xl mx-auto">
-            Lorem Ipsum dolor sit ammet isterashai yut et mortem lortem vitae lid perplexit
-          </p>
-        </div>
-
-        {/* Partners Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {partners.map((partner) => (
-            <div key={partner.name} className="flex items-center gap-4">
-              {/* Partner Logo */}
-              <div className={`w-12 h-12 rounded-full ${partner.bgColor} flex items-center justify-center`}>
-                <Image src={partner.logo} width={500} height={500} alt={`${partner.name} logo`} className="w-8 h-8 object-contain"/>
-               
-              </div>
-              
-              {/* Partner Info */}
-              <div className="flex flex-col">
-                <span className="text-white text-sm md:text-lg font-semibold">
-                  {partner.name}
-                </span>
-                <button 
-                  className="text-xs px-3 py-1 rounded-full mt-1 text-white opacity-80 hover:opacity-100 transition-opacity"
-                  style={{ backgroundColor: partner.buttonBg }}
-                >
-                  Learn more
-                </button>
-              </div>
+    <div className="w-full h-auto md:h-[280px] bg-secondary text-secondary py-12 md:py-20 px-4 md:px-8">
+    <div className="max-w-6xl mx-auto">
+      {/* Header Section */}
+      <div className="text-center mb-8 md:mb-16">
+        <h2 className="text-2xl md:text-4xl font-bold text-white mb-2 md:mb-4">
+          We are aligned with
+        </h2>
+        <p className="text-secondary text-sm md:text-base max-w-2xl mx-auto">
+          Lorem Ipsum dolor sit ammet isterashai yut et mortem lortem vitae lid perplexit
+        </p>
+      </div>
+  
+      {/* Partners Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+        {partners.map((partner) => (
+          <div
+            key={partner.name}
+            className="flex flex-col md:flex-row items-center gap-3 p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-200"
+          >
+            {/* Partner Logo */}
+            <div
+              className={`w-12 h-12 rounded-full ${partner.bgColor} flex items-center justify-center flex-shrink-0`}
+            >
+              <Image
+                src={partner.logo}
+                width={500}
+                height={500}
+                alt={`${partner.name} logo`}
+                className="w-6 h-6 md:w-8 md:h-8 object-contain"
+              />
             </div>
-          ))}
-        </div>
+
+            {/* Partner Info */}
+            <div className="flex flex-col md:items-start items-center text-center md:text-left">
+              <span className="text-white text-sm md:text-base font-semibold truncate">
+                {partner.name}
+              </span>
+              <button
+                className="text-xs px-3 py-1 rounded-full mt-2 md:mt-1 text-white opacity-80 hover:opacity-100 transition-opacity w-fit"
+                style={{ backgroundColor: partner.buttonBg }}
+              >
+                Learn more
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
+  </div>
   );
 };
 
