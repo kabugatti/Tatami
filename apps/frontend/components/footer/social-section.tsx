@@ -22,7 +22,7 @@ export const SocialSection = () => {
     },
     {
       id: "twitter-id",
-      url: "https://twitter.com/your-handle",
+      url: "https://x.com/TatamiDev",
       iconSVG: (
         <svg
           className="w-7 h-7"
@@ -36,7 +36,7 @@ export const SocialSection = () => {
     },
     {
       id: "telegram-id",
-      url: "https://t.me/your-channel",
+      url: "https://t.me/+e0d3hYFhXO0zMThh",
       iconSVG: (
         <svg
           className="w-7 h-7"
