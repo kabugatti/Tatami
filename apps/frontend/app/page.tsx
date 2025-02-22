@@ -6,9 +6,6 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-4xl font-bold mb-8">Welcome to Tatami</h1>
       <PartnersSection/>
-      <Link href="/app">
-        <Button>Go to App</Button>
-      </Link>
     </div>
   );
 }

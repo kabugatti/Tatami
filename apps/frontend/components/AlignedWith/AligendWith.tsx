@@ -34,7 +34,7 @@ const PartnersSection = () => {
   ];
 
   return (
-    <div className="w-full h-auto md:h-[280px] bg-secondary text-secondary py-12 md:py-20 px-4 md:px-8">
+    <div className="w-full h-auto md:h-[280px] bg-black text-secondary py-12 md:py-20 px-4 md:px-8">
     <div className="max-w-6xl mx-auto">
       {/* Header Section */}
       <div className="text-center mb-8 md:mb-16">
@@ -51,7 +51,7 @@ const PartnersSection = () => {
         {partners.map((partner) => (
           <div
             key={partner.name}
-            className="flex flex-col md:flex-row items-center gap-3 p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors duration-200"
+            className="bg-black flex flex-col md:flex-row items-center gap-3 p-4 rounded-lg hover:bg-white/20 transition-colors duration-200"
           >
             {/* Partner Logo */}
             <div
