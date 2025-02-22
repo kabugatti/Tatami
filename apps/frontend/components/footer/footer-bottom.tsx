@@ -19,7 +19,7 @@ export const FooterBottom = () => {
         </Link>
       </div>
       <div className="text-white text-lg">
-        2025 <span className="font-semibold">Kaizenode Labs</span>
+        <Link href='https://github.com/KaizeNodeLabs'>2025 <span className="font-semibold">Kaizenode Labs</span></Link>
       </div>
     </div>
   );
