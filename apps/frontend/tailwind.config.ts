@@ -25,10 +25,11 @@ export default {
         yellow: "hsl(var(--yellow))",
         red: "hsl(var(--red))",
         blue: "hsl(var(--blue))",
+        black: "hsl(var(--black))",
+        white: "hsl(var(--white))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        black: "#000000",
-        white: "#FFFFFF",
+        navblack: "#000000",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
