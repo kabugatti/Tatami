@@ -4,7 +4,7 @@ export const SocialSection = () => {
   const socials = [
     {
       id: "github-id",
-      url: "https://github.com/KaizeNodeLabs",
+      url: "https://github.com/KaizeNodeLabs/Tatami",
       iconSVG: (
         <svg
           className="w-7 h-7"
