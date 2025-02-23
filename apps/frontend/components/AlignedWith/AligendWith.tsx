@@ -47,11 +47,11 @@ const PartnersSection = () => {
       </div>
   
       {/* Partners Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-8">
         {partners.map((partner) => (
           <div
             key={partner.name}
-            className="bg-black flex flex-col md:flex-row items-center gap-3 p-4 rounded-lg hover:bg-white/20 transition-colors duration-200"
+            className="bg-black flex flex-col md:flex-row items-center gap-3 p-4 rounded-lg  transition-colors duration-200"
           >
             {/* Partner Logo */}
             <div
@@ -72,7 +72,7 @@ const PartnersSection = () => {
                 {partner.name}
               </span>
               <button
-                className="text-xs px-3 py-1 rounded-full mt-2 md:mt-1 text-white opacity-80 hover:opacity-100 transition-opacity w-fit"
+                className="text-xs sm:text-[10px] px-3 sm:px-2 py-1 rounded-full mt-2 md:mt-1 text-white opacity-80 hover:opacity-100 transition-opacity w-fit"
                 style={{ backgroundColor: partner.buttonBg }}
               >
                 Learn more
