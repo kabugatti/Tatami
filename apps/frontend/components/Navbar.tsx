@@ -57,9 +57,8 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full h-full border-none bg-black p-0"
+              className="w-full h-full border-none bg-navblack p-0"
             >
-              {/* Adding SheetHeader and SheetTitle for accessibility */}
               <SheetHeader>
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               </SheetHeader>
