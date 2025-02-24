@@ -61,13 +61,13 @@ export const EntityCard = React.forwardRef<HTMLDivElement, EntityCardProps>(
       <div
         ref={ref}
         className={cn(
-          "w-fit overflow-hidden border border-black/50",
+          "w-fit overflow-hidden border border-black/30 rounded-md",
           className,
         )}
         {...props}
       >
         {/* Header */}
-        <div className="bg-black px-4 py-2 flex items-center justify-between">
+        <div className="bg-black px-2 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image
               src="/assets/diagram/tree.svg"
