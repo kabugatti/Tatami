@@ -1,7 +1,7 @@
+import PartnersSection from "@/components/AlignedWith/AligendWith";
 import Productive from "@/components/productive/productive";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import PartnersSection from "@/components/AlignedWith/AligendWith";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -11,7 +11,6 @@ export default function Home() {
       <Link href="/app">
         <Button>Go to App</Button>
       </Link>
-
     </div>
   );
 }
