@@ -2,7 +2,7 @@
 
 export default function HeroSection() {
   return (
-    <section className="bg-[#101010] text-white py-16 px-4">
+    <section className="bg-primary-foreground text-white py-16 px-4">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Text Column */}
         <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
@@ -17,14 +17,14 @@ export default function HeroSection() {
             {/* Primary Button */}
             <a
               href="/tatami-gui"
-              className="bg-[#FEB913] text-[#101010] font-semibold py-3 px-6 rounded-md transition-colors hover:bg-yellow-500"
+              className="bg-primary text-primary-foreground font-semibold py-3 px-6 rounded-md transition-colors hover:bg-yellow-500"
             >
               Try Tatami
             </a>
             {/* Secondary Button */}
             <a
               href="/learn-more"
-              className="border border-[#FEB913] text-[#FEB913] font-semibold py-3 px-6 rounded-md transition-colors hover:bg-[#262626]"
+              className="border border-primary text-primary font-semibold py-3 px-6 rounded-md transition-colors hover:bg-primary-foreground"
             >
               Open Docs
             </a>
