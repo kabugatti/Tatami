@@ -3,7 +3,6 @@ import Productive from "@/components/productive/productive";
 import WhyChooseTatami from "./why-choose-us/why-choose-us";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import PartnersSection from "@/components/AlignedWith/AligendWith";
 import JoinCommunity from "@/components/JoinTheCommunity/JoinTheCommunity";
 
 export default function Home() {
