@@ -5,6 +5,7 @@ import WhyChooseTatami from "./why-choose-us/why-choose-us";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import JoinCommunity from "@/components/JoinTheCommunity/JoinTheCommunity";
+
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

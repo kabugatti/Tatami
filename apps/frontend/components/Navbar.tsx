@@ -75,7 +75,7 @@ export default function Navbar() {
                     <Button
                       variant="ghost"
                       className="px-0 text-xl hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-white"
-                    ></Button>
+                    />
                   </SheetTrigger>
                 </div>
                 <nav className="flex flex-col space-y-8 p-6">
