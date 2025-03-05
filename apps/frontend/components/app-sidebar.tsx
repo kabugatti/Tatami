@@ -21,11 +21,20 @@ import {
   Settings,
   Trash2,
   X,
+  Check,
+  Pencil,
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Model, Property, PropertyItemProps } from "@/types/models";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
+// Static menu items for the main sidebar
 const staticMenuItems = [
   { id: "models", label: "Make Models", icon: Database },
   { id: "templates", label: "Templates", icon: LayoutTemplate },
@@ -34,6 +43,7 @@ const staticMenuItems = [
   { id: "settings", label: "Settings", icon: Settings },
 ];
 
+// Dynamic content for each option
 const initialDynamicContent = {
   templates: [
     { id: "blank", label: "Blank Canvas" },
@@ -85,17 +95,28 @@ function PropertyItem({
         />
       </div>
       <div className="col-span-4">
-        <select
-          value={dataType}
-          onChange={(e) => onDataTypeChange(id, e.target.value)}
-          className="w-full h-8 rounded-md bg-background border border-yellow-500/20 text-foreground px-3"
-        >
-          {dataTypes.map((type) => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="h-8 w-full justify-between bg-background border-yellow-500/20 text-foreground px-3 hover:bg-sidebar"
+            >
+              {dataType}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[8rem] bg-stone-800 border-yellow-500/20">
+            {dataTypes.map((type) => (
+              <DropdownMenuItem
+                key={type}
+                className="flex justify-between items-center text-foreground hover:bg-stone-700"
+                onClick={() => onDataTypeChange(id, type)}
+              >
+                {type}
+                {dataType === type && <Check className="h-4 w-4 text-yellow-500" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="col-span-1 flex justify-center">
         <input
@@ -122,6 +143,8 @@ export function AppSidebar() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dynamicContent, setDynamicContent] = useState(initialDynamicContent);
   const [models, setModels] = useState<Model[]>([]);
+  const [editingModelId, setEditingModelId] = useState<string | null>(null);
+  const [editModelName, setEditModelName] = useState<string>("");
 
   const toggleOption = (optionId: string) => {
     if (selectedOption === optionId) {
@@ -247,6 +270,12 @@ export function AppSidebar() {
         model.id === modelId ? { ...model, name } : model
       )
     );
+    setEditingModelId(null);
+  };
+  
+  const startEditingModelName = (modelId: string, currentName: string) => {
+    setEditingModelId(modelId);
+    setEditModelName(currentName);
   };
 
   const deleteModel = (modelId: string) => {
@@ -321,10 +350,45 @@ export function AppSidebar() {
                               )}
                             </button>
 
-                            <span className="font-medium text-foreground">{model.name}</span>
+                            {editingModelId === model.id ? (
+                              <div className="flex items-center gap-2">
+                                <Input
+                                  value={editModelName}
+                                  onChange={(e) => setEditModelName(e.target.value)}
+                                  className="h-8 bg-background border-yellow-500/20 text-foreground"
+                                  autoFocus
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      updateModelName(model.id, editModelName);
+                                    } else if (e.key === 'Escape') {
+                                      setEditingModelId(null);
+                                    }
+                                  }}
+                                />
+                                <Button
+                                  size="sm"
+                                  onClick={() => updateModelName(model.id, editModelName)}
+                                  className="h-8 px-2 bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                            ) : (
+                              <span className="font-medium text-foreground">{model.name}</span>
+                            )}
                           </div>
 
                           <div className="flex items-center gap-2">
+                            {editingModelId !== model.id && (
+                              <button
+                                type="button"
+                                onClick={() => startEditingModelName(model.id, model.name)}
+                                className="text-muted-foreground hover:text-white"
+                              >
+                                <span className="sr-only">Edit</span>
+                                <Pencil className="h-4 w-4" />
+                              </button>
+                            )}
                             <button
                               type="button"
                               onClick={() => deleteModel(model.id)}
