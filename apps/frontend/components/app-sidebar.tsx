@@ -20,19 +20,12 @@ import {
   Layers,
   Settings,
   Trash2,
-  X,
-  Check,
   Pencil,
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Model, Property, PropertyItemProps } from "@/types/models";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import { Model, Property } from "@/types/models";
+import { PropertyItem } from "./models/PropertyItem";
 
 // Static menu items for the main sidebar
 const staticMenuItems = [
@@ -69,76 +62,6 @@ const initialDynamicContent = {
   ],
 };
 
-const dataTypes = ["String", "Number", "Boolean", "Date", "Object", "Array"];
-
-function PropertyItem({
-  id,
-  name,
-  dataType,
-  isKey,
-  onNameChange,
-  onDataTypeChange,
-  onKeyChange,
-  onDelete,
-}: PropertyItemProps) {
-  return (
-    <div className="grid grid-cols-12 gap-1 items-center bg-background rounded-md p-2 mb-2 bg-stone-700">
-      <div className="col-span-1 flex justify-center text-muted-foreground">
-        ≡
-      </div>
-      <div className="col-span-5">
-        <Input
-          value={name}
-          onChange={(e) => onNameChange(id, e.target.value)}
-          className="h-8 bg-background border-yellow-500/20 text-foreground"
-          placeholder="Name"
-        />
-      </div>
-      <div className="col-span-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="outline" 
-              className="h-8 w-full justify-between bg-background border-yellow-500/20 text-foreground px-3 hover:bg-sidebar"
-            >
-              {dataType}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[8rem] bg-stone-800 border-yellow-500/20">
-            {dataTypes.map((type) => (
-              <DropdownMenuItem
-                key={type}
-                className="flex justify-between items-center text-foreground hover:bg-stone-700"
-                onClick={() => onDataTypeChange(id, type)}
-              >
-                {type}
-                {dataType === type && <Check className="h-4 w-4 text-yellow-500" />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="col-span-1 flex justify-center">
-        <input
-          type="checkbox"
-          checked={isKey}
-          onChange={(e) => onKeyChange(id, e.target.checked)}
-          className="h-4 w-4 rounded border-yellow-500/20 text-yellow-500 focus:ring-yellow-500"
-        />
-      </div>
-      <div className="col-span-1 flex justify-center">
-        <button
-          type="button"
-          onClick={() => onDelete(id)}
-          className="text-muted-foreground hover:text-red-500"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export function AppSidebar() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dynamicContent, setDynamicContent] = useState(initialDynamicContent);
@@ -163,7 +86,7 @@ export function AppSidebar() {
         {
           id: `prop_${Date.now()}`,
           name: "",
-          dataType: "String",
+          dataType: "# u32",
           isKey: true
         }
       ]
@@ -183,7 +106,7 @@ export function AppSidebar() {
               {
                 id: `prop_${Date.now()}`,
                 name: "",
-                dataType: "String",
+                dataType: "# u32",
                 isKey: model.properties.length === 0,
               },
             ],
@@ -313,7 +236,7 @@ export function AppSidebar() {
       {selectedOption && (
         <Sidebar
           collapsible="none"
-          className="fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] shadow-lg border-r border-yellow-500 w-[350px] overflow-hidden"
+          className="fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] shadow-lg border-r border-yellow-500 w-[350px] overflow-visible"
         >
           <SidebarContent className="h-full flex flex-col overflow-hidden">
             <SidebarGroup className="flex flex-col h-full overflow-hidden">
@@ -333,7 +256,7 @@ export function AppSidebar() {
                   </div>
                   
                   {/* Model list with custom scrollbar */}
-                  <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4">
+                  <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
                     {models.map((model) => (
                       <div key={model.id} className="border border-yellow-500/20 rounded-md overflow-hidden mb-4">
                         <div className="flex items-center justify-between p-3 bg-sidebar">
