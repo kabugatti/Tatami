@@ -1,38 +1,36 @@
 "use client";
 
+import illustration from "@/public/hero-illustration.png";
+import Image from "next/image";
+
 export default function HeroSection() {
   return (
-    <section className="bg-primary-foreground text-white py-16 px-4">
+    <section className="bg-background text-white py-16 px-4">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
-          <h1 className="font-inter font-bold text-[32px] leading-[38.73px] tracking-[0] mb-4">
+          <h1 className="font-inter font-bold text-lg leading-[38.73px] tracking-[0] mb-4">
             Conquer the Dojo
           </h1>
-          <p className="text-lg mb-6">
-            Leverage powerful tooling with Dojo Engine, Cartridge, Caldera, and
-            Starknet.
+          <p className="text-md mb-6">
+          Leverage the power of Tatami to accelerate on-chain game development and launch your game quickly and efficiently
           </p>
           <div className="flex flex-col md:flex-row gap-4">
             <a
               href="/app"
-              className="bg-primary text-primary-foreground font-semibold py-3 px-6 rounded-md transition-colors hover:bg-yellow-500"
+              className="bg-primary text-secondary-foreground font-semibold py-3 px-6 rounded-md transition-colors"
             >
               Try Tatami
             </a>
-            <a
+            {/*<a
               href="/learn-more"
-              className="border border-primary text-primary font-semibold py-3 px-6 rounded-md transition-colors hover:bg-primary-foreground"
+              className="border border-primary text-primary font-semibold py-3 px-6 rounded-md transition-colors"
             >
               Open Docs
-            </a>
+            </a> */}
           </div>
         </div>
         <div className="md:w-1/2">
-          <img
-            src="/hero-illustration.png"
-            alt="Hero illustration"
-            className="w-full h-auto opacity-45"
-          />
+          <Image src={illustration} height={1000} width={1000} alt="Tatami"></Image>
         </div>
       </div>
     </section>
