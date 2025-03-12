@@ -137,14 +137,6 @@ export function ModelItem({
               }
             />
           ))}
-
-          <Button
-            onClick={() => onPropertyAdd(id)}
-            variant="outline"
-            className="w-full mt-2 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white"
-          >
-            <span className="mr-1">+</span> Add property
-          </Button>
         </div>
       )}
     </div>

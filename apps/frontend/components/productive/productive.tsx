@@ -3,19 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-
-const videos = [
-  {
-    id: 1,
-    url: "/videos/demo-1.mp4",
-    title: "Create Game Models",
-  },
-  {
-    id: 2,
-    url: "/videos/demo-2.mp4",
-    title: "Generate Game Logic",
-  },
-];
+import { videos } from './videos';
 
 const Productive = () => {
   const [activeVideo, setActiveVideo] = useState(0);
@@ -24,10 +12,10 @@ const Productive = () => {
     <section className="w-full py-12 md:py-24 lg:py-32 bg-black">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white">
+          <h2 className="md:text-md font-bold tracking-tighter sm:text-4xl xl:text-4xl text-white">
             Stay productive and build your own game
           </h2>
-          <p className="mx-auto max-w-[700px] text-secondary md:text-xl">
+          <p className="mx-auto text-secondary-foreground lg:text-lg">
             Lorem ipsum dolor sit ammet letarsha wut et mortem lortem vitae lid
             perplexit
           </p>
@@ -44,7 +32,7 @@ const Productive = () => {
                 )}
                 onClick={() => setActiveVideo(index)}
               >
-                Option {index + 1}
+                {video.type}
               </Button>
             ))}
           </div>

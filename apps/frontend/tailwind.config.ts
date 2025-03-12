@@ -24,13 +24,11 @@ export default {
     extend: {
       colors: {
         yellow: "hsl(var(--yellow))",
-        red: "hsl(var(--red))",
-        blue: "hsl(var(--blue))",
+        neutral: "hsl(var(--neutral-black))",
         black: "hsl(var(--black))",
         white: "hsl(var(--white))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        navblack: "#000000",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -57,6 +55,10 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        third: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--black-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
