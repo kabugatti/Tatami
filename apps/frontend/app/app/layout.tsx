@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/tatami_sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "../globals.css";
 export default function AppLayout({

@@ -29,7 +29,6 @@ export default {
         white: "hsl(var(--white))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        navblack: "#000000",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
@@ -56,6 +55,10 @@ export default {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        third: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--black-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -127,7 +130,7 @@ export default {
           },
         ],
         lg: [
-          "3.125rem",
+          "1.125rem",
           {
             lineHeight: "1.75rem",
           },

@@ -13,6 +13,7 @@ body {
     --black: 0 0% 10%;
     --neutral-black: 0 0% 0%;      
     --white: 0 0% 100%; 
+    --paragraph: 0 0% 76%;
 
     /* Base */
     --background: var(--black);
@@ -27,6 +28,7 @@ body {
     /* Brand colors */
     --primary: var(--yellow);
     --primary-foreground: var(--white);
+    --black-foreground: var(--black);
     --primary-50: 0 0% 98%;
     --primary-100: 0 0% 90%;
     --primary-200: 0 0% 80%;
@@ -40,7 +42,7 @@ body {
     --primary-950: 0 0% 5%;
     
     --secondary: var(--yellow);
-    --secondary-foreground: var(--black);
+    --secondary-foreground: var(--paragraph);
     
     --accent: var(--yellow);
     --accent-foreground: var(--yellow);
@@ -103,7 +105,6 @@ body {
     --primary-950: 0 0% 5%;
     
     --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
     
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;

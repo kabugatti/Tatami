@@ -12,44 +12,24 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-  Box,
   ChevronDown,
   ChevronRight,
   Database,
   LayoutTemplate,
-  Layers,
-  Settings,
   Trash2,
   Pencil,
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Model, Property } from "@/types/models";
-import { PropertyItem } from "./models/PropertyItem";
+import { PropertyItem } from "../models/PropertyItem";
 
-// Static menu items for the main sidebar
 const staticMenuItems = [
-  { id: "models", label: "Make Models", icon: Database },
-  { id: "templates", label: "Templates", icon: LayoutTemplate },
-  { id: "components", label: "Components", icon: Box },
-  { id: "layers", label: "Layers", icon: Layers },
-  { id: "settings", label: "Settings", icon: Settings },
+  { id: "models", label: "Models", icon: Database },
+  { id: "metrics", label: "Metrics", icon: LayoutTemplate }
 ];
 
-// Dynamic content for each option
 const initialDynamicContent = {
-  templates: [
-    { id: "blank", label: "Blank Canvas" },
-    { id: "flowchart", label: "Flowchart" },
-    { id: "wireframe", label: "Wireframe" },
-    { id: "mindmap", label: "Mind Map" },
-  ],
-  components: [
-    { id: "shapes", label: "Basic Shapes" },
-    { id: "connectors", label: "Connectors" },
-    { id: "text", label: "Text Elements" },
-    { id: "icons", label: "Icons" },
-  ],
   layers: [
     { id: "layer1", label: "Layer 1" },
     { id: "layer2", label: "Layer 2" },
@@ -207,10 +187,9 @@ export function AppSidebar() {
 
   return (
     <div className="flex h-[calc(100vh-64px)]">
-      {/* Static Sidebar - Always visible */}
       <Sidebar
         collapsible="none"
-        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-yellow-500"
+        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-primary-700"
       >
         <SidebarContent>
           <SidebarGroup>
@@ -221,9 +200,9 @@ export function AppSidebar() {
                     isActive={selectedOption === item.id}
                     onClick={() => toggleOption(item.id)}
                     tooltip={item.label}
-                    className="hover:border-yellow-500 focus:border-yellow-500 justify-center p-3"
+                    className="justify-center p-3"
                   >
-                    <item.icon className="h-6 w-6" />
+                    <item.icon className="text-primary-foreground h-9 w-9" />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -236,20 +215,20 @@ export function AppSidebar() {
       {selectedOption && (
         <Sidebar
           collapsible="none"
-          className="fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] shadow-lg border-r border-yellow-500 w-[350px] overflow-visible"
+          className="fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] shadow-lg border-r border-primary-700 w-[350px] overflow-visible"
         >
           <SidebarContent className="h-full flex flex-col overflow-hidden">
             <SidebarGroup className="flex flex-col h-full overflow-hidden">
-              <SidebarGroupLabel className="border-b border-yellow-500 flex-shrink-0">
+              <SidebarGroupLabel className="text-primary-foreground text-xl flex-shrink-0">
                 {staticMenuItems.find((item) => item.id === selectedOption)?.label}
               </SidebarGroupLabel>
-
+              <hr />
               {selectedOption === "models" ? (
                 <div className="flex flex-col h-full overflow-hidden">
                   <div className="p-4 flex justify-end flex-shrink-0">
                     <Button
                       onClick={addModel}
-                      className="bg-black hover:bg-gray-900 text-white font-medium flex items-center gap-1"
+                      className="hover:bg-gray-900 text-white font-medium flex items-center gap-1"
                     >
                       <span className="text-lg">+</span> Add model
                     </Button>
@@ -258,13 +237,13 @@ export function AppSidebar() {
                   {/* Model list with custom scrollbar */}
                   <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
                     {models.map((model) => (
-                      <div key={model.id} className="border border-yellow-500/20 rounded-md overflow-hidden mb-4">
-                        <div className="flex items-center justify-between p-3 bg-sidebar">
+                      <div key={model.id} className="border border-primary-700 rounded-md overflow-hidden mb-4">
+                        <div className="flex items-center justify-between p-3 bg-black">
                           <div className="flex items-center gap-2">
                             <button
                               type="button"
                               onClick={() => toggleModelExpansion(model.id)}
-                              className="text-yellow-500 hover:text-yellow-600"
+                              className="text-primary-foreground"
                             >
                               {model.expanded ? (
                                 <ChevronDown className="h-5 w-5" />
@@ -278,7 +257,7 @@ export function AppSidebar() {
                                 <Input
                                   value={editModelName}
                                   onChange={(e) => setEditModelName(e.target.value)}
-                                  className="h-8 bg-background border-yellow-500/20 text-foreground"
+                                  className="h-8 bg-background border-primary-700 text-primary-foreground"
                                   autoFocus
                                   onKeyDown={(e) => {
                                     if (e.key === 'Enter') {
@@ -288,16 +267,9 @@ export function AppSidebar() {
                                     }
                                   }}
                                 />
-                                <Button
-                                  size="sm"
-                                  onClick={() => updateModelName(model.id, editModelName)}
-                                  className="h-8 px-2 bg-yellow-500 hover:bg-yellow-600 text-black font-medium"
-                                >
-                                  Save
-                                </Button>
                               </div>
                             ) : (
-                              <span className="font-medium text-foreground">{model.name}</span>
+                              <span className="font-medium text-primary-foreground">{model.name}</span>
                             )}
                           </div>
 
@@ -326,12 +298,11 @@ export function AppSidebar() {
                           <div className="p-3 bg-background">
                             <h3 className="text-sm font-medium text-foreground mb-3">Properties</h3>
                             
-                            <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 px-2">
-                              <div className="col-span-1"></div>
+                            <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2">
                               <div className="col-span-5">Name</div>
                               <div className="col-span-4">Datatype</div>
                               <div className="col-span-1 text-center">Key</div>
-                              <div className="col-span-1"></div>
+                              <div className="col-span-2 text-center"></div>
                             </div>
 
                             {model.properties.map((property) => (
@@ -358,8 +329,7 @@ export function AppSidebar() {
 
                             <Button
                               onClick={() => addProperty(model.id)}
-                              variant="outline"
-                              className="w-full mt-2 border-yellow-500/20 text-muted-foreground hover:bg-sidebar hover:text-foreground"
+                              className="w-full mt-2 text-primary-foreground hover:bg-neutral hover:text-primary-foreground border border-primary-700"
                             >
                               <span className="mr-1">+</span> Add property
                             </Button>
@@ -376,7 +346,7 @@ export function AppSidebar() {
                       selectedOption as keyof typeof dynamicContent
                     ].map((item) => (
                       <SidebarMenuItem key={item.id}>
-                        <SidebarMenuButton className="w-full hover:border-yellow-500 text-base p-3">
+                        <SidebarMenuButton className="w-full text-base p-3">
                           {item.label}
                         </SidebarMenuButton>
                       </SidebarMenuItem>

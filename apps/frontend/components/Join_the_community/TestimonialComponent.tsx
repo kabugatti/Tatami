@@ -17,7 +17,7 @@ export function Testimonial({
   }: TestimonialProps) {
     return (
       <Card
-        className={`bg-background border-border p-4 flex flex-col w-full relative ${className}`}
+        className={`bg-neutral border-primary-700 p-4 flex flex-col w-full relative ${className}`}
       >
         <div className="relative flex items-center gap-2 mb-2">
           <div className="relative w-8 h-8">

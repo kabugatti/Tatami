@@ -55,7 +55,7 @@ export default function Navbar() {
               <Button
                 type="button"
                 variant="ghost"
-                className={`px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden`}
+                className="px-0 text-primary-foreground hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden"
               >
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
@@ -68,7 +68,7 @@ export default function Navbar() {
               <SheetHeader>
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               </SheetHeader>
-              <div className="flex h-full flex-col">
+              <div className="flex h-full flex-col bg-neutral">
                 <div className="flex items-center justify-between p-6">
                   <Link href="/" className="flex items-center">
                     <img src={logoSrc} alt="Logo" className="h-14 w-auto" />
@@ -77,26 +77,26 @@ export default function Navbar() {
                     <Button
                       type="button"
                       variant="ghost"
-                      className={`px-0 text-xl hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0`}
+                      className={`px-0 text-xl focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0`}
                     />
                   </SheetTrigger>
                 </div>
                 <nav className="flex flex-col space-y-8 p-6">
                   <Link
                     href="/docs"
-                    className={`text-xl font-medium hover:text-white/80`}
+                    className="text-lg font-medium text-primary-foreground"
                   >
                     Docs
                   </Link>
                   <Link
                     href="/community"
-                    className={`text-xl font-medium hover:text-white/80`}
+                    className="text-lg font-medium text-primary-foreground"
                   >
                     Community
                   </Link>
                   <Link
                     href="/build"
-                    className={`text-xl font-medium hover:text-white/80`}
+                    className="text-lg font-medium text-primary-foreground"
                   >
                     {"Let's build"}
                   </Link>
