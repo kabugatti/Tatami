@@ -1,8 +1,7 @@
 import Image from "next/image";
 import type React from "react";
 import chooseUs from '@/public/chooseUs.png';
-import { MousePointerClick, Lightbulb } from "lucide-react";
-1
+
 const WhyChooseTatami: React.FC = () => {
   return (
     <section className="text-white flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 2xl:px-40 py-16 sm:py-20 md:py-24 lg:py-28 gap-4 sm:gap-6 md:gap-8 lg:gap-10 w-full">
@@ -59,15 +58,15 @@ const WhyChooseTatami: React.FC = () => {
 
           {/* Benefit 3 */}
           <div className="flex flex-col md:flex-col lg:flex-row items-center md:items-center lg:items-start gap-4 sm:gap-5">
-          <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[#FEB913]">
-            <Image
-              src="/IconLight.svg"
-              alt="Lightbulb Icon"
-              width={24} // Ajusta según sea necesario
-              height={24}
-              className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7"
-            />
-          </div>
+            <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-[#FEB913]">
+              <Image
+                src="/IconLight.svg"
+                alt="Lightbulb Icon"
+                width={24} // Ajusta según sea necesario
+                height={24}
+                className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7"
+              />
+            </div>
 
             <div className="flex flex-col">
               <h3 className="text-base sm:text-lg md:text-md lg:text-xl font-bold mb-1">

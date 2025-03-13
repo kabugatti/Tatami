@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
-import { X } from "lucide-react";
 import type { PropertyItemProps } from "@/types/models";
+import { X } from "lucide-react";
 import DatatypeDropdown from "../ui/datatype-dropdown";
 export function PropertyItem({
   id,
