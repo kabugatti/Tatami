@@ -37,6 +37,7 @@ export function CodeDiagramSection() {
       title: "Code copied",
       description: "The code has been copied to your clipboard",
       duration: 2000,
+      style: { color: "white" },
     });
   };
 
