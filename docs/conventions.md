@@ -1,4 +1,4 @@
-# Tatami Design System
+# Tatami Design System 🖌️
 
 This document outlines the design system used in Tatami, a project designed to accelerate the development of Dojo Engine games within the Starknet ecosystem.
 
