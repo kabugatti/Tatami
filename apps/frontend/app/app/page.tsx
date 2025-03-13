@@ -1,13 +1,9 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import DatatypeDropdown from "@/components/ui/datatype-dropdown";
-import Link from "next/link";
+import { CodeDiagramSection } from "@/components/app/code-diagram-section";
 
 export default function AppPage() {
   return (
-    <div className="">
-
-    </div>
+    <main className="w-full h-full p-10">
+      <CodeDiagramSection />
+    </main>
   );
 }

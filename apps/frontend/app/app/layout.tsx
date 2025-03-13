@@ -13,7 +13,7 @@ export default function AppLayout({
       <div className="relative flex min-h-screen w-full">
         <AppSidebar />
         <div
-          className="relative flex-1 w-full pt-16"
+          className="relative flex-1 w-full pt-16 pl-16"
         >
           {children}
         </div>

@@ -8,15 +8,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const dojoDataTypes = [
-  "# u8",
-  "# u16",
-  "# u32",
-  "# u64",
-  "# u128",
-  "# u256",
+  "u8",
+  "u16",
+  "u32",
+  "u64",
+  "u128",
+  "u256",
   "ByteArray",
   "String",
   "Bool",
@@ -28,7 +28,10 @@ interface DatatypeDropdownProps {
   onChange?: (value: string) => void;
 }
 
-export default function DatatypeDropdown({ value = "", onChange }: DatatypeDropdownProps) {
+export default function DatatypeDropdown({
+  value = "",
+  onChange,
+}: DatatypeDropdownProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,7 +39,7 @@ export default function DatatypeDropdown({ value = "", onChange }: DatatypeDropd
     if (onChange) {
       onChange(selectedValue);
     }
-    
+
     setSearchQuery("");
   };
 
@@ -51,12 +54,12 @@ export default function DatatypeDropdown({ value = "", onChange }: DatatypeDropd
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <SelectTrigger className="w-full h-8 bg-background border border-yellow-500/20 text-foreground px-3">
+      <SelectTrigger className="w-full h-8 bg-background border border-yellow-500/20 text-muted-foreground px-3">
         <SelectValue placeholder="Select a datatype">{value}</SelectValue>
       </SelectTrigger>
       <SelectContent
         side="bottom"
-        className="bg-stone-800 border border-yellow-500/20 text-foreground z-[999] max-h-60 overflow-y-auto"
+        className="bg-stone-800 border border-yellow-500/20 text-muted-foreground z-[999] max-h-60 overflow-y-auto"
         position="popper"
         sideOffset={5}
         align="start"
@@ -79,8 +82,8 @@ export default function DatatypeDropdown({ value = "", onChange }: DatatypeDropd
         </div>
         {filteredDatatypes.length > 0 ? (
           filteredDatatypes.map((datatype) => (
-            <SelectItem 
-              key={datatype} 
+            <SelectItem
+              key={datatype}
               value={datatype}
               className="hover:bg-stone-700 focus:bg-stone-700"
             >
@@ -88,7 +91,9 @@ export default function DatatypeDropdown({ value = "", onChange }: DatatypeDropd
             </SelectItem>
           ))
         ) : (
-          <div className="px-4 py-2 text-muted-foreground">No results found</div>
+          <div className="px-4 py-2 text-muted-foreground">
+            No results found
+          </div>
         )}
       </SelectContent>
     </Select>

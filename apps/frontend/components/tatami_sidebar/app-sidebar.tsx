@@ -337,7 +337,7 @@ export function AppSidebar() {
 
                         {model.expanded && (
                           <div className="p-3 bg-background">
-                            <h3 className="text-sm font-medium text-foreground mb-3">Properties</h3>
+                            <h3 className="text-sm font-medium text-muted-foreground mb-3">Properties</h3>
 
                             <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2">
                               <div className="col-span-5">Name</div>
