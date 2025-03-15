@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
+import type { PropertyItemProps } from "@/types/models";
 import { X } from "lucide-react";
-import { PropertyItemProps } from "@/types/models";
 import DatatypeDropdown from "../ui/datatype-dropdown";
 export function PropertyItem({
   id,
@@ -18,14 +18,14 @@ export function PropertyItem({
         <Input
           value={name}
           onChange={(e) => onNameChange(id, e.target.value)}
-          className="h-8 bg-background text-foreground"
+          className="h-8 bg-background text-muted-foreground"
           placeholder="Name"
         />
       </div>
       <div className="col-span-4">
-        <DatatypeDropdown 
-          value={dataType} 
-          onChange={(value) => onDataTypeChange(id, value)} 
+        <DatatypeDropdown
+          value={dataType}
+          onChange={(value) => onDataTypeChange(id, value)}
         />
       </div>
       <div className="col-span-1 flex justify-end">

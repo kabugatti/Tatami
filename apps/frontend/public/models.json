@@ -1,0 +1,53 @@
+{
+  "models": [
+    {
+      "id": "model_1741813939846",
+      "name": "Beast",
+      "expanded": true,
+      "properties": [
+        {
+          "id": "prop_1741813939846",
+          "name": "beast_id",
+          "dataType": "u64",
+          "isKey": true
+        },
+        {
+          "id": "prop_1741814021558",
+          "name": "beast_attack",
+          "dataType": "u32",
+          "isKey": false
+        },
+        {
+          "id": "prop_1741814055894",
+          "name": "beast_name",
+          "dataType": "String",
+          "isKey": false
+        },
+        {
+          "id": "prop_1741814778848",
+          "name": "beast_description",
+          "dataType": "ByteArray",
+          "isKey": false
+        },
+        {
+          "id": "prop_1741814799848",
+          "name": "beast_anything",
+          "dataType": "u32",
+          "isKey": false
+        },
+        {
+          "id": "prop_1741823367795",
+          "name": "beast_mana",
+          "dataType": "u64",
+          "isKey": false
+        },
+        {
+          "id": "prop_1741823718605",
+          "name": "beast_gold",
+          "dataType": "u64",
+          "isKey": false
+        }
+      ]
+    }
+  ]
+}

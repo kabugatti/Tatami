@@ -21,9 +21,21 @@ interface ModelItemProps {
   onDelete: (id: string) => void;
   onPropertyAdd: (modelId: string) => void;
   onPropertyDelete: (modelId: string, propertyId: string) => void;
-  onPropertyNameChange: (modelId: string, propertyId: string, name: string) => void;
-  onPropertyDataTypeChange: (modelId: string, propertyId: string, dataType: string) => void;
-  onPropertyKeyChange: (modelId: string, propertyId: string, isKey: boolean) => void;
+  onPropertyNameChange: (
+    modelId: string,
+    propertyId: string,
+    name: string,
+  ) => void;
+  onPropertyDataTypeChange: (
+    modelId: string,
+    propertyId: string,
+    dataType: string,
+  ) => void;
+  onPropertyKeyChange: (
+    modelId: string,
+    propertyId: string,
+    isKey: boolean,
+  ) => void;
 }
 
 export function ModelItem({
@@ -91,8 +103,7 @@ export function ModelItem({
             onClick={() => !isEditing && setIsEditing(true)}
             className="text-gray-400 hover:text-white"
           >
-            <span className="sr-only">Edit</span>
-            ✎
+            <span className="sr-only">Edit</span>✎
           </button>
           <button
             type="button"
@@ -107,13 +118,13 @@ export function ModelItem({
       {expanded && (
         <div className="p-3 bg-gray-900">
           <h3 className="text-sm font-medium text-white mb-3">Properties</h3>
-          
+
           <div className="grid grid-cols-12 gap-1 text-xs font-medium text-gray-400 mb-2 px-2">
-            <div className="col-span-1"></div>
+            <div className="col-span-1" />
             <div className="col-span-5">Name</div>
             <div className="col-span-4">Datatype</div>
             <div className="col-span-1 text-center">Key</div>
-            <div className="col-span-1"></div>
+            <div className="col-span-1" />
           </div>
 
           {properties.map((property) => (
@@ -123,18 +134,16 @@ export function ModelItem({
               name={property.name}
               dataType={property.dataType}
               isKey={property.isKey}
-              onNameChange={(propertyId, value) => 
+              onNameChange={(propertyId, value) =>
                 onPropertyNameChange(id, propertyId, value)
               }
-              onDataTypeChange={(propertyId, value) => 
+              onDataTypeChange={(propertyId, value) =>
                 onPropertyDataTypeChange(id, propertyId, value)
               }
-              onKeyChange={(propertyId, value) => 
+              onKeyChange={(propertyId, value) =>
                 onPropertyKeyChange(id, propertyId, value)
               }
-              onDelete={(propertyId) => 
-                onPropertyDelete(id, propertyId)
-              }
+              onDelete={(propertyId) => onPropertyDelete(id, propertyId)}
             />
           ))}
         </div>

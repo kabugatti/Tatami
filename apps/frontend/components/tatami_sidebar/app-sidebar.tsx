@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Sidebar,
   SidebarContent,
@@ -16,13 +17,12 @@ import {
   ChevronRight,
   Database,
   LayoutTemplate,
-  Trash2,
   Pencil,
+  Trash2,
 } from "lucide-react";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Model, Property } from "@/types/models";
+import type { Model } from "@/types/models";
 import { PropertyItem } from "../models/PropertyItem";
+import { useEffect, useState } from "react";
 
 const staticMenuItems = [
   { id: "models", label: "Models", icon: Database },
@@ -49,6 +49,21 @@ export function AppSidebar() {
   const [editingModelId, setEditingModelId] = useState<string | null>(null);
   const [editModelName, setEditModelName] = useState<string>("");
 
+  useEffect(() => {
+    fetch("/api/models")
+      .then((res) => res.json())
+      .then((data) => setModels(data.models))
+      .catch((err) => console.error("Error loading models:", err));
+  }, []);
+
+  const saveModelsToJson = async (updatedModels: Model[]) => {
+    await fetch("/api/models", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ models: updatedModels }),
+    });
+  };
+
   const toggleOption = (optionId: string) => {
     if (selectedOption === optionId) {
       setSelectedOption(null);
@@ -63,126 +78,150 @@ export function AppSidebar() {
       name: `New Model ${models.length + 1}`,
       expanded: true,
       properties: [
-        {
-          id: `prop_${Date.now()}`,
-          name: "",
-          dataType: "# u32",
-          isKey: true
-        }
-      ]
+        { id: `prop_${Date.now()}`, name: "", dataType: "u32", isKey: true },
+      ],
     };
-    
-    setModels([...models, newModel]);
+
+    setModels((prevModels) => {
+      const updatedModels = [...prevModels, newModel];
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
   const addProperty = (modelId: string) => {
-    setModels(
-      models.map((model) => {
-        if (model.id === modelId) {
-          return {
-            ...model,
-            properties: [
-              ...model.properties,
-              {
-                id: `prop_${Date.now()}`,
-                name: "",
-                dataType: "# u32",
-                isKey: model.properties.length === 0,
-              },
-            ],
-          };
-        }
-        return model;
-      })
-    );
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId
+          ? {
+              ...model,
+              properties: [
+                ...model.properties,
+                {
+                  id: `prop_${Date.now()}`,
+                  name: "",
+                  dataType: "u32",
+                  isKey: model.properties.length === 0,
+                },
+              ],
+            }
+          : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
   const deleteProperty = (modelId: string, propertyId: string) => {
-    setModels(
-      models.map((model) => {
-        if (model.id === modelId) {
-          return {
-            ...model,
-            properties: model.properties.filter((p) => p.id !== propertyId),
-          };
-        }
-        return model;
-      })
-    );
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId
+          ? {
+              ...model,
+              properties: model.properties.filter((p) => p.id !== propertyId),
+            }
+          : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
-  const updatePropertyName = (modelId: string, propertyId: string, name: string) => {
-    setModels(
-      models.map((model) => {
-        if (model.id === modelId) {
-          return {
-            ...model,
-            properties: model.properties.map((p) => 
-              p.id === propertyId ? { ...p, name } : p
-            ),
-          };
-        }
-        return model;
-      })
-    );
+  const updatePropertyName = (
+    modelId: string,
+    propertyId: string,
+    name: string,
+  ) => {
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId
+          ? {
+              ...model,
+              properties: model.properties.map((p) =>
+                p.id === propertyId ? { ...p, name } : p,
+              ),
+            }
+          : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
-  const updatePropertyDataType = (modelId: string, propertyId: string, dataType: string) => {
-    setModels(
-      models.map((model) => {
-        if (model.id === modelId) {
-          return {
-            ...model,
-            properties: model.properties.map((p) => 
-              p.id === propertyId ? { ...p, dataType } : p
-            ),
-          };
-        }
-        return model;
-      })
-    );
+  const updatePropertyDataType = (
+    modelId: string,
+    propertyId: string,
+    dataType: string,
+  ) => {
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId
+          ? {
+              ...model,
+              properties: model.properties.map((p) =>
+                p.id === propertyId ? { ...p, dataType } : p,
+              ),
+            }
+          : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
-  const updatePropertyKey = (modelId: string, propertyId: string, isKey: boolean) => {
-    setModels(
-      models.map((model) => {
-        if (model.id === modelId) {
-          return {
-            ...model,
-            properties: model.properties.map((p) => 
-              p.id === propertyId ? { ...p, isKey } : p
-            ),
-          };
-        }
-        return model;
-      })
-    );
+  const updatePropertyKey = (
+    modelId: string,
+    propertyId: string,
+    isKey: boolean,
+  ) => {
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId
+          ? {
+              ...model,
+              properties: model.properties.map((p) =>
+                p.id === propertyId ? { ...p, isKey } : p,
+              ),
+            }
+          : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
   const toggleModelExpansion = (modelId: string) => {
-    setModels(
-      models.map((model) => 
-        model.id === modelId ? { ...model, expanded: !model.expanded } : model
-      )
-    );
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId ? { ...model, expanded: !model.expanded } : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
   const updateModelName = (modelId: string, name: string) => {
-    setModels(
-      models.map((model) => 
-        model.id === modelId ? { ...model, name } : model
-      )
-    );
+    setModels((prevModels) => {
+      const updatedModels = prevModels.map((model) =>
+        model.id === modelId ? { ...model, name } : model,
+      );
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
     setEditingModelId(null);
   };
-  
+
   const startEditingModelName = (modelId: string, currentName: string) => {
     setEditingModelId(modelId);
     setEditModelName(currentName);
   };
 
   const deleteModel = (modelId: string) => {
-    setModels(models.filter((model) => model.id !== modelId));
+    setModels((prevModels) => {
+      const updatedModels = prevModels.filter((model) => model.id !== modelId);
+      saveModelsToJson(updatedModels);
+      return updatedModels;
+    });
   };
 
   return (
@@ -233,7 +272,7 @@ export function AppSidebar() {
                       <span className="text-lg">+</span> Add model
                     </Button>
                   </div>
-                  
+
                   {/* Model list with custom scrollbar */}
                   <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
                     {models.map((model) => (
@@ -260,9 +299,9 @@ export function AppSidebar() {
                                   className="h-8 bg-background border-primary-700 text-primary-foreground"
                                   autoFocus
                                   onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
+                                    if (e.key === "Enter") {
                                       updateModelName(model.id, editModelName);
-                                    } else if (e.key === 'Escape') {
+                                    } else if (e.key === "Escape") {
                                       setEditingModelId(null);
                                     }
                                   }}
@@ -277,7 +316,9 @@ export function AppSidebar() {
                             {editingModelId !== model.id && (
                               <button
                                 type="button"
-                                onClick={() => startEditingModelName(model.id, model.name)}
+                                onClick={() =>
+                                  startEditingModelName(model.id, model.name)
+                                }
                                 className="text-muted-foreground hover:text-white"
                               >
                                 <span className="sr-only">Edit</span>
@@ -296,13 +337,13 @@ export function AppSidebar() {
 
                         {model.expanded && (
                           <div className="p-3 bg-background">
-                            <h3 className="text-sm font-medium text-foreground mb-3">Properties</h3>
-                            
+                            <h3 className="text-sm font-medium text-muted-foreground mb-3">Properties</h3>
+
                             <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2">
                               <div className="col-span-5">Name</div>
                               <div className="col-span-4">Datatype</div>
                               <div className="col-span-1 text-center">Key</div>
-                              <div className="col-span-2 text-center"></div>
+                              <div className="col-span-2 text-center"/>
                             </div>
 
                             {model.properties.map((property) => (
@@ -312,16 +353,24 @@ export function AppSidebar() {
                                 name={property.name}
                                 dataType={property.dataType}
                                 isKey={property.isKey}
-                                onNameChange={(propertyId, value) => 
-                                  updatePropertyName(model.id, propertyId, value)
+                                onNameChange={(propertyId, value) =>
+                                  updatePropertyName(
+                                    model.id,
+                                    propertyId,
+                                    value,
+                                  )
                                 }
-                                onDataTypeChange={(propertyId, value) => 
-                                  updatePropertyDataType(model.id, propertyId, value)
+                                onDataTypeChange={(propertyId, value) =>
+                                  updatePropertyDataType(
+                                    model.id,
+                                    propertyId,
+                                    value,
+                                  )
                                 }
-                                onKeyChange={(propertyId, value) => 
+                                onKeyChange={(propertyId, value) =>
                                   updatePropertyKey(model.id, propertyId, value)
                                 }
-                                onDelete={(propertyId) => 
+                                onDelete={(propertyId) =>
                                   deleteProperty(model.id, propertyId)
                                 }
                               />
