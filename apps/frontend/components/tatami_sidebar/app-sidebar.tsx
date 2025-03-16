@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import type { Model } from "@/types/models";
 import {
   ChevronDown,
   ChevronRight,
@@ -20,13 +21,13 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import type { Model } from "@/types/models";
-import { PropertyItem } from "../models/PropertyItem";
 import { useEffect, useState } from "react";
+import { PropertyItem } from "../models/PropertyItem";
+import { ModelSidebarSection } from "./model-sidebar-section";
 
 const staticMenuItems = [
   { id: "models", label: "Models", icon: Database },
-  { id: "metrics", label: "Metrics", icon: LayoutTemplate }
+  { id: "metrics", label: "Metrics", icon: LayoutTemplate },
 ];
 
 const initialDynamicContent = {
@@ -259,135 +260,14 @@ export function AppSidebar() {
           <SidebarContent className="h-full flex flex-col overflow-hidden">
             <SidebarGroup className="flex flex-col h-full overflow-hidden">
               <SidebarGroupLabel className="text-primary-foreground text-xl flex-shrink-0">
-                {staticMenuItems.find((item) => item.id === selectedOption)?.label}
+                {
+                  staticMenuItems.find((item) => item.id === selectedOption)
+                    ?.label
+                }
               </SidebarGroupLabel>
               <hr />
               {selectedOption === "models" ? (
-                <div className="flex flex-col h-full overflow-hidden">
-                  <div className="p-4 flex justify-end flex-shrink-0">
-                    <Button
-                      onClick={addModel}
-                      className="hover:bg-gray-900 text-white font-medium flex items-center gap-1"
-                    >
-                      <span className="text-lg">+</span> Add model
-                    </Button>
-                  </div>
-
-                  {/* Model list with custom scrollbar */}
-                  <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
-                    {models.map((model) => (
-                      <div key={model.id} className="border border-primary-700 rounded-md overflow-hidden mb-4">
-                        <div className="flex items-center justify-between p-3 bg-black">
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => toggleModelExpansion(model.id)}
-                              className="text-primary-foreground"
-                            >
-                              {model.expanded ? (
-                                <ChevronDown className="h-5 w-5" />
-                              ) : (
-                                <ChevronRight className="h-5 w-5" />
-                              )}
-                            </button>
-
-                            {editingModelId === model.id ? (
-                              <div className="flex items-center gap-2">
-                                <Input
-                                  value={editModelName}
-                                  onChange={(e) => setEditModelName(e.target.value)}
-                                  className="h-8 bg-background border-primary-700 text-primary-foreground"
-                                  autoFocus
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      updateModelName(model.id, editModelName);
-                                    } else if (e.key === "Escape") {
-                                      setEditingModelId(null);
-                                    }
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <span className="font-medium text-primary-foreground">{model.name}</span>
-                            )}
-                          </div>
-
-                          <div className="flex items-center gap-2">
-                            {editingModelId !== model.id && (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  startEditingModelName(model.id, model.name)
-                                }
-                                className="text-muted-foreground hover:text-white"
-                              >
-                                <span className="sr-only">Edit</span>
-                                <Pencil className="h-4 w-4" />
-                              </button>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => deleteModel(model.id)}
-                              className="text-muted-foreground hover:text-red-500"
-                            >
-                              <Trash2 className="h-5 w-5" />
-                            </button>
-                          </div>
-                        </div>
-
-                        {model.expanded && (
-                          <div className="p-3 bg-background">
-                            <h3 className="text-sm font-medium text-muted-foreground mb-3">Properties</h3>
-
-                            <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2">
-                              <div className="col-span-5">Name</div>
-                              <div className="col-span-4">Datatype</div>
-                              <div className="col-span-1 text-center">Key</div>
-                              <div className="col-span-2 text-center"/>
-                            </div>
-
-                            {model.properties.map((property) => (
-                              <PropertyItem
-                                key={property.id}
-                                id={property.id}
-                                name={property.name}
-                                dataType={property.dataType}
-                                isKey={property.isKey}
-                                onNameChange={(propertyId, value) =>
-                                  updatePropertyName(
-                                    model.id,
-                                    propertyId,
-                                    value,
-                                  )
-                                }
-                                onDataTypeChange={(propertyId, value) =>
-                                  updatePropertyDataType(
-                                    model.id,
-                                    propertyId,
-                                    value,
-                                  )
-                                }
-                                onKeyChange={(propertyId, value) =>
-                                  updatePropertyKey(model.id, propertyId, value)
-                                }
-                                onDelete={(propertyId) =>
-                                  deleteProperty(model.id, propertyId)
-                                }
-                              />
-                            ))}
-
-                            <Button
-                              onClick={() => addProperty(model.id)}
-                              className="w-full mt-2 text-primary-foreground hover:bg-neutral hover:text-primary-foreground border border-primary-700"
-                            >
-                              <span className="mr-1">+</span> Add property
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <ModelSidebarSection />
               ) : (
                 <SidebarGroupContent>
                   <SidebarMenu>
