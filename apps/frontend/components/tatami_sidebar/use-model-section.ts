@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 
 export const useModelSection = () => {
   const [models, setModels] = useState<Model[]>([]);
-  const [editingModelId, setEditingModelId] = useState<string | null>(null);
-  const [editModelName, setEditModelName] = useState<string>("");
-
+  const [editingModels, setEditingModels] = useState<{ [key: string]: string }>(
+    {},
+  );
   const saveModelsToJson = async (updatedModels: Model[]) => {
     await fetch("/api/models", {
       method: "POST",
@@ -129,12 +129,12 @@ export const useModelSection = () => {
       saveModelsToJson(updatedModels);
       return updatedModels;
     });
-    setEditingModelId(null);
-  };
 
-  const startEditingModelName = (modelId: string, currentName: string) => {
-    setEditingModelId(modelId);
-    setEditModelName(currentName);
+    setEditingModels((prev) => {
+      const updated = { ...prev };
+      delete updated[modelId];
+      return updated;
+    });
   };
 
   const deleteModel = (modelId: string) => {
@@ -177,17 +177,14 @@ export const useModelSection = () => {
     addModel,
     models,
     toggleModelExpansion,
-    editingModelId,
-    editModelName,
-    setEditModelName,
     updateModelName,
-    setEditingModelId,
-    startEditingModelName,
     deleteModel,
     updatePropertyDataType,
     updatePropertyName,
     updatePropertyKey,
     deleteProperty,
     addProperty,
+    editingModels,
+    setEditingModels,
   };
 };

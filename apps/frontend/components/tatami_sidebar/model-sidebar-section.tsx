@@ -9,18 +9,15 @@ export function ModelSidebarSection() {
     addModel,
     models,
     toggleModelExpansion,
-    editingModelId,
-    editModelName,
-    setEditModelName,
     updateModelName,
-    setEditingModelId,
-    startEditingModelName,
     deleteModel,
     updatePropertyDataType,
     updatePropertyName,
     updatePropertyKey,
     deleteProperty,
     addProperty,
+    editingModels,
+    setEditingModels,
   } = useModelSection();
   return (
     <div className="flex flex-col h-full overflow-hidden">
@@ -54,40 +51,35 @@ export function ModelSidebarSection() {
                   )}
                 </button>
 
-                {editingModelId === model.id ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={editModelName}
-                      onChange={(e) => setEditModelName(e.target.value)}
-                      className="h-8 bg-background border-primary-700 text-primary-foreground"
-                      autoFocus
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          updateModelName(model.id, editModelName);
-                        } else if (e.key === "Escape") {
-                          setEditingModelId(null);
-                        }
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <span className="font-medium text-primary-foreground">
-                    {model.name}
-                  </span>
-                )}
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={editingModels[model.id] ?? model.name} // Si no se está editando, usa el nombre actual
+                    onChange={(e) =>
+                      setEditingModels((prev) => ({
+                        ...prev,
+                        [model.id]: e.target.value,
+                      }))
+                    }
+                    className="h-8 bg-background border-primary-700 text-primary-foreground"
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        updateModelName(
+                          model.id,
+                          editingModels[model.id] ?? model.name,
+                        );
+                      } else if (e.key === "Escape") {
+                        setEditingModels((prev) => {
+                          const updated = { ...prev };
+                          delete updated[model.id];
+                          return updated;
+                        });
+                      }
+                    }}
+                  />
+                </div>
               </div>
-
               <div className="flex items-center gap-2">
-                {editingModelId !== model.id && (
-                  <button
-                    type="button"
-                    onClick={() => startEditingModelName(model.id, model.name)}
-                    className="text-muted-foreground hover:text-white"
-                  >
-                    <span className="sr-only">Edit</span>
-                    <Pencil className="h-4 w-4" />
-                  </button>
-                )}
                 <button
                   type="button"
                   onClick={() => deleteModel(model.id)}
