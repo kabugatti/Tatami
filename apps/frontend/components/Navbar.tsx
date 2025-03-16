@@ -8,23 +8,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import logo from "@/public/Primary Logo_Primary Color.svg";
 import { Menu } from "lucide-react";
-import Link from "next/link";
-import logo from '@/public/Primary Logo_Primary Color.svg';
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
-
-  const logoSrc = "/Primary Logo_Primary Color.svg"
+  const logoSrc = "/Primary Logo_Primary Color.svg";
 
   return (
-    <nav
-      className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral"
-    >
+    <nav className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral">
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Image src={logo} width={50} height={50} alt="Tatami logo"></Image>
+            <Image src={logo} width={50} height={50} alt="Tatami logo" />
           </Link>
         </div>
 
@@ -63,7 +60,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className={`w-full h-full border-none p-0 transition-colors duration-300`}
+              className="w-full h-full border-none p-0 transition-colors duration-300"
             >
               <SheetHeader>
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
@@ -77,7 +74,7 @@ export default function Navbar() {
                     <Button
                       type="button"
                       variant="ghost"
-                      className={`px-0 text-xl focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0`}
+                      className="px-0 text-xl focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </SheetTrigger>
                 </div>
