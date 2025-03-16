@@ -1,0 +1,39 @@
+import { Database, LayoutTemplate } from "lucide-react";
+import { useState } from "react";
+
+const staticMenuItems = [
+  { id: "models", label: "Models", icon: Database },
+  { id: "metrics", label: "Metrics", icon: LayoutTemplate },
+];
+
+const initialDynamicContent = {
+  layers: [
+    { id: "layer1", label: "Layer 1" },
+    { id: "layer2", label: "Layer 2" },
+    { id: "layer3", label: "Layer 3" },
+  ],
+  settings: [
+    { id: "account", label: "Account Settings" },
+    { id: "preferences", label: "Preferences" },
+    { id: "theme", label: "Theme" },
+  ],
+};
+
+export const useSidebar = () => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [dynamicContent, setDynamicContent] = useState(initialDynamicContent);
+  const toggleOption = (optionId: string) => {
+    if (selectedOption === optionId) {
+      setSelectedOption(null);
+    } else {
+      setSelectedOption(optionId);
+    }
+  };
+
+  return {
+    selectedOption,
+    dynamicContent,
+    staticMenuItems,
+    toggleOption,
+  };
+};

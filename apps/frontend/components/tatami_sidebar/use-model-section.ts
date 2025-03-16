@@ -1,5 +1,5 @@
 import type { Model } from "@/types/models";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useModelSection = () => {
   const [models, setModels] = useState<Model[]>([]);
@@ -165,6 +165,13 @@ export const useModelSection = () => {
       return updatedModels;
     });
   };
+
+  useEffect(() => {
+    fetch("/api/models")
+      .then((res) => res.json())
+      .then((data) => setModels(data.models))
+      .catch((err) => console.error("Error loading models:", err));
+  }, []);
 
   return {
     addModel,
