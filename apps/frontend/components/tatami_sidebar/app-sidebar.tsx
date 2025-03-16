@@ -34,7 +34,10 @@ export function AppSidebar() {
                     tooltip={item.label}
                     className="justify-center p-3"
                   >
-                    <item.icon className="text-primary-foreground h-9 w-9" />
+                    <item.icon
+                      className="text-primary-foreground h-9 w-9"
+                      style={{ color: "#f7c618" }}
+                    />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
