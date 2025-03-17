@@ -12,7 +12,8 @@ export default function HeroSection() {
             Conquer the Dojo
           </h1>
           <p className="sm:text-sm md: text-md lg:text-lg mb-6 text-secondary-foreground">
-          Leverage the power of Tatami to accelerate on-chain game development and launch your game quickly and efficiently
+            Leverage the power of Tatami to accelerate on-chain game development
+            and launch your game quickly and efficiently
           </p>
           <div className="flex flex-col md:flex-row gap-4">
             <a
@@ -30,7 +31,7 @@ export default function HeroSection() {
           </div>
         </div>
         <div className="md:w-1/2">
-          <Image src={illustration} height={1000} width={1000} alt="Tatami"></Image>
+          <Image src={illustration} height={1000} width={1000} alt="Tatami" />
         </div>
       </div>
     </section>
