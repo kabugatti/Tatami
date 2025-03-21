@@ -6,7 +6,6 @@
 - [React](https://react.dev/) - Component-based UI library
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS
-- [Biome](https://biomejs.dev/) - Fast formatter and linter
 - [shadcn/ui](https://ui.shadcn.com/) - Accessible components
 - [Radix UI](https://www.radix-ui.com/) - Headless UI primitives
 - [React Hook Form](https://react-hook-form.com/) - Performant form handling
@@ -50,12 +49,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - `npm run dev` - Start development server
 - `npm run build` - Create production build
 - `npm run start` - Start production server
-- `npm run lint` - Run Biome linter
 
 ## 💡 Development Guidelines
 
 - Use TypeScript for type safety
-- Follow Biome linting rules
 - Components should be accessible
 - Use Tailwind CSS for styling
 - Prefer server components unless client interactivity needed
@@ -66,7 +63,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [React Documentation](https://react.dev/learn)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [Biome Documentation](https://biomejs.dev/guides/getting-started/)
 - [Radix UI Documentation](https://www.radix-ui.com/themes/docs/overview/getting-started)
 - [shadcn/ui Documentation](https://ui.shadcn.com/docs)
 - [React Hook Form Documentation](https://react-hook-form.com/get-started)
