@@ -19,8 +19,8 @@ const low_code_section = () => {
         <div className="flex items-center justify-center ">
           <Image
             src={LowCode}
-            width={500}
-            height={500}
+            width={700}
+            height={700}
             alt={"low cod section"}
           />
         </div>
