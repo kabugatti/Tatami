@@ -1,5 +1,5 @@
 import { Database, LayoutTemplate } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const staticMenuItems = [
   { id: "models", label: "Models", icon: Database },
@@ -22,6 +22,15 @@ const initialDynamicContent = {
 export const useSidebar = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dynamicContent, setDynamicContent] = useState(initialDynamicContent);
+
+  useEffect(() => {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      const margin = selectedOption ? '410px' : '60px';
+      mainContent.style.marginLeft = margin;
+    }
+  }, [selectedOption]);
+
   const toggleOption = (optionId: string) => {
     if (selectedOption === optionId) {
       setSelectedOption(null);
