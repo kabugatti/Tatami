@@ -18,7 +18,8 @@ export function AppSidebar() {
     useSidebar();
 
   return (
-    <div className="flex h-[calc(100vh-64px)]">
+    <>
+      {/* Sidebar principal fijo */}
       <Sidebar
         collapsible="none"
         className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-primary-700"
@@ -46,19 +47,20 @@ export function AppSidebar() {
         </SidebarContent>
       </Sidebar>
 
-      {/* Dynamic Sidebar - Changes based on selection */}
-      {selectedOption && (
+      {/* Sidebar dinámico con transición */}
+      <div
+        className={`fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] transition-all duration-300 ease-in-out ${
+          selectedOption ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+        }`}
+      >
         <Sidebar
           collapsible="none"
-          className="fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] shadow-lg border-r border-primary-700 w-[350px] overflow-visible"
+          className="h-full shadow-lg border-r border-primary-700 w-[350px] bg-background"
         >
           <SidebarContent className="h-full flex flex-col overflow-hidden">
             <SidebarGroup className="flex flex-col h-full overflow-hidden">
               <SidebarGroupLabel className="text-primary-foreground text-xl flex-shrink-0">
-                {
-                  staticMenuItems.find((item) => item.id === selectedOption)
-                    ?.label
-                }
+                {staticMenuItems.find((item) => item.id === selectedOption)?.label}
               </SidebarGroupLabel>
               <hr />
               {selectedOption === "models" ? (
@@ -68,7 +70,7 @@ export function AppSidebar() {
                   <SidebarMenu>
                     {dynamicContent[
                       selectedOption as keyof typeof dynamicContent
-                    ].map((item) => (
+                    ]?.map((item) => (
                       <SidebarMenuItem key={item.id}>
                         <SidebarMenuButton className="w-full text-base p-3">
                           {item.label}
@@ -81,7 +83,7 @@ export function AppSidebar() {
             </SidebarGroup>
           </SidebarContent>
         </Sidebar>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
