@@ -9,6 +9,7 @@ export async function GET() {
     const data = fs.readFileSync(MODELS_JSON_PATH, "utf-8");
     return NextResponse.json(JSON.parse(data));
   } catch (error) {
+    console.error("Error reading models.json:", error);
     return NextResponse.json(
       { error: "Error reading models.json" },
       { status: 500 },
@@ -20,8 +21,13 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     fs.writeFileSync(MODELS_JSON_PATH, JSON.stringify(body, null, 2));
-    return NextResponse.json({ message: "Models updated successfully" });
+    
+    return NextResponse.json({ 
+      message: "Models updated successfully",
+      models: body.models 
+    });
   } catch (error) {
+    console.error("Error writing to models.json:", error);
     return NextResponse.json(
       { error: "Error writing to models.json" },
       { status: 500 },
