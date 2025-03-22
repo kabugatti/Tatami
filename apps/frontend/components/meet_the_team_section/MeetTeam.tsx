@@ -77,7 +77,7 @@ const TeamSection: React.FC = () => {
                 
                 
                 {/* Social icons */}
-                <div className="flex space-x-4 mt-2">
+                <div className="flex space-x-4 mt-4">
                   {member.socialLinks.github && (
                     <a href={member.socialLinks.github} className="text-white hover:text-primary" aria-label="GitHub">
                       <svg
