@@ -75,8 +75,6 @@ const TeamSection: React.FC = () => {
                 <h4 className="text-white font-bold lg:text-xl">{member.surname}</h4>
                 <p className="text-primary font-bold border-b-2 border-primary w-[40%] lg:w-[60%] pb-3 mt-2">{member.role}</p>
                 
-                {/* Divider line */}
-                <div className="w-16 h-1 bg-yellow-500 my-3"></div>
                 
                 {/* Social icons */}
                 <div className="flex space-x-4 mt-2">
