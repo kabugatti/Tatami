@@ -40,7 +40,7 @@ const TeamSection: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-[#101010] py-12 px-4">
+    <div className="w-full bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl md:text-4xl font-bold text-white text-center mb-12">
           Meet the Tatami's team
