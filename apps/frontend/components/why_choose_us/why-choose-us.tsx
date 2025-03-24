@@ -1,8 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import type React from "react";
 import chooseUs from '@/public/chooseUs.png';
+import { useTranslation } from 'react-i18next';
 
 const WhyChooseTatami: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="text-white flex flex-col sm:flex-col md:flex-col lg:flex-row items-center justify-center px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 2xl:px-40 py-16 sm:py-20 md:py-24 lg:py-28 gap-4 sm:gap-6 md:gap-8 lg:gap-10 w-full">
       <div className="w-full sm:w-full md:w-full lg:w-1/2 flex justify-center lg:justify-end">
@@ -17,7 +22,7 @@ const WhyChooseTatami: React.FC = () => {
       </div>
       <div className="w-full md:w-full lg:w-1/2 flex flex-col items-center md:items-center lg:items-start text-center md:text-center lg:text-left px-4 sm:px-6 md:px-8">
         <h2 className="sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4">
-          Why choose Tatami?
+          {t('whyChooseTatami')}
         </h2>
         <div className="space-y-4 sm:space-y-5 md:space-y-6 w-full max-w-[90%] sm:max-w-[85%] md:max-w-[80%]">
           <div className="flex flex-col md:flex-col lg:flex-row items-center md:items-center lg:items-start gap-4 sm:gap-5">
@@ -26,10 +31,10 @@ const WhyChooseTatami: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <h3 className="text-base sm:text-lg md:text-sm lg:text-xl font-bold mb-1">
-                Build faster with Tatami
+                {t('buildFaster')}
               </h3>
               <p className="text-secondary-foreground text-sm sm:text-base md:text-md lg:text-md leading-snug">
-                Accelerates development
+                {t('acceleratesDevelopment')}
               </p>
             </div>
           </div>
@@ -48,10 +53,10 @@ const WhyChooseTatami: React.FC = () => {
 
             <div className="flex flex-col">
               <h3 className="text-base sm:text-lg md:text-md lg:text-xl font-bold mb-1">
-                No-code game development
+                {t('noCodeGameDevelopment')}
               </h3>
               <p className="text-secondary-foreground text-sm sm:text-base md:text-md lg:text-md leading-snug">
-                Code without much effort
+                {t('codeWithoutMuchEffort')}
               </p>
             </div>
           </div>
@@ -70,10 +75,10 @@ const WhyChooseTatami: React.FC = () => {
 
             <div className="flex flex-col">
               <h3 className="text-base sm:text-lg md:text-md lg:text-xl font-bold mb-1">
-                Think about the idea
+                {t('thinkAboutTheIdea')}
               </h3>
               <p className="text-secondary-foreground text-sm sm:text-base md:text-md lg:text-md leading-snug">
-                Don’t think about code
+                {t('dontThinkAboutCode')}
               </p>
             </div>
           </div>

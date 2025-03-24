@@ -3,10 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type FormEvent, useState } from "react";
-
+import { useTranslation } from 'react-i18next';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const NewsletterForm = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
@@ -53,7 +54,7 @@ export const NewsletterForm = () => {
           type="submit"
           className="bg-primary text-black hover:bg-primary/90 px-6 text-sm px-4 rounded-full"
         >
-          Subscribe
+          {t('subscribe')}
         </Button>
       </div>
       {error && (
