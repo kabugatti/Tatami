@@ -12,9 +12,15 @@ export default function AppLayout({
     <html lang="en">
       <body>
         <SidebarProvider defaultOpen={false}>
-          <div className="relative flex min-h-screen w-full">
+          <div className="relative flex min-h-screen w-full overflow-x-hidden">
             <AppSidebar />
-            <div className="relative flex-1 w-full pt-16 pl-16">
+            <div 
+              id="main-content"
+              className="relative flex-1 w-full pt-16 transition-all duration-300 ease-in-out"
+              style={{
+                marginLeft: "60px"
+              }}
+            >
               {children}
               <Toaster />
             </div>

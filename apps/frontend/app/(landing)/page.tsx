@@ -3,6 +3,7 @@ import HeroSection from "@/components/hero_section_component/HeroSection";
 import JoinCommunity from "@/components/Join_the_community/JoinTheCommunity";
 import Productive from "@/components/productive/productive";
 import WhyChooseTatami from "../../components/why_choose_us/why-choose-us";
+import TeamSection from "@/components/meet_the_team_section/MeetTeam";
 import LowCode from "@/components/low_code_section/low_code_section";
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <LowCode/>
       <Productive />
       <JoinCommunity />
+      <TeamSection />
     </div>
   );
 }
