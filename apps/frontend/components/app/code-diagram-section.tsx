@@ -9,6 +9,7 @@ import { generateCairoCode } from "@/utils/generateCairoCode";
 import { generateEntities } from "@/utils/generateEntities";
 import { ActionButtons } from "./action-buttons";
 import { DiagramControls } from "./diagram-controls";
+import { modelStateService } from "@/services/ModelStateService";
 
 export function CodeDiagramSection() {
   const [activeSection, setActiveSection] = useState("code");
@@ -18,6 +19,19 @@ export function CodeDiagramSection() {
     { title: string; fields: EntityField[] }[]
   >([]);
   const { toast } = useToast();
+
+  // Subscribe to model changes
+  useEffect(() => {
+    const subscription = modelStateService.models$.subscribe(models => {
+      setCode(generateCairoCode(models));
+      setEntities(generateEntities(models));
+      setLoading(false);
+    });
+    
+    modelStateService.initialize();
+    
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     setLoading(true);
