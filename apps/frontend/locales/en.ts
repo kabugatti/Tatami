@@ -25,7 +25,11 @@ const en = {
   subscribeToNewsOfTatami: "Subscribe to news of Tatami",
   subscribe: "Subscribe",
   privacyPolicy: "Privacy Policy",
-  termsOfService: "Terms of Service"
+  termsOfService: "Terms of Service",
+  founder: 'FOUNDER',
+  coFounder: 'CO-FOUNDER',
+  videoModels: "Models",
+  videoMetrics: "Metrics"
 };
 
 export default en;

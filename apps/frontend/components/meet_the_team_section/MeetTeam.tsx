@@ -23,7 +23,7 @@ const TeamSection: React.FC = () => {
     {
       name: 'DIEGO DUARTE',
       surname: 'FERNÁNDEZ',
-      role: 'FOUNDER',
+      role: t('founder'),
       image: '/Diego.webp',
       socialLinks: {
         github: 'https://github.com/diegoTech14',
@@ -34,7 +34,7 @@ const TeamSection: React.FC = () => {
     {
       name: 'DANIEL',
       surname: 'CALDERON DIAZ',
-      role: 'CO-FOUNDER',
+      role: t('coFounder'),
       image: '/Daniel.webp',
       socialLinks: {
         github: 'https://github.com/danielcdz',

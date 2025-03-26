@@ -34,7 +34,7 @@ const Productive = () => {
                 )}
                 onClick={() => setActiveVideo(index)}
               >
-                {video.type}
+                {t(video.type)}
               </Button>
             ))}
           </div>
