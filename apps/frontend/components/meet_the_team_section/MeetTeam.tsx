@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Image from "next/image";
+import { useTranslation } from 'react-i18next';
 
 interface TeamMember {
   name: string;
@@ -14,11 +17,13 @@ interface TeamMember {
 }
 
 const TeamSection: React.FC = () => {
+  const { t } = useTranslation();
+
   const teamMembers: TeamMember[] = [
     {
       name: 'DIEGO DUARTE',
       surname: 'FERNÁNDEZ',
-      role: 'FOUNDER',
+      role: t('founder'),
       image: '/Diego.webp',
       socialLinks: {
         github: 'https://github.com/diegoTech14',
@@ -29,7 +34,7 @@ const TeamSection: React.FC = () => {
     {
       name: 'DANIEL',
       surname: 'CALDERON DIAZ',
-      role: 'CO-FOUNDER',
+      role: t('coFounder'),
       image: '/Daniel.webp',
       socialLinks: {
         github: 'https://github.com/danielcdz',
@@ -43,7 +48,7 @@ const TeamSection: React.FC = () => {
     <div className="w-full bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl md:text-4xl font-bold text-white text-center mb-12">
-          Meet the Tatami's team
+          {t('meetTheTatamisTeam')}
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:gap-24 gap-12">

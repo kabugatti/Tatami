@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import { Footer } from "@/components/footer/footer";
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/i18n';
+import I18nProviderWrapper from '@/components/I18nProviderWrapper';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +33,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <I18nProviderWrapper>
+          <Navbar />
+          {children}
+          <Footer />
+        </I18nProviderWrapper>
       </body>
     </html>
   );

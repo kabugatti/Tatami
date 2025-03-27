@@ -12,9 +12,30 @@ import logo from "@/public/Primary Logo_Primary Color.svg";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from 'react-i18next';
+import { useCallback } from 'react';
+import LanguageToggleButton from './LanguageToggleButton';
 
 export default function Navbar() {
   const logoSrc = "/Primary Logo_Primary Color.svg";
+
+  const { t, i18n } = useTranslation();
+
+  const debounce = (func: Function, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+    return (...args: any[]) => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
+  };
+
+  const toggleLanguage = useCallback(debounce(() => {
+    const newLanguage = i18n.language === 'en' ? 'es' : 'en';
+    console.log(`Switching language to: ${newLanguage}`);
+    i18n.changeLanguage(newLanguage);
+  }, 300), [i18n]);
 
   return (
     <nav className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral">
@@ -31,20 +52,21 @@ export default function Navbar() {
               href="/docs"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
-              Docs
+              {t('docs')}
             </Link>
             <Link
               href="/community"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
-              Community
+              {t('community')}
             </Link>
             <Link
               href="/build"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
-              {"Let's build"}
+              {t('build')}
             </Link>
+            <LanguageToggleButton />
           </nav>
 
           <Sheet>
@@ -55,7 +77,7 @@ export default function Navbar() {
                 className="px-0 text-primary-foreground hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden"
               >
                 <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle menu</span>
+                <span className="sr-only">{t('toggleMenu')}</span>
               </Button>
             </SheetTrigger>
             <SheetContent
@@ -63,7 +85,7 @@ export default function Navbar() {
               className="w-full h-full border-none p-0 transition-colors duration-300"
             >
               <SheetHeader>
-                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetTitle className="sr-only">{t('navigationMenu')}</SheetTitle>
               </SheetHeader>
               <div className="flex h-full flex-col bg-neutral">
                 <div className="flex items-center justify-between p-6">
@@ -83,20 +105,21 @@ export default function Navbar() {
                     href="/docs"
                     className="text-lg font-medium text-primary-foreground"
                   >
-                    Docs
+                    {t('docs')}
                   </Link>
                   <Link
                     href="/community"
                     className="text-lg font-medium text-primary-foreground"
                   >
-                    Community
+                    {t('community')}
                   </Link>
                   <Link
                     href="/build"
                     className="text-lg font-medium text-primary-foreground"
                   >
-                    {"Let's build"}
+                    {t('build')}
                   </Link>
+                  <LanguageToggleButton />
                 </nav>
               </div>
             </SheetContent>

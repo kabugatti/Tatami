@@ -1,16 +1,19 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Github, Send } from "lucide-react";
 import { Testimonial } from "./TestimonialComponent";
 import { testimonialGroups } from './opinions';
-
+import { useTranslation } from 'react-i18next';
 
 export default function JoinCommunity() {
+  const { t } = useTranslation();
+
   return (
     <div className="text-white py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="md: text-md sm:text-sm lg:text-4xl font-bold tracking-tighter text-primary-foreground mb-4">
-            Join the community
+            {t('joinTheCommunity')}
           </h2>
           <p className="mx-auto max-w-[700px] text-secondary-foreground sm:text-sm md:text-md lg:text-lg">
             Lorem ipsum dolor sit ammet letarsha wut et mortem lortem vitae lid perplexit

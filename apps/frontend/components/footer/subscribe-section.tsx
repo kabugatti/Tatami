@@ -1,10 +1,14 @@
+"use client";
+
 import { NewsletterForm } from "@/components/footer/newsletter-form";
+import { useTranslation } from 'react-i18next';
 
 export const SubscribeSection = () => {
+  const { t } = useTranslation();
   return (
     <div>
       <h3 className="text-primary text-xl font-semibold mb-4">
-        Subscribe to news of Tatami
+        {t('subscribeToNewsOfTatami')}
       </h3>
       <NewsletterForm />
     </div>
