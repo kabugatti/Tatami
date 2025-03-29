@@ -22,7 +22,7 @@ export function AppSidebar() {
       {/* Sidebar principal fijo */}
       <Sidebar
         collapsible="none"
-        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-primary-700"
+        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-background"
       >
         <SidebarContent>
           <SidebarGroup>

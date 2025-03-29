@@ -24,7 +24,7 @@ export default {
     extend: {
       colors: {
         yellow: "hsl(var(--yellow))",
-        neutral: "hsl(var(--neutral-black))",
+        neutral: "hsl(var(--neutral))",
         black: "hsl(var(--black))",
         white: "hsl(var(--white))",
         background: "hsl(var(--background))",
