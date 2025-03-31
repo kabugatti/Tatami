@@ -11,17 +11,17 @@ body {
     /* Brand Colors */
     --yellow: 47 93% 53%;
     --black: 0 0% 10%;
-    --neutral-white: 100% 100% 100%;
+    --neutral-white: 0 0% 100%;
     --neutral-black: 0 0% 0%;
 
 
-    --white: 0 0% 91%;
+    --white: 0 0% 90.6%;
     --paragraph: 0 0% 76%;
 
     /* Base */
-    --background: var(--white); 
+    --background: var(--white);
     --foreground: var(--black); 
-    --neutral: var(--neutral-white)
+    --neutral: var(--neutral-white);
 
     /* Surface colors */
     --card: 0 0% 100%;
@@ -81,6 +81,9 @@ body {
 
     /* Radii */
     --radius: 0.5rem;
+
+    /* Constant text */
+    --text: 0 0% 60.8%;
   }
 
   .dark {
