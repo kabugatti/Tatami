@@ -8,7 +8,7 @@
         {
           "id": "prop_1741813939846",
           "name": "beast_id",
-          "dataType": "u64",
+          "dataType": "u8",
           "isKey": true
         },
         {
@@ -38,12 +38,6 @@
         {
           "id": "prop_1741823367795",
           "name": "beast_mana",
-          "dataType": "u64",
-          "isKey": false
-        },
-        {
-          "id": "prop_1741823718605",
-          "name": "beast_gold",
           "dataType": "u64",
           "isKey": false
         }

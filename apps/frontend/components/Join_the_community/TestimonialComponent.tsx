@@ -36,9 +36,9 @@ export function Testimonial({
             className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2"
           />
         </div>
-        <span className="text-white">{author}</span>
+        <span className="text-primary-foreground">{author}</span>
       </div>
-      <p className="text-white text-sm flex-grow">{content}</p>
+      <p className="text-primary-foreground text-sm flex-grow">{content}</p>
     </Card>
   );
 }

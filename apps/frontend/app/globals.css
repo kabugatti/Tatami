@@ -31,7 +31,7 @@ body {
 
     /* Brand colors */
     --primary: var(--yellow);
-    --primary-foreground: var(--white);
+    --primary-foreground: var(--black);
     --black-foreground: var(--black);
     --primary-50: 0 0% 98%;
     --primary-100: 0 0% 90%;
@@ -46,7 +46,7 @@ body {
     --primary-950: 0 0% 5%;
 
     --secondary: var(--yellow);
-    --secondary-foreground: var(--paragraph);
+    --secondary-foreground: var(--black);
 
     --accent: var(--yellow);
     --accent-foreground: var(--yellow);
@@ -99,7 +99,8 @@ body {
 
     /* Brand colors dark */
     --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary-foreground: var(--white);
+    --secondary-foreground: var(--paragraph);
     --primary-50: 0 0% 95%;
     --primary-100: 0 0% 85%;
     --primary-200: 0 0% 75%;

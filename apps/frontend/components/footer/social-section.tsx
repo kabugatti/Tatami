@@ -59,7 +59,7 @@ export const SocialSection = () => {
             <Link
               key={social.id}
               href={social.url}
-              className="text-white hover:text-primary transition-colors"
+              className="text-primary-foreground hover:text-primary transition-colors"
             >
               {social.iconSVG}
             </Link>

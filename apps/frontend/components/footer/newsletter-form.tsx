@@ -44,7 +44,7 @@ export const NewsletterForm = () => {
             setEmail(e.target.value);
             if (error) validateEmail(e.target.value);
           }}
-          className="border-width-2 p-0 mr-2"
+          className="border-width-2 text-primary-foreground p-0 mr-2"
           variant="footer"
           required
           aria-invalid={!!error}
@@ -52,7 +52,7 @@ export const NewsletterForm = () => {
         />
         <Button
           type="submit"
-          className="bg-primary text-black hover:bg-primary/90 px-6 text-sm px-4 rounded-full"
+          className="bg-primary text-black hover:bg-primary/90 md:px-6 text-sm px-4 rounded-full"
         >
           {t('subscribe')}
         </Button>
