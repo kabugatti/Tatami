@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { useGraphQLConnection } from '@/hooks/use-graphql-connection'
+import { useGraphQLClient } from '@/hooks/use-graphql-client'
 
 import '@graphiql/react/dist/style.css'
 
@@ -36,7 +36,7 @@ export function GraphQLExplorer() {
     setQuery,
     connect,
     runQuery,
-  } = useGraphQLConnection()
+  } = useGraphQLClient()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),

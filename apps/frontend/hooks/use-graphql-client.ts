@@ -5,7 +5,7 @@ import { createApolloClient } from '@/lib/apollo-client'
 
 type GenericGraphQLResult = Record<string, unknown>
 
-export function useGraphQLConnection() {
+export function useGraphQLClient() {
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null)
   const [fetcher, setFetcher] = useState<Fetcher | null>(null)
   const [error, setError] = useState<string | null>(null)
