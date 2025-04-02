@@ -30,7 +30,12 @@ import '@graphiql/react/dist/style.css'
 
 // Schema definition for endpoint form validation
 const formSchema = z.object({
-  endpoint: z.string().url('Must be a valid URL'),
+  endpoint: z
+    .string()
+    .url('Must be a valid URL')
+    .refine((url) => url.startsWith('http://') || url.startsWith('https://'), {
+      message: 'Endpoint must start with http:// or https://',
+    }),
 })
 type FormValues = z.infer<typeof formSchema>
 
