@@ -1,19 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  ApolloClient,
-  gql,
-  NormalizedCacheObject,
-  ApolloQueryResult,
-} from '@apollo/client'
-import { createGraphiQLFetcher, Fetcher } from '@graphiql/toolkit'
 import { GraphiQLProvider, QueryEditor } from '@graphiql/react'
+import { AlertTriangle } from 'lucide-react'
 
-import { createApolloClient } from '@/lib/apollo-client'
 import {
   Form,
   FormField,
@@ -26,25 +18,25 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertTriangle } from 'lucide-react'
+import { useGraphQLConnection } from '@/hooks/use-graphql-connection'
 
 import '@graphiql/react/dist/style.css'
 
 const formSchema = z.object({
   endpoint: z.string().url('Must be a valid URL'),
 })
-
 type FormValues = z.infer<typeof formSchema>
 
-type GenericGraphQLResult = Record<string, unknown>
-
 export function GraphQLExplorer() {
-  const [query, setQuery] = useState<string>('')
-  const [result, setResult] = useState<GenericGraphQLResult | null>(null)
-  const [error, setError] = useState<string | null>(null)
-
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null)
-  const [fetcher, setFetcher] = useState<Fetcher | null>(null)
+  const {
+    client,
+    fetcher,
+    error,
+    result,
+    setQuery,
+    connect,
+    runQuery,
+  } = useGraphQLConnection()
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -52,37 +44,7 @@ export function GraphQLExplorer() {
   })
 
   const onSubmit = (data: FormValues) => {
-    try {
-      const newClient = createApolloClient(data.endpoint)
-      const newFetcher = createGraphiQLFetcher({ url: data.endpoint })
-
-      setClient(newClient)
-      setFetcher(() => newFetcher)
-      setError(null)
-    } catch {
-      setError('Failed to connect to the GraphQL endpoint.')
-    }
-  }
-
-  const handleRunQuery = async () => {
-    if (!client || !query.trim()) {
-      setError('Please enter a valid query.')
-      return
-    }
-
-    try {
-      const response: ApolloQueryResult<GenericGraphQLResult> = await client.query({
-        query: gql(query),
-        fetchPolicy: 'no-cache',
-      })
-
-      setResult(response.data)
-      setError(null)
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error'
-      setError(message)
-      setResult(null)
-    }
+    connect(data.endpoint)
   }
 
   return (
@@ -119,11 +81,11 @@ export function GraphQLExplorer() {
           <>
             <GraphiQLProvider fetcher={fetcher}>
               <div className="graphiql-container h-[220px]">
-                <QueryEditor onEdit={(val) => setQuery(val)} />
+                <QueryEditor onEdit={setQuery} />
               </div>
             </GraphiQLProvider>
 
-            <Button onClick={handleRunQuery}>Run Query</Button>
+            <Button onClick={runQuery}>Run Query</Button>
 
             {result && (
               <pre className="bg-muted p-4 rounded-md overflow-auto text-sm max-h-[220px]">
