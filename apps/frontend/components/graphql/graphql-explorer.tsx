@@ -4,8 +4,13 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ApolloClient, gql } from '@apollo/client'
-import { createGraphiQLFetcher } from '@graphiql/toolkit'
+import {
+  ApolloClient,
+  gql,
+  NormalizedCacheObject,
+  ApolloQueryResult,
+} from '@apollo/client'
+import { createGraphiQLFetcher, Fetcher } from '@graphiql/toolkit'
 import { GraphiQLProvider, QueryEditor } from '@graphiql/react'
 
 import { createApolloClient } from '@/lib/apollo-client'
@@ -25,25 +30,28 @@ import { AlertTriangle } from 'lucide-react'
 
 import '@graphiql/react/dist/style.css'
 
-// Zod schema for validation
 const formSchema = z.object({
   endpoint: z.string().url('Must be a valid URL'),
 })
 
-export function GraphQLEditor() {
+type FormValues = z.infer<typeof formSchema>
+
+type GenericGraphQLResult = Record<string, unknown>
+
+export function GraphQLExplorer() {
   const [query, setQuery] = useState<string>('')
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<GenericGraphQLResult | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const [client, setClient] = useState<ApolloClient<any> | null>(null)
-  const [fetcher, setFetcher] = useState<any>(null)
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | null>(null)
+  const [fetcher, setFetcher] = useState<Fetcher | null>(null)
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { endpoint: '' },
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: FormValues) => {
     try {
       const newClient = createApolloClient(data.endpoint)
       const newFetcher = createGraphiQLFetcher({ url: data.endpoint })
@@ -51,7 +59,7 @@ export function GraphQLEditor() {
       setClient(newClient)
       setFetcher(() => newFetcher)
       setError(null)
-    } catch (err) {
+    } catch {
       setError('Failed to connect to the GraphQL endpoint.')
     }
   }
@@ -63,14 +71,16 @@ export function GraphQLEditor() {
     }
 
     try {
-      const response = await client.query({
+      const response: ApolloQueryResult<GenericGraphQLResult> = await client.query({
         query: gql(query),
         fetchPolicy: 'no-cache',
       })
+
       setResult(response.data)
       setError(null)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error'
+      setError(message)
       setResult(null)
     }
   }
