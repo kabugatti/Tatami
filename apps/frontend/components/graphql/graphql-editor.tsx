@@ -1,39 +1,52 @@
 'use client'
 
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { ApolloClient, gql } from '@apollo/client'
+import { createGraphiQLFetcher } from '@graphiql/toolkit'
 import { GraphiQLProvider, QueryEditor } from '@graphiql/react'
-import { createGraphiQLFetcher } from '@graphiql/toolkit';
-import { AlertTriangle } from 'lucide-react'
 
 import { createApolloClient } from '@/lib/apollo-client'
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Label } from '@/components/ui/label'
+import { AlertTriangle } from 'lucide-react'
 
 import '@graphiql/react/dist/style.css'
 
+// Zod schema for validation
+const formSchema = z.object({
+  endpoint: z.string().url('Must be a valid URL'),
+})
+
 export function GraphQLEditor() {
-  const [endpoint, setEndpoint] = useState('')
-  const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState<string>('')
   const [result, setResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const [client, setClient] = useState<ApolloClient<any> | null>(null)
   const [fetcher, setFetcher] = useState<any>(null)
 
-  const handleConnect = () => {
-    if (!endpoint.startsWith('http')) {
-      setError('Please enter a valid URL that starts with http:// or https://')
-      return
-    }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { endpoint: '' },
+  })
 
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     try {
-      const newClient = createApolloClient(endpoint)
-
-      const newFetcher = createGraphiQLFetcher({ url: endpoint })
+      const newClient = createApolloClient(data.endpoint)
+      const newFetcher = createGraphiQLFetcher({ url: data.endpoint })
 
       setClient(newClient)
       setFetcher(() => newFetcher)
@@ -64,15 +77,25 @@ export function GraphQLEditor() {
 
   return (
     <Card>
-      <CardContent className="space-y-4 mt-0">
-        <Label htmlFor="graphql-endpoint">GraphQL Endpoint</Label>
-        <Input
-          id="graphql-endpoint"
-          placeholder="https://api.example.com/graphql"
-          value={endpoint}
-          onChange={(e) => setEndpoint(e.target.value)}
-        />
-        <Button onClick={handleConnect}>Connect</Button>
+      <CardContent className="space-y-6 mt-0">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="endpoint"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>GraphQL Endpoint</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://api.example.com/graphql" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Connect</Button>
+          </form>
+        </Form>
 
         {error && (
           <Alert variant="destructive">
@@ -86,9 +109,7 @@ export function GraphQLEditor() {
           <>
             <GraphiQLProvider fetcher={fetcher}>
               <div className="graphiql-container h-[220px]">
-                <QueryEditor
-                  onEdit={(val) => setQuery(val)}
-                />
+                <QueryEditor onEdit={(val) => setQuery(val)} />
               </div>
             </GraphiQLProvider>
 
