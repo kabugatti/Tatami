@@ -11,13 +11,13 @@ const Productive = () => {
   const [activeVideo, setActiveVideo] = useState(0);
 
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-foreground">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-black">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
-          <h2 className="md:text-md font-bold tracking-tighter sm:text-4xl xl:text-4xl text-background">
+          <h2 className="md:text-md font-bold tracking-tighter sm:text-4xl xl:text-4xl text-white">
             {t('stayProductiveAndBuildYourOwnGame')}
           </h2>
-          <p className="mx-auto text-background lg:text-lg">
+          <p className="mx-auto text-secondary-foreground lg:text-lg">
             Lorem ipsum dolor sit ammet letarsha wut et mortem lortem vitae lid
             perplexit
           </p>
@@ -26,11 +26,11 @@ const Productive = () => {
             {videos.map((video, index) => (
               <Button
                 key={video.id}
-                variant="action"
+                variant="default"
                 className={cn(
                   "min-w-[120px]",
                   activeVideo === index &&
-                    "bg-primary text-black hover:bg-primary/90",
+                    "bg-yellow text-black hover:bg-yellow/90",
                 )}
                 onClick={() => setActiveVideo(index)}
               >

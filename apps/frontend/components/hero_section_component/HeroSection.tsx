@@ -20,7 +20,7 @@ export default function HeroSection() {
           <div className="flex flex-col md:flex-row gap-4">
             <a
               href="/app"
-              className="bg-primary text-third-foreground font-semibold py-3 px-6 rounded-md transition-colors"
+              className="bg-yellow text-third-foreground font-semibold py-3 px-6 rounded-md transition-colors"
             >
               {t('tryTatami')}
             </a>
