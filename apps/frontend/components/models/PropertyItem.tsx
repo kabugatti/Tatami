@@ -13,12 +13,12 @@ export function PropertyItem({
   onDelete,
 }: PropertyItemProps) {
   return (
-    <div className="grid grid-cols-12 gap-1 items-center rounded-sm p-2 mb-2 bg-primary-800">
+    <div className="grid grid-cols-12 gap-1 items-center rounded-sm p-2 mb-2 bg-background">
       <div className="col-span-5">
         <Input
           value={name}
           onChange={(e) => onNameChange(id, e.target.value)}
-          className="h-8 bg-background text-muted-foreground"
+          className="h-8 bg-neutral text-muted-foreground"
           placeholder="Name"
         />
       </div>

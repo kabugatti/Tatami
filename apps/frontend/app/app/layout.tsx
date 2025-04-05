@@ -2,6 +2,7 @@ import { AppSidebar } from "@/components/tatami_sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import AppNavbar from "@/components/app/app-navbar";
 
 export default function AppLayout({
   children,
@@ -11,6 +12,7 @@ export default function AppLayout({
   return (
     <html lang="en">
       <body>
+        <AppNavbar />
         <SidebarProvider defaultOpen={false}>
           <div className="relative flex min-h-screen w-full overflow-x-hidden">
             <AppSidebar />

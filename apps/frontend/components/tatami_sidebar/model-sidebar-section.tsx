@@ -24,7 +24,7 @@ export function ModelSidebarSection() {
       <div className="p-4 flex justify-end flex-shrink-0">
         <Button
           onClick={addModel}
-          className="hover:bg-gray-900 text-white font-medium flex items-center gap-1"
+          className="hover:bg-foreground/95 bg-foreground text-background font-medium flex items-center gap-1"
         >
           <span className="text-lg">+</span> Add model
         </Button>
@@ -35,14 +35,13 @@ export function ModelSidebarSection() {
         {models.map((model) => (
           <div
             key={model.id}
-            className="border border-primary-700 rounded-md overflow-hidden mb-4"
+            className="border border-neutral bg-neutral rounded-md overflow-hidden mb-4"
           >
-            <div className="flex items-center justify-between p-3 bg-black">
+            <div className="flex items-center justify-between p-3 bg-neutral text-foreground">
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => toggleModelExpansion(model.id)}
-                  className="text-primary-foreground"
                 >
                   {model.expanded ? (
                     <ChevronDown className="h-5 w-5" />
@@ -60,7 +59,7 @@ export function ModelSidebarSection() {
                         [model.id]: e.target.value,
                       }))
                     }
-                    className="h-8 bg-background border-primary-700 text-primary-foreground"
+                    className="h-8 bg-background border-neutral"
                     autoFocus
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
@@ -83,7 +82,7 @@ export function ModelSidebarSection() {
                 <button
                   type="button"
                   onClick={() => deleteModel(model.id)}
-                  className="text-muted-foreground hover:text-red-500"
+                  className=" hover:text-red-500"
                 >
                   <Trash2 className="h-5 w-5" />
                 </button>
@@ -91,12 +90,12 @@ export function ModelSidebarSection() {
             </div>
 
             {model.expanded && (
-              <div className="p-3 bg-background">
+              <div className="p-3 bg-neutral">
                 <h3 className="text-sm font-medium text-muted-foreground mb-3">
                   Properties
                 </h3>
 
-                <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2">
+                <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2 py-3">
                   <div className="col-span-5">Name</div>
                   <div className="col-span-4">Datatype</div>
                   <div className="col-span-1 text-center">Key</div>
@@ -127,7 +126,7 @@ export function ModelSidebarSection() {
 
                 <Button
                   onClick={() => addProperty(model.id)}
-                  className="w-full mt-2 text-primary-foreground hover:bg-neutral hover:text-primary-foreground border border-primary-700"
+                  className="w-full mt-2 text-text bg-background hover:bg-background/0 hover:text-primary-foreground border border-dotted border-foreground-500"
                 >
                   <span className="mr-1">+</span> Add property
                 </Button>

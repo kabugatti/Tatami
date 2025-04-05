@@ -22,7 +22,7 @@ export function AppSidebar() {
       {/* Sidebar principal fijo */}
       <Sidebar
         collapsible="none"
-        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-primary-700"
+        className="fixed left-0 top-16 h-[calc(100vh-64px)] z-[100] shadow-lg w-[60px] border-r border-background"
       >
         <SidebarContent>
           <SidebarGroup>
@@ -55,11 +55,11 @@ export function AppSidebar() {
       >
         <Sidebar
           collapsible="none"
-          className="h-full shadow-lg border-r border-primary-700 w-[350px] bg-background"
+          className="h-full shadow-lg border-r border-primary-700 w-[350px] bg-neutral"
         >
           <SidebarContent className="h-full flex flex-col overflow-hidden">
             <SidebarGroup className="flex flex-col h-full overflow-hidden">
-              <SidebarGroupLabel className="text-primary-foreground text-xl flex-shrink-0">
+              <SidebarGroupLabel className="text-foreground text-xl flex-shrink-0">
                 {staticMenuItems.find((item) => item.id === selectedOption)?.label}
               </SidebarGroupLabel>
               <hr />
