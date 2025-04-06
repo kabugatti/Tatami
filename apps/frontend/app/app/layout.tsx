@@ -18,10 +18,7 @@ export default function AppLayout({
             <AppSidebar />
             <div 
               id="main-content"
-              className="relative flex-1 w-full pt-16 transition-all duration-300 ease-in-out"
-              style={{
-                marginLeft: "60px"
-              }}
+               className="relative h-full flex-1 overflow-auto pt-16 transition-all duration-300 ease-in-out"
             >
               {children}
               <Toaster />
