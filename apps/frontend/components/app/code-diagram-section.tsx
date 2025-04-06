@@ -131,7 +131,7 @@ export function CodeDiagramSection() {
   };
 
   return (
-    <section className="bg-neutral text-foreground rounded-xl shadow-md flex flex-col h-full">
+    <section className="bg-neutral w-[99%] text-foreground rounded-xl shadow-md flex flex-col h-full">
       <ActionButtons
         activeSection={activeSection}
         onToggleSection={() =>
