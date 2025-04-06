@@ -157,7 +157,7 @@ export function CodeDiagramSection() {
             </div>
           ) : (
             <div className="h-full flex flex-col">
-              <div className="flex justify-between p-2 bg-gray-100 border-b ">
+              <div className="flex justify-between p-2 bg-gray-100 border-b  mx-1">
                 {hasCustomEdits && (
                   <button
                     onClick={resetToGenerated}
