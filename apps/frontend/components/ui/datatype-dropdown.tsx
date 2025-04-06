@@ -54,7 +54,7 @@ export default function DatatypeDropdown({
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <SelectTrigger className="w-full h-8 bg-background border border-yellow-500/20 text-muted-foreground px-3">
+      <SelectTrigger className="w-full h-8 bg-neutral border border-yellow-500/20 text-muted-foreground px-3">
         <SelectValue placeholder="Select a datatype">{value}</SelectValue>
       </SelectTrigger>
       <SelectContent

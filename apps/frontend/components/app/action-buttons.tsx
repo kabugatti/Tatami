@@ -21,7 +21,7 @@ export function ActionButtons({
         size="icon"
         variant="ghost"
         onClick={onToggleSection}
-        className="bg-white hover:bg-gray-100"
+        className="bg-background  hover:bg-background/30"
       >
         {activeSection === "code" ? (
           <Image src="/diagram.svg" alt="Diagram" width={20} height={20} />
@@ -34,7 +34,7 @@ export function ActionButtons({
           size="icon"
           variant="ghost"
           onClick={onCopy}
-          className="bg-white hover:bg-gray-100"
+          className="bg-background hover:bg-background/30"
         >
           <Copy className="h-4 w-4" />
         </Button>
@@ -43,7 +43,7 @@ export function ActionButtons({
         size="icon"
         variant="ghost"
         onClick={onDownload}
-        className="bg-white hover:bg-gray-100"
+        className="bg-background hover:bg-background/30"
       >
         <Download className="h-4 w-4" />
       </Button>

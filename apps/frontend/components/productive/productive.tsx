@@ -26,7 +26,7 @@ const Productive = () => {
             {videos.map((video, index) => (
               <Button
                 key={video.id}
-                variant="action"
+                variant="default"
                 className={cn(
                   "min-w-[120px]",
                   activeVideo === index &&

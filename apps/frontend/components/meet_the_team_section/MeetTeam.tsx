@@ -47,7 +47,7 @@ const TeamSection: React.FC = () => {
   return (
     <div className="w-full bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-2xl md:text-4xl font-bold text-white text-center mb-12">
+        <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground text-center mb-12">
           {t('meetTheTatamisTeam')}
         </h2>
         
@@ -76,15 +76,15 @@ const TeamSection: React.FC = () => {
               
               {/* Member info */}
               <div className="mt-4">
-                <h3 className="text-white font-bold lg:text-xl">{member.name}</h3>
-                <h4 className="text-white font-bold lg:text-xl">{member.surname}</h4>
+                <h3 className="text-primary-foreground font-bold lg:text-xl">{member.name}</h3>
+                <h4 className="text-primary-foreground font-bold lg:text-xl">{member.surname}</h4>
                 <p className="text-primary font-bold border-b-2 border-primary w-[40%] lg:w-[60%] pb-3 mt-2">{member.role}</p>
                 
                 
                 {/* Social icons */}
                 <div className="flex space-x-4 mt-4">
                   {member.socialLinks.github && (
-                    <a href={member.socialLinks.github} className="text-white hover:text-primary" aria-label="GitHub">
+                    <a href={member.socialLinks.github} className="text-primary-foreground hover:text-primary" aria-label="GitHub">
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
@@ -101,7 +101,7 @@ const TeamSection: React.FC = () => {
                     </a>
                   )}
                   {member.socialLinks.twitter && (
-                    <a href={member.socialLinks.twitter} className="text-white hover:text-primary" aria-label="Twitter">
+                    <a href={member.socialLinks.twitter} className="text-primary-foreground hover:text-primary" aria-label="Twitter">
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"
@@ -114,7 +114,7 @@ const TeamSection: React.FC = () => {
                     </a>
                   )}
                   {member.socialLinks.telegram && (
-                    <a href={member.socialLinks.telegram} className="text-white hover:text-primary" aria-label="Telegram">
+                    <a href={member.socialLinks.telegram} className="text-primary-foreground hover:text-primary" aria-label="Telegram">
                       <svg
                         className="w-5 h-5"
                         fill="currentColor"

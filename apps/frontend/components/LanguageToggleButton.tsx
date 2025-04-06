@@ -23,7 +23,7 @@ const LanguageToggleButton = () => {
 
   return (
     <Button
-      variant="secondary"
+      variant="languageChange"
       size="sm"
       className="flex items-center justify-center"
       style={{ width: '65px', height: '18px', borderRadius: '7.5px', fontSize: '10px', color: '#000000', overflow: 'visible' }}
