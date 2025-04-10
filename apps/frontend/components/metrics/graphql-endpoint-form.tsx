@@ -26,9 +26,10 @@ type FormValues = z.infer<typeof formSchema>
 
 interface GraphQLEndpointFormProps {
   connect: (endpoint: string) => void
+  onLoadMetrics: () => void
 }
 
-export function GraphQLEndpointForm({ connect }: GraphQLEndpointFormProps) {
+export function GraphQLEndpointForm({ connect, onLoadMetrics }: GraphQLEndpointFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { endpoint: '' },
@@ -39,28 +40,38 @@ export function GraphQLEndpointForm({ connect }: GraphQLEndpointFormProps) {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col xl:flex-row gap-4 items-start xl:items-end">
           <FormField
             control={form.control}
             name="endpoint"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="flex-1 w-full">
                 <FormLabel className="text-foreground font-semibold">GraphQL Endpoint</FormLabel>
                 <FormControl>
-                  <Input placeholder="https://api.example.com/graphql" {...field} />
+                  <Input className="text-black" placeholder="https://api.example.com/graphql" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            className="w-full bg-primary text-foreground font-semibold py-3 px-6 rounded-md hover:bg-primary/85"
-          >
-            Connect
-          </Button>
+
+          <div className="flex gap-2 w-full xl:w-auto">
+            <Button
+              type="submit"
+              className="w-full xl:w-auto bg-primary text-black py-3 px-6 rounded-md hover:bg-primary/85"
+            >
+              Connect
+            </Button>
+            <Button
+              type="button"
+              className="w-full xl:w-auto text-white"
+              onClick={onLoadMetrics}
+            >
+              Metrics
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
