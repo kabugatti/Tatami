@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 import { TrendingUp } from "lucide-react";
-import type { CustomTooltipProps } from "../../../types/charts";
+import type { CustomTooltipProps } from "../../types/charts";
 
 // Simulated data for the transactions chart
 const transactionData = [
@@ -61,9 +61,8 @@ export function TransactionsChart() {
             {transactionData[transactionData.length - 1].value}
           </span>
           <div
-            className={`flex items-center ${
-              isPositive ? "text-green-500" : "text-red-500"
-            }`}
+            className={`flex items-center ${isPositive ? "text-green-500" : "text-red-500"
+              }`}
           >
             <span className="text-sm font-medium">
               {isPositive ? "+" : ""}
