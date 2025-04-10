@@ -52,7 +52,7 @@ export function ModelsChart({ data }: ModelsChartProps) {
                         x={isRightSide ? x + 10 : x - 10}
                         y={y}
                         textAnchor={isRightSide ? "start" : "end"}
-                        fill="#101010"
+                        className="fill-foreground"
                         fontSize="12"
                         fontWeight="bold"
                       >
@@ -62,7 +62,7 @@ export function ModelsChart({ data }: ModelsChartProps) {
                         x={isRightSide ? x + 10 : x - 10}
                         y={y + 15}
                         textAnchor={isRightSide ? "start" : "end"}
-                        fill="#101010"
+                        className="fill-foreground"
                         fontSize="12"
                       >
                         {value.toLocaleString()}
@@ -71,7 +71,7 @@ export function ModelsChart({ data }: ModelsChartProps) {
                         cx={isRightSide ? x + 5 : x - 5}
                         cy={y}
                         r={2}
-                        fill="#101010"
+                        className="fill-foreground"
                       />
                     </g>
                   );
