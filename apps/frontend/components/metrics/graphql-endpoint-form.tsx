@@ -3,7 +3,6 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertTriangle } from 'lucide-react'
 
 import {
   Form,
@@ -15,7 +14,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 const formSchema = z.object({
   endpoint: z.string().url('Must be a valid URL').refine((url) =>
@@ -26,13 +24,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-export function GraphQLEndpointForm({
-  connect,
-  error
-}: {
-  connect: (endpoint: string) => void,
-  error?: string | null
-}) {
+interface GraphQLEndpointFormProps {
+  connect: (endpoint: string) => void
+}
+
+export function GraphQLEndpointForm({ connect }: GraphQLEndpointFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { endpoint: '' },
@@ -67,14 +63,6 @@ export function GraphQLEndpointForm({
           </Button>
         </form>
       </Form>
-
-      {error && (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
     </div>
   )
 }

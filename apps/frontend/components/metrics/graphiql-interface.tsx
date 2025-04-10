@@ -3,7 +3,11 @@ import { Fetcher } from '@graphiql/toolkit'
 
 import 'graphiql/graphiql.min.css'
 
-export function GraphiQLInterface({ fetcher }: { fetcher?: Fetcher | null }) {
+interface GraphiQLInterfaceProps {
+  fetcher?: Fetcher | null
+}
+
+export function GraphiQLInterface({ fetcher }: GraphiQLInterfaceProps) {
   if (!fetcher) return null
 
   return (
