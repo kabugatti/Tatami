@@ -1,6 +1,5 @@
 import { GraphiQL } from 'graphiql'
 import { Fetcher } from '@graphiql/toolkit'
-
 import 'graphiql/graphiql.min.css'
 
 interface GraphiQLInterfaceProps {
@@ -8,7 +7,13 @@ interface GraphiQLInterfaceProps {
 }
 
 export function GraphiQLInterface({ fetcher }: GraphiQLInterfaceProps) {
-  if (!fetcher) return null
+  if (!fetcher) {
+    return (
+      <div className="h-full w-full border border-dashed border-gray-300 flex items-center justify-center rounded-md text-sm text-muted-foreground text-center px-4">
+        ⚠️ No GraphQL endpoint connected. Please enter a valid endpoint above to start exploring the API.
+      </div>
+    )
+  }
 
   return (
     <div className="h-[600px] xl:h-full w-full">
