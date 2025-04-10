@@ -96,6 +96,33 @@ export const GET_BEAST_STATUS_TOTAL_COUNT = gql`
   }
 `
 
+export const GET_ALL_MODELS_DATA = gql`
+  query getModels {
+    models {
+      edges {
+        node {
+          name
+        }
+      }
+    }
+    tamagotchiPlayerModels {
+      totalCount
+    }
+    tamagotchiBeastModels {
+      totalCount
+    }
+    tamagotchiFoodModels {
+      totalCount
+    }
+    tamagotchiBeastStatusModels {
+      totalCount
+    }
+    entities {
+      totalCount
+    }
+  }
+`
+
 export const GET_TRANSACTIONS = gql`
   query getTransactions {
     transactions {
