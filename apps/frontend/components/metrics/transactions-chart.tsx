@@ -2,32 +2,33 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts"
-import { TrendingUp, TrendingDown } from "lucide-react"
-import type { CustomTooltipProps, TransactionDataPoint } from "../../types/charts"
+import { TrendingDown, TrendingUp } from "lucide-react"
+import type { CustomTooltipProps } from "../../types/charts"
+import type { TransactionDataPoint } from "@/types/charts"
 
 // Simulated data for the transactions chart
-const transactionData: TransactionDataPoint[] = [
-  { date: "2023-01", value: 320 },
-  { date: "2023-02", value: 350 },
-  { date: "2023-03", value: 410 },
-  { date: "2023-04", value: 490 },
-  { date: "2023-05", value: 550 },
-  { date: "2023-06", value: 620 },
-  { date: "2023-07", value: 690 },
-  { date: "2023-08", value: 820 },
-  { date: "2023-09", value: 635 },
-  { date: "2023-10", value: 580 },
-  { date: "2023-11", value: 510 },
-  { date: "2023-12", value: 635 },
-]
+// const transactionData: TransactionDataPoint[] = [
+//   { date: "2023-01", value: 320 },
+//   { date: "2023-02", value: 350 },
+//   { date: "2023-03", value: 410 },
+//   { date: "2023-04", value: 490 },
+//   { date: "2023-05", value: 550 },
+//   { date: "2023-06", value: 620 },
+//   { date: "2023-07", value: 690 },
+//   { date: "2023-08", value: 820 },
+//   { date: "2023-09", value: 635 },
+//   { date: "2023-10", value: 580 },
+//   { date: "2023-11", value: 510 },
+//   { date: "2023-12", value: 635 },
+// ]
 
 // Custom tooltip
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-2 border border-gray-200 shadow-sm rounded-md">
-        <p className="text-xs font-medium">{`${label}`}</p>
-        <p className="text-xs text-gray-700">{`${payload[0].value} transactions`}</p>
+      <div className="bg-background p-2 border border-gray-300 shadow-sm rounded-md">
+        <p className="text-xs font-medium">{label}</p>
+        <p className="text-xs text-muted-foreground">{payload[0].value} transactions</p>
       </div>
     )
   }
@@ -40,10 +41,22 @@ interface TransactionsChartProps {
 }
 
 export function TransactionsChart({ data }: TransactionsChartProps) {
-  const chartData = data ? data : transactionData
+  if (!data) {
+    return (
+      <Card className="w-full">
+        <CardHeader className="pb-2">
+          <p className="text-sm text-muted-foreground">Total transactions generated</p>
+          <CardTitle className="text-xl">Transactions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground text-sm">No transaction data available.</p>
+        </CardContent>
+      </Card>
+    )
+  }
 
-  const currentValue = chartData[chartData.length - 1]?.value ?? 0
-  const previousValue = chartData[chartData.length - 2]?.value ?? 0
+  const currentValue = data[data.length - 1]?.value ?? 0
+  const previousValue = data[data.length - 2]?.value ?? 0
 
   let percentChange: number | null = null
   let percentText = "--"
@@ -66,9 +79,7 @@ export function TransactionsChart({ data }: TransactionsChartProps) {
   return (
     <Card className="w-full">
       <CardHeader className="pb-2">
-        <div className="text-sm text-muted-foreground">
-          Total transactions generated
-        </div>
+        <p className="text-sm text-muted-foreground">Total transactions generated</p>
         <CardTitle className="text-xl">Transactions</CardTitle>
       </CardHeader>
       <CardContent>
@@ -86,7 +97,7 @@ export function TransactionsChart({ data }: TransactionsChartProps) {
         </div>
         <div className="h-[100px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+            <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorTransaction" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#FEB913" stopOpacity={0.1} />
@@ -104,11 +115,7 @@ export function TransactionsChart({ data }: TransactionsChartProps) {
               />
               <Tooltip
                 content={<CustomTooltip />}
-                cursor={{
-                  stroke: "#FEB913",
-                  strokeWidth: 1,
-                  strokeDasharray: "4 4",
-                }}
+                cursor={{ stroke: "#FEB913", strokeWidth: 1, strokeDasharray: "4 4" }}
               />
             </AreaChart>
           </ResponsiveContainer>

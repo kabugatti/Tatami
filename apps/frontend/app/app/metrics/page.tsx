@@ -11,10 +11,13 @@ import { useToast } from "@/hooks/use-toast"
 import { createApolloClient } from "@/lib/apollo-client"
 import { GET_ALL_MODELS_DATA, GET_TRANSACTIONS } from "@/lib/graphql/metrics.queries"
 import type { ModelDataItem, TransactionDataPoint } from "@/types/charts"
+import clsx from "clsx"
 
 export default function MetricsPage() {
   const [modelsData, setModelsData] = useState<ModelDataItem[] | null>(null)
   const [transactionsData, setTransactionsData] = useState<TransactionDataPoint[] | null>(null)
+  const [hasFetched, setHasFetched] = useState(false)
+
   const { toast } = useToast()
 
   const { connect, fetcher } = useGraphQLConnection((msg) => {
@@ -33,11 +36,6 @@ export default function MetricsPage() {
         client.query({ query: GET_ALL_MODELS_DATA }),
         client.query({ query: GET_TRANSACTIONS }),
       ])
-
-      console.log("✅ All metrics loaded")
-      results.forEach((r, i) => {
-        console.log(`📊 Query ${i + 1}`, r.data)
-      })
 
       // Extract real data
       const modelsResponse = results[0].data // GET_All_MODELS_DATA
@@ -58,6 +56,7 @@ export default function MetricsPage() {
       })).slice(0, 12) // we take 12 values
 
       setTransactionsData(transformedTransactions)
+      setHasFetched(true)
     } catch (error) {
       toast({
         title: "Error loading metrics",
@@ -72,12 +71,21 @@ export default function MetricsPage() {
       <GraphQLEndpointForm connect={connect} onLoadMetrics={onLoadMetrics} />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 pb-4 xl:pb-0 gap-6">
-        <div className="col-span-1 xl:col-span-2 row-span-2">
+        <div
+          className={clsx(
+            "row-span-2",
+            hasFetched ? "col-span-1 xl:col-span-2" : "col-span-1 xl:col-span-3"
+          )}
+        >
           <GraphiQLInterface fetcher={fetcher} />
         </div>
 
-        <ModelsChart data={modelsData} />
-        <TransactionsChart data={transactionsData} />
+        {hasFetched && (
+          <>
+            <ModelsChart data={modelsData} />
+            <TransactionsChart data={transactionsData} />
+          </>
+        )}
       </div>
     </main>
   )
