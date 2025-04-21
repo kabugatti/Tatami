@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Code, Copy, Download } from "lucide-react";
-import Image from "next/image";
+import { Code, Copy, Download, SquareDashedMousePointer } from "lucide-react";
 
 interface ActionButtonsProps {
   activeSection: string;
@@ -19,33 +18,30 @@ export function ActionButtons({
     <div className="flex justify-end p-2">
       <Button
         size="icon"
-        variant="ghost"
+        variant="secondary"
         onClick={onToggleSection}
-        className="bg-background  hover:bg-background/30"
       >
         {activeSection === "code" ? (
-          <Image src="/diagram.svg" alt="Diagram" width={20} height={20} />
+         <SquareDashedMousePointer style={{ height: '20px', width: '20px' }}/>
         ) : (
-          <Code className="h-4 w-4" />
+          <Code />
         )}
       </Button>
       {activeSection === "code" && (
         <Button
           size="icon"
-          variant="ghost"
+          variant="secondary"
           onClick={onCopy}
-          className="bg-background hover:bg-background/30"
         >
-          <Copy className="h-4 w-4" />
+          <Copy style={{ height: '20px', width: '20px' }} />
         </Button>
       )}
       <Button
         size="icon"
-        variant="ghost"
+        variant="secondary"
         onClick={onDownload}
-        className="bg-background hover:bg-background/30"
       >
-        <Download className="h-4 w-4" />
+        <Download style={{ height: '20px', width: '20px' }} />
       </Button>
     </div>
   );

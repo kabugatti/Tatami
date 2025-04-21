@@ -31,12 +31,6 @@ export default function Navbar() {
     };
   };
 
-  const toggleLanguage = useCallback(debounce(() => {
-    const newLanguage = i18n.language === 'en' ? 'es' : 'en';
-    console.log(`Switching language to: ${newLanguage}`);
-    i18n.changeLanguage(newLanguage);
-  }, 300), [i18n]);
-
   return (
     <nav className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral">
       <div className="container flex h-16 items-center">
