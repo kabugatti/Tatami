@@ -13,8 +13,7 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from 'react-i18next';
-import { useCallback } from 'react';
-import LanguageToggleButton from './LanguageToggleButton';
+import LanguageToggleButton from '../LanguageToggleButton';
 
 export default function Navbar() {
   const logoSrc = "/Primary Logo_Primary Color.svg";

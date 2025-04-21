@@ -7,7 +7,6 @@ export function DiagramControls() {
       <Button
         size="icon"
         variant="ghost"
-        className="bg-white hover:bg-gray-100"
       >
         <Plus className="h-4 w-4" />
       </Button>
@@ -15,14 +14,12 @@ export function DiagramControls() {
       <Button
         size="icon"
         variant="ghost"
-        className="bg-white hover:bg-gray-100"
       >
         <Minus className="h-4 w-4" />
       </Button>
       <Button
         size="icon"
         variant="ghost"
-        className="bg-white hover:bg-gray-100"
       >
         <Expand className="h-4 w-4" />
       </Button>

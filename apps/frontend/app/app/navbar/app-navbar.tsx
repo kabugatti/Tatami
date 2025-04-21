@@ -33,27 +33,15 @@ export default function AppNavbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral">
+    <nav className="sticky top-0 z-50 transition-colors duration-300 bg-neutral">
       <div className="flex h-16 items-center">
-        <div className="flex ml-2">
+        <div className="ml-2">
           <Link href="/">
             <Image src={logoSrc} width={50} height={50} alt="Tatami logo" />
           </Link>
         </div>
 
-        <div className="flex flex-1 items-center justify-end mr-2">
-          <Button type="button"
-            variant="ghost"
-            onClick={toggleDarkMode}
-            className="text-primary-foreground hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0">
-            <Image
-              src={darkMode ? darkmodesrc : lightmodesrc}
-              width={28}
-              height={28}
-              alt="Theme changer"
-            />
-          </Button>
-        </div>
+
       </div>
     </nav>
   );

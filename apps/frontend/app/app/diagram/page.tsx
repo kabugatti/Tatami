@@ -1,6 +1,6 @@
 "use client";
 
-import { EntityCard, type EntityField } from "@/components/diagram/EntityCard";
+import { EntityCard, type EntityField } from "@/app/app/diagram/EntityCard";
 
 // Example data - this would typically come from your data source
 const exampleEntities = [

@@ -1,4 +1,4 @@
-import type { EntityField } from "@/components/diagram/EntityCard";
+import type { EntityField } from "@/app/app/diagram/EntityCard";
 import type { Model, Property } from "@/types/models";
 
 export function generateEntities(

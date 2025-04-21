@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 
-import { EntityCard, type EntityField } from "@/components/diagram/EntityCard";
+import { EntityCard, type EntityField } from "@/app/app/diagram/EntityCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { generateCairoCode } from "@/utils/generateCairoCode";
@@ -182,7 +182,7 @@ export function CodeDiagramSection() {
                 </div>
               </div>
               <Editor
-                height="90vh"
+                height="70vh"
                 className="bg-black"
                 defaultLanguage="rust"
                 value={displayCode}
@@ -238,7 +238,7 @@ export function CodeDiagramSection() {
             </div>
           )
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white p-10 overflow-auto h-full">
+          <div className="bg-neutral grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-10 overflow-auto h-full">
             {entities.length === 0 ? (
               <p className="text-gray-500">No models created yet</p>
             ) : (

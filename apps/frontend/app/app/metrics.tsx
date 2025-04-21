@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 
-import { GraphQLEndpointForm } from "@/components/metrics/graphql-endpoint-form"
-import { GraphiQLInterface } from "@/components/metrics/graphiql-interface"
-import { ModelsChart } from "@/components/metrics/models-chart"
-import { TransactionsChart } from "@/components/metrics/transactions-chart"
+import { GraphQLEndpointForm } from "@/app/app/metrics/graphql-endpoint-form"
+import { GraphiQLInterface } from "@/app/app/metrics/graphiql-interface"
+import { ModelsChart } from "@/app/app/metrics/models-chart"
+import { TransactionsChart } from "@/app/app/metrics/transactions-chart"
 import { useGraphQLConnection } from "@/hooks/use-graphql-connection"
 import { useToast } from "@/hooks/use-toast"
 import { createApolloClient } from "@/lib/apollo-client"
