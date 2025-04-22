@@ -1,4 +1,4 @@
-import { CodeDiagramSection } from "@/components/app/code-diagram-section";
+import { CodeDiagramSection } from "@/app/app/diagram/code-diagram-section";
 
 export default function AppPage() {
   return (

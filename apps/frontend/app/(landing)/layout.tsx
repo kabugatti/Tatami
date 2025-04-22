@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import { Footer } from "@/components/footer/footer";
-import { I18nextProvider } from 'react-i18next';
-import i18n from '@/i18n';
 import I18nProviderWrapper from '@/components/I18nProviderWrapper';
 
 const geistSans = Geist({
@@ -29,9 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
+        className={`${geistSans.variable} ${geistMono.variable}`}
       >
         <I18nProviderWrapper>
           <Navbar />

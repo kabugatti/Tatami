@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { PropertyItem } from "../models/PropertyItem";
-import { Button } from "../ui/button";
+import { Button } from "../../../components/ui/button";
 import { useModelSection } from "./use-model-section";
 
 export function ModelSidebarSection() {

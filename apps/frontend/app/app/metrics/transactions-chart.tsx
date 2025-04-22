@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts"
 import { TrendingDown, TrendingUp } from "lucide-react"
-import type { CustomTooltipProps } from "../../types/charts"
+import type { CustomTooltipProps } from "../../../types/charts"
 import type { TransactionDataPoint } from "@/types/charts"
 
 // Simulated data for the transactions chart

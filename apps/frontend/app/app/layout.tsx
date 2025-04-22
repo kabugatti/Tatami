@@ -1,8 +1,8 @@
-import { AppSidebar } from "@/components/tatami_sidebar/app-sidebar";
+import { AppSidebar } from "@/app/app/tatami_sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "../globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import AppNavbar from "@/components/app/app-navbar";
+import AppNavbar from "@/app/app/navbar/app-navbar";
 
 export default function AppLayout({
   children,
@@ -10,10 +10,10 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body>
         <AppNavbar />
-        <SidebarProvider defaultOpen={false}>
+        <SidebarProvider defaultOpen={false} className="overflow-hidden">
           <div className="relative flex min-h-screen w-full overflow-x-hidden">
             <AppSidebar />
             <div 

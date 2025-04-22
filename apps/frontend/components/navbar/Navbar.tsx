@@ -13,8 +13,7 @@ import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from 'react-i18next';
-import { useCallback } from 'react';
-import LanguageToggleButton from './LanguageToggleButton';
+import LanguageToggleButton from '../LanguageToggleButton';
 
 export default function Navbar() {
   const logoSrc = "/Primary Logo_Primary Color.svg";
@@ -31,12 +30,6 @@ export default function Navbar() {
     };
   };
 
-  const toggleLanguage = useCallback(debounce(() => {
-    const newLanguage = i18n.language === 'en' ? 'es' : 'en';
-    console.log(`Switching language to: ${newLanguage}`);
-    i18n.changeLanguage(newLanguage);
-  }, 300), [i18n]);
-
   return (
     <nav className="sticky top-0 z-50 w-full transition-colors duration-300 bg-neutral">
       <div className="container flex h-16 items-center">
@@ -49,19 +42,13 @@ export default function Navbar() {
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="hidden items-center space-x-6 text-sm font-sm lg:flex">
             <Link
-              href="/docs"
-              className="text-primary-foreground transition-colors hover:text-accent"
-            >
-              {t('docs')}
-            </Link>
-            <Link
-              href="/community"
+              href="#community"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
               {t('community')}
             </Link>
             <Link
-              href="/build"
+              href="/app"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
               {t('build')}
@@ -102,13 +89,7 @@ export default function Navbar() {
                 </div>
                 <nav className="flex flex-col space-y-8 p-6">
                   <Link
-                    href="/docs"
-                    className="text-lg font-medium text-primary-foreground"
-                  >
-                    {t('docs')}
-                  </Link>
-                  <Link
-                    href="/community"
+                    href="#community"
                     className="text-lg font-medium text-primary-foreground"
                   >
                     {t('community')}

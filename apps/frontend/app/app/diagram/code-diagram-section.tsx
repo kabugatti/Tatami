@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
 
-import { EntityCard, type EntityField } from "@/components/diagram/EntityCard";
+import { EntityCard, type EntityField } from "@/app/app/diagram/EntityCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { generateCairoCode } from "@/utils/generateCairoCode";
@@ -41,8 +41,6 @@ export function CodeDiagramSection() {
   // Toggle editing mode
   const toggleEditMode = () => {
     if (isEditing && hasCustomEdits) {
-     
-      // and update your models if needed
       toast({
         title: "Changes saved",
         description: "Your code changes have been saved",
@@ -50,35 +48,35 @@ export function CodeDiagramSection() {
         style: { color: "white" },
       });
     }
-    
+
     setIsEditing(!isEditing);
     toast({
       title: isEditing ? "Edit mode disabled" : "Edit mode enabled",
-      description: isEditing 
-        ? "The editor is now in read-only mode" 
+      description: isEditing
+        ? "The editor is now in read-only mode"
         : "You can now edit the code directly",
       duration: 2000,
       style: { color: "white" },
     });
   };
-
+  
   // Subscribe to model changes
   useEffect(() => {
     const subscription = modelStateService.models$.subscribe(models => {
       const generatedCode = generateCairoCode(models);
-      
+
       // Only update code if we haven't made custom edits
       if (!hasCustomEdits) {
         setCode(generatedCode);
         setEditedCode(generatedCode);
       }
-      
+
       setEntities(generateEntities(models));
       setLoading(false);
     });
-    
+
     modelStateService.initialize();
-    
+
     return () => subscription.unsubscribe();
   }, [hasCustomEdits]);
 
@@ -131,7 +129,7 @@ export function CodeDiagramSection() {
   };
 
   return (
-    <section className="bg-neutral  text-foreground rounded-xl shadow-md flex flex-col h-full">
+    <section className="bg-neutral text-foreground rounded-xl shadow-md flex flex-col">
       <ActionButtons
         activeSection={activeSection}
         onToggleSection={() =>
@@ -157,7 +155,7 @@ export function CodeDiagramSection() {
             </div>
           ) : (
             <div className="h-full flex flex-col">
-              <div className="flex justify-between p-2 bg-gray-100 border-b  mx-1">
+              <div className="flex justify-between p-2 border-b  mx-1">
                 {hasCustomEdits && (
                   <button
                     onClick={resetToGenerated}
@@ -174,37 +172,73 @@ export function CodeDiagramSection() {
                   )}
                   <button
                     onClick={toggleEditMode}
-                    className={`text-xs px-3 py-1 rounded ${
-                      isEditing
-                        ? "bg-green-500 text-white" 
-                        : "bg-blue-500 text-white"
-                    }`}
+                    className={`text-xs px-3 py-1 rounded ${isEditing
+                      ? "bg-green-500 text-white"
+                      : "bg-blue-500 text-white"
+                      }`}
                   >
                     {isEditing ? "Save" : "Edit Code"}
                   </button>
                 </div>
               </div>
               <Editor
-                height="100%"
-                className=""
-                defaultLanguage="cairo"
+                height="70vh"
+                className="bg-black"
+                defaultLanguage="rust"
                 value={displayCode}
                 onChange={handleEditorChange}
                 onMount={handleEditorDidMount}
                 options={{
                   readOnly: !isEditing,
-                  minimap: { enabled: true },
                   scrollBeyondLastLine: false,
-                  fontSize: 14,
+                  fontSize: 15,
                   wordWrap: "on",
-                  automaticLayout: true
+                  automaticLayout: true,
+                  wrappingIndent: "indent",
+                  scrollbar: {
+                    verticalScrollbarSize: 8,
+                    horizontalScrollbarSize: 8,
+                    alwaysConsumeMouseWheel: false
+
+                  },
+                  minimap: {
+                    enabled: true,
+                    maxColumn: 80,
+                    renderCharacters: false,
+                    showSlider: "always"
+                  },
+                  lineNumbers: "on",
+                  lineNumbersMinChars: 3,
+
+                  renderWhitespace: "boundary",
+                  renderLineHighlight: "all",
+                  guides: {
+                    indentation: true,
+                    highlightActiveIndentation: true
+                  },
+                  cursorBlinking: "smooth",
+                  cursorStyle: "line-thin",
+
+                  find: {
+                    addExtraSpaceOnTop: false,
+                    autoFindInSelection: "never",
+                    seedSearchStringFromSelection: "always"
+                  },
+
+                  // Accesibilidad
+                  mouseWheelZoom: true,
+                  smoothScrolling: true,
+                  padding: {
+                    top: 12,
+                    bottom: 12
+                  },
                 }}
-                theme="vs-dark"
+                theme="hc-black"
               />
             </div>
           )
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-white p-10 overflow-auto h-full">
+          <div className="bg-neutral grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-10 overflow-auto h-full">
             {entities.length === 0 ? (
               <p className="text-gray-500">No models created yet</p>
             ) : (
