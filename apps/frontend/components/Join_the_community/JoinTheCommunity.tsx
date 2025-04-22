@@ -9,7 +9,7 @@ export default function JoinCommunity() {
   const { t } = useTranslation();
 
   return (
-    <div className="text-white py-16 px-4">
+    <div id="community" className="text-white py-16 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="md: text-md sm:text-sm lg:text-4xl font-bold tracking-tighter text-primary-foreground mb-4">

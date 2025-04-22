@@ -24,12 +24,6 @@ export default function HeroSection() {
             >
               {t('tryTatami')}
             </a>
-            {/*<a
-              href="/learn-more"
-              className="border border-primary text-primary font-semibold py-3 px-6 rounded-md transition-colors"
-            >
-              Open Docs
-            </a> */}
           </div>
         </div>
         <div className="md:w-1/2">

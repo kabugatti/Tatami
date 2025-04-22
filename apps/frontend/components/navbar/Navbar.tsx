@@ -42,19 +42,13 @@ export default function Navbar() {
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="hidden items-center space-x-6 text-sm font-sm lg:flex">
             <Link
-              href="/docs"
-              className="text-primary-foreground transition-colors hover:text-accent"
-            >
-              {t('docs')}
-            </Link>
-            <Link
-              href="/community"
+              href="#community"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
               {t('community')}
             </Link>
             <Link
-              href="/build"
+              href="/app"
               className="text-primary-foreground transition-colors hover:text-accent"
             >
               {t('build')}
@@ -95,13 +89,7 @@ export default function Navbar() {
                 </div>
                 <nav className="flex flex-col space-y-8 p-6">
                   <Link
-                    href="/docs"
-                    className="text-lg font-medium text-primary-foreground"
-                  >
-                    {t('docs')}
-                  </Link>
-                  <Link
-                    href="/community"
+                    href="#community"
                     className="text-lg font-medium text-primary-foreground"
                   >
                     {t('community')}

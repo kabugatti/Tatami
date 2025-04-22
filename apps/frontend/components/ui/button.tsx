@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary:
           "text-yellow",
         languageChange:
-          "bg-yellow text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          "bg-yellow text-secondary-foreground shadow-sm",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         action:
