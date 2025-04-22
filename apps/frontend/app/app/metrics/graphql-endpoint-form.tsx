@@ -66,7 +66,7 @@ export function GraphQLEndpointForm({ connect, onLoadMetrics }: GraphQLEndpointF
             </Button>
             <Button
               type="button"
-              className="w-full xl:w-auto text-white"
+              className="w-full xl:w-auto text-black"
               onClick={onLoadMetrics}
             >
               Metrics

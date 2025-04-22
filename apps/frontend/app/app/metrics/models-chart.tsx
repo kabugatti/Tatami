@@ -4,14 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { ModelDataItem } from "@/types/charts"
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
 
-// Mock data
-// const modelData: ModelDataItem[] = [
-//   { name: "Firefox", value: 2811, color: "#FEB913" },
-//   { name: "Chrome", value: 12799, color: "#FFCB47" },
-//   { name: "Safari", value: 1500, color: "#FFD670" },
-//   { name: "Edge", value: 950, color: "#FFE299" },
-// ];
-
 interface ModelsChartProps {
   data?: ModelDataItem[] | null
 }
@@ -21,7 +13,7 @@ export function ModelsChart({ data }: ModelsChartProps) {
     return (
       <Card className="w-full">
         <CardHeader className="pb-2">
-          <p className="text-sm text-muted-foreground">Bytebeast.models</p>
+          <p className="text-sm text-muted-foreground">Models</p>
           <CardTitle className="text-xl">Models created</CardTitle>
         </CardHeader>
         <CardContent>
@@ -37,7 +29,7 @@ export function ModelsChart({ data }: ModelsChartProps) {
   return (
     <Card className="w-full">
       <CardHeader className="pb-2">
-        <p className="text-sm text-muted-foreground">Bytebeast.models</p>
+        <p className="text-sm text-muted-foreground">Models</p>
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl">Models created</CardTitle>
           <span className="text-xl font-bold">{total}</span>
