@@ -19,6 +19,7 @@ const initialDynamicContent = {
   ],
 };
 
+const dynamicMenuItems = ['Metrics', 'Users', 'Settings'];
 export const useSidebar = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [dynamicContent, setDynamicContent] = useState(initialDynamicContent);
@@ -43,6 +44,6 @@ export const useSidebar = () => {
     selectedOption,
     dynamicContent,
     staticMenuItems,
-    toggleOption,
+    toggleOption, dynamicMenuItems
   };
 };

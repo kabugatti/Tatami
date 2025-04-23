@@ -2,28 +2,19 @@ import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { PropertyItem } from "../models/PropertyItem";
 import { Button } from "../../../components/ui/button";
-import { useModelSection } from "./use-model-section";
+import { memo } from "react";
+import { UseModelSectionReturn } from "../models/SideBarModels";
 
-export function ModelSidebarSection() {
-  const {
-    addModel,
-    models,
-    toggleModelExpansion,
-    updateModelName,
-    deleteModel,
-    updatePropertyDataType,
-    updatePropertyName,
-    updatePropertyKey,
-    deleteProperty,
-    addProperty,
-    editingModels,
-    setEditingModels,
-  } = useModelSection();
+type Props = {
+  modelSection: UseModelSectionReturn;
+};
+
+function ModelSidebarSection({ modelSection }: Props) {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="p-4 flex justify-end flex-shrink-0">
         <Button
-          onClick={addModel}
+          onClick={modelSection.addModel}
           className="hover:bg-foreground/95 bg-foreground text-background font-medium flex items-center gap-1"
         >
           <span className="text-lg">+</span> Add model
@@ -32,7 +23,7 @@ export function ModelSidebarSection() {
 
       {/* Model list with custom scrollbar */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
-        {models.map((model) => (
+        {modelSection.models.map((model) => (
           <div
             key={model.id}
             className="border border-neutral bg-neutral rounded-md overflow-hidden mb-4"
@@ -41,7 +32,7 @@ export function ModelSidebarSection() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => toggleModelExpansion(model.id)}
+                  onClick={() => modelSection.toggleModelExpansion(model.id)}
                 >
                   {model.expanded ? (
                     <ChevronDown className="h-5 w-5" />
@@ -52,9 +43,9 @@ export function ModelSidebarSection() {
 
                 <div className="flex items-center gap-2">
                   <Input
-                    value={editingModels[model.id] ?? model.name} // Si no se está editando, usa el nombre actual
+                    value={modelSection.editingModels[model.id] ?? model.name} // Si no se está editando, usa el nombre actual
                     onChange={(e) =>
-                      setEditingModels((prev) => ({
+                      modelSection.setEditingModels((prev) => ({
                         ...prev,
                         [model.id]: e.target.value,
                       }))
@@ -63,12 +54,12 @@ export function ModelSidebarSection() {
                     autoFocus
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
-                        updateModelName(
+                        modelSection.updateModelName(
                           model.id,
-                          editingModels[model.id] ?? model.name,
+                          modelSection.editingModels[model.id] ?? model.name
                         );
                       } else if (e.key === "Escape") {
-                        setEditingModels((prev) => {
+                        modelSection.setEditingModels((prev) => {
                           const updated = { ...prev };
                           delete updated[model.id];
                           return updated;
@@ -81,7 +72,7 @@ export function ModelSidebarSection() {
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => deleteModel(model.id)}
+                  onClick={() => modelSection.deleteModel(model.id)}
                   className=" hover:text-red-500"
                 >
                   <Trash2 className="h-5 w-5" />
@@ -110,22 +101,34 @@ export function ModelSidebarSection() {
                     dataType={property.dataType}
                     isKey={property.isKey}
                     onNameChange={(propertyId, value) =>
-                      updatePropertyName(model.id, propertyId, value)
+                      modelSection.updatePropertyName(
+                        model.id,
+                        propertyId,
+                        value
+                      )
                     }
                     onDataTypeChange={(propertyId, value) =>
-                      updatePropertyDataType(model.id, propertyId, value)
+                      modelSection.updatePropertyDataType(
+                        model.id,
+                        propertyId,
+                        value
+                      )
                     }
                     onKeyChange={(propertyId, value) =>
-                      updatePropertyKey(model.id, propertyId, value)
+                      modelSection.updatePropertyKey(
+                        model.id,
+                        propertyId,
+                        value
+                      )
                     }
                     onDelete={(propertyId) =>
-                      deleteProperty(model.id, propertyId)
+                      modelSection.deleteProperty(model.id, propertyId)
                     }
                   />
                 ))}
 
                 <Button
-                  onClick={() => addProperty(model.id)}
+                  onClick={() => modelSection.addProperty(model.id)}
                   className="w-full mt-2 text-text bg-background hover:bg-background/0 hover:text-primary-foreground border border-dotted border-foreground-500"
                 >
                   <span className="mr-1">+</span> Add property
@@ -138,3 +141,4 @@ export function ModelSidebarSection() {
     </div>
   );
 }
+export const MemoizedModelSidebarSection = memo(ModelSidebarSection);
