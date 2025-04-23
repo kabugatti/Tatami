@@ -14,11 +14,11 @@ export default function AppLayout({
       <body>
         <AppNavbar />
         <SidebarProvider defaultOpen={false} className="overflow-hidden">
-          <div className="relative flex min-h-screen w-full overflow-x-hidden">
+          <div className="relative flex  w-full overflow-x-hidden">
             <AppSidebar />
             <div 
               id="main-content"
-               className="relative h-full flex-1 overflow-auto pt-16 transition-all duration-300 ease-in-out"
+               className="relative  flex-1 h-full overflow-auto pt-5 transition-all duration-300 ease-in-out"
             >
               {children}
               <Toaster />
