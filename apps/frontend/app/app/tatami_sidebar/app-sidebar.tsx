@@ -12,8 +12,10 @@ import {
 import { useSidebar } from "./useSidebar";
 import { useModelSection } from "./use-model-section";
 import { MemoizedModelSidebarSection } from "./model-sidebar-section";
+import AppPage from "../page";
+import MetricsPage from "../metrics/page";
 
-export function AppSidebar() {
+export function AppSidebar({ setMainContent }: { setMainContent: (content: React.ReactNode) => void }) {
   const { selectedOption, dynamicContent, staticMenuItems, toggleOption,dynamicMenuItems } =
     useSidebar();
   const modelSection = useModelSection();
@@ -29,16 +31,20 @@ export function AppSidebar() {
             <SidebarMenu>
               {staticMenuItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
-                  <SidebarMenuButton
+                 <SidebarMenuButton
                     isActive={selectedOption === item.id}
-                    onClick={() => toggleOption(item.id)}
+                    onClick={() => {
+                      toggleOption(item.id);
+                      if (item.id === "models") {
+                        setMainContent(<AppPage />);
+                      } else if (item.id === "metrics") {
+                        setMainContent(<MetricsPage />);
+                      }
+                    }}
                     tooltip={item.label}
                     className="justify-center p-3"
                   >
-                    <item.icon
-                      className="text-primary-foreground h-9 w-9"
-                      style={{ color: "#f7c618" }}
-                    />
+                    <item.icon className="text-primary-foreground h-9 w-9" style={{ color: "#f7c618" }} />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -50,7 +56,7 @@ export function AppSidebar() {
       {/* Sidebar dinámico con transición */}
       <div
         className={`fixed left-[60px] top-16 h-[calc(100vh-64px)] z-[99] transition-all duration-300 ease-in-out ${
-          selectedOption
+          selectedOption =='models'
             ? "translate-x-0 opacity-100"
             : "-translate-x-full opacity-0"
         }`}

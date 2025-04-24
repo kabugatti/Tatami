@@ -27,7 +27,7 @@ export const useSidebar = () => {
   useEffect(() => {
     const mainContent = document.getElementById('main-content');
     if (mainContent) {
-      const margin = selectedOption ? '410px' : '60px';
+      const margin = selectedOption=='models' ? '410px' : '60px';
       mainContent.style.marginLeft = margin;
     }
   }, [selectedOption]);
