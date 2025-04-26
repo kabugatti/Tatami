@@ -11,6 +11,8 @@ import { generateEntities } from "@/utils/generateEntities";
 import { ActionButtons } from "./action-buttons";
 import { DiagramControls } from "./diagram-controls";
 import { modelStateService } from "@/services/ModelStateService";
+import { ModelRelationships } from "./ModelRelationships";
+import { ModelRelationship, detectModelRelationships } from "@/utils/detectModelRelationships";
 
 export function CodeDiagramSection() {
   const [activeSection, setActiveSection] = useState("code");
@@ -18,12 +20,15 @@ export function CodeDiagramSection() {
   const [code, setCode] = useState("");
   const [editedCode, setEditedCode] = useState("");
   const [entities, setEntities] = useState<
-    { title: string; fields: EntityField[] }[]
+    { title: string; fields: EntityField[]; modelId: string }[]
   >([]);
+  const [modelRelationships, setModelRelationships] = useState<ModelRelationship[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [hasCustomEdits, setHasCustomEdits] = useState(false);
+  const [showRelationships, setShowRelationships] = useState(true);
   const { toast } = useToast();
   const editorRef = useRef<import("monaco-editor").editor.IStandaloneCodeEditor | null>(null);
+  const diagramContainerRef = useRef<HTMLDivElement>(null);
 
   // Handler function for the Monaco editor
   function handleEditorDidMount(editor: import("monaco-editor").editor.IStandaloneCodeEditor): void {
@@ -72,6 +77,11 @@ export function CodeDiagramSection() {
       }
 
       setEntities(generateEntities(models));
+      
+      // Detect and set model relationships
+      const relationships = detectModelRelationships(models);
+      setModelRelationships(relationships);
+      
       setLoading(false);
     });
 
@@ -89,10 +99,20 @@ export function CodeDiagramSection() {
         setCode(generatedCode);
         setEditedCode(generatedCode); // Initialize editedCode with the same value
         setEntities(generateEntities(data.models || []));
+        
+        // Detect and set model relationships
+        const relationships = detectModelRelationships(data.models || []);
+        setModelRelationships(relationships);
+        
         setLoading(false);
       })
       .catch((err) => console.error("Error loading models:", err));
   }, []);
+
+  // Handle relationship visibility toggle
+  const handleToggleRelationships = (visible: boolean) => {
+    setShowRelationships(visible);
+  };
 
   // Determine which code to display
   const displayCode = hasCustomEdits ? editedCode : code;
@@ -238,19 +258,35 @@ export function CodeDiagramSection() {
             </div>
           )
         ) : (
-          <div className="bg-neutral grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-10 overflow-auto h-full">
-            {entities.length === 0 ? (
-              <p className="text-gray-500">No models created yet</p>
-            ) : (
-              entities.map(({ title, fields }) => (
-                <EntityCard key={title} title={title} fields={fields} />
-              ))
+          <div 
+            ref={diagramContainerRef}
+            className="bg-neutral p-10 overflow-auto h-full relative"
+          >
+            {/* Grid for model cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {entities.length === 0 ? (
+                <p className="text-gray-500">No models created yet</p>
+              ) : (
+                entities.map(({ title, fields, modelId }) => (
+                  <EntityCard 
+                    key={modelId} 
+                    title={title} 
+                    fields={fields} 
+                    modelId={modelId} 
+                  />
+                ))
+              )}
+            </div>
+            
+            {/* Relationship lines */}
+            {activeSection === "diagram" && entities.length > 0 && showRelationships && (
+              <ModelRelationships relationships={modelRelationships} />
             )}
           </div>
         )}
       </div>
 
-      {activeSection === "diagram" && <DiagramControls />}
+      {activeSection === "diagram" && <DiagramControls onToggleRelationships={handleToggleRelationships} />}
     </section>
   );
 }
