@@ -4,12 +4,20 @@ import { PropertyItem } from "../models/PropertyItem";
 import { Button } from "../../../components/ui/button";
 import { memo } from "react";
 import { UseModelSectionReturn } from "../models/SideBarModels";
+import { TraitsDropdown } from "./TraitsDropdown"; // Import the new component
 
 type Props = {
   modelSection: UseModelSectionReturn;
 };
 
 function ModelSidebarSection({ modelSection }: Props) {
+  // Handler for trait toggle
+  const handleTraitToggle = (modelId: string, traitName: string, isSelected: boolean) => {
+    // Add this to your modelSection logic to handle trait changes
+    console.log(`Model ${modelId}: ${traitName} ${isSelected ? 'enabled' : 'disabled'}`);
+    // Implement the actual state change in your model
+  };
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="p-4 flex justify-end flex-shrink-0">
@@ -43,7 +51,7 @@ function ModelSidebarSection({ modelSection }: Props) {
 
                 <div className="flex items-center gap-2">
                   <Input
-                    value={modelSection.editingModels[model.id] ?? model.name} // Si no se está editando, usa el nombre actual
+                    value={modelSection.editingModels[model.id] ?? model.name}
                     onChange={(e) =>
                       modelSection.setEditingModels((prev) => ({
                         ...prev,
@@ -66,6 +74,11 @@ function ModelSidebarSection({ modelSection }: Props) {
                         });
                       }
                     }}
+                  />
+                  {/* Add the traits dropdown here */}
+                  <TraitsDropdown 
+                    modelId={model.id} 
+                    onTraitToggle={handleTraitToggle} 
                   />
                 </div>
               </div>
