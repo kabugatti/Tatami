@@ -10,11 +10,7 @@ type Props = {
   modelSection: UseModelSectionReturn;
 };
 
-function ModelSidebarSection({ modelSection }: Props) {
-  const handleTraitToggle = (modelId: string, traitName: string, isSelected: boolean) => {
-    console.log(`Model ${modelId}: ${traitName} ${isSelected ? 'enabled' : 'disabled'}`);
-  };
-
+function ModelSidebarSection({ modelSection }: Props) { 
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="p-4 flex justify-end flex-shrink-0">
@@ -62,7 +58,13 @@ function ModelSidebarSection({ modelSection }: Props) {
                       }}
                     />
                     <div className="w-24 flex-shrink-0 min-w-0">
-                      <TraitsDropdown modelId={model.id} onTraitToggle={handleTraitToggle} />
+                      <TraitsDropdown 
+                        modelId={model.id} 
+                        onTraitToggle={(modelId, trait, isSelected) => 
+                          modelSection.updateModelTraits(modelId, trait, isSelected)
+                        }
+                        selectedTraits={model.traits || []}
+                      />
                     </div>
                   </div>
                 </div>

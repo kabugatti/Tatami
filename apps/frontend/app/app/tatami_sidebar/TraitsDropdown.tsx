@@ -1,23 +1,24 @@
+'use client'
 import React, { useState, useRef, useEffect } from 'react'; 
 import { ChevronDown, Check } from 'lucide-react';
 
 interface TraitsDropdownProps {
   modelId: string;
-  onTraitToggle: (modelId: string, traitId: string, isEnabled: boolean) => void;
+  onTraitToggle: (modelId: string, name: string, isEnabled: boolean) => void;
+  selectedTraits: string[];
 }
 
 interface Trait {
   id: string;
   name: string;
-  icon: string;
 }
 
 const availableTraits: Trait[] = [
-  { id: '1', name: 'Copy', icon: '👁️' },
-  { id: '2', name: 'Drop', icon: '🔍' },
-  { id: '3', name: 'Serde', icon: '💻' },
-  { id: '4', name: 'IntrospectPacked', icon: '📁' },
-  { id: '5', name: 'Debug', icon: '📁📁' }
+  { id: '1', name: 'Copy'},
+  { id: '2', name: 'Drop'},
+  { id: '3', name: 'Serde'},
+  { id: '4', name: 'IntrospectPacked'},
+  { id: '5', name: 'Debug'}
 ];
 
 const TuneIcon = () => (
@@ -33,14 +34,9 @@ const TuneIcon = () => (
   </svg>
 );
 
-const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle }) => {
+const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle, selectedTraits = [] }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedTraits, setSelectedTraits] = useState<string[]>(['1', '2', '3']);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    selectedTraits.forEach(traitId => onTraitToggle(modelId, traitId, true));
-  }, [modelId, onTraitToggle]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,13 +50,14 @@ const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle 
   }, []);
 
   const toggleTrait = (traitId: string) => {
-    const isSelected = selectedTraits.includes(traitId);
-    setSelectedTraits(isSelected ? selectedTraits.filter(id => id !== traitId) : [...selectedTraits, traitId]);
-    onTraitToggle(modelId, traitId, !isSelected);
+    const trait = availableTraits.find(t => t.id === traitId);
+  
+    if (trait) {
+      const isSelected = selectedTraits.includes(trait.name);
+      onTraitToggle(modelId, trait.name, !isSelected);
+    }
   };
-
-
-
+  
   return (
     <div className="relative inline-block flex-wrap" ref={dropdownRef}>
       <button
@@ -68,7 +65,10 @@ const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle 
         onClick={() => setIsOpen(!isOpen)}
         className="relative hover:bg-foreground/95 bg-foreground text-background font-medium gap-1 flex items-center justify-center h-8 px-3 border border-neutral rounded transition-colors"
       >
-        <span className="truncate mr-1">Traits</span>
+        <div className="flex items-center gap-0 max-w-[100px]">
+            <TuneIcon />
+            <span className="font-medium">Traits</span>
+        </div>
         <ChevronDown className="h-4 w-4 ml-1" />
       </button>
 
@@ -86,11 +86,10 @@ const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle 
                 onClick={() => toggleTrait(trait.id)}
               >
                 <div className="flex items-center">
-                  <span className="mr-2">{trait.icon}</span>
                   <span className="text-sm">{trait.name}</span>
                 </div>
                 <div className="w-4 h-4 flex items-center justify-center border border-neutral rounded bg-foreground text-background">
-                  {selectedTraits.includes(trait.id) && <Check className="h-3 w-3" />}
+                  {selectedTraits.includes(trait.name) && <Check className="h-3 w-3" />}
                 </div>
               </div>
             ))}
