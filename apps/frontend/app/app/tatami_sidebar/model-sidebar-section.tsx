@@ -4,18 +4,15 @@ import { PropertyItem } from "../models/PropertyItem";
 import { Button } from "../../../components/ui/button";
 import { memo } from "react";
 import { UseModelSectionReturn } from "../models/SideBarModels";
-import { TraitsDropdown } from "./TraitsDropdown"; // Import the new component
+import TraitsDropdown from "./TraitsDropdown";
 
 type Props = {
   modelSection: UseModelSectionReturn;
 };
 
 function ModelSidebarSection({ modelSection }: Props) {
-  // Handler for trait toggle
   const handleTraitToggle = (modelId: string, traitName: string, isSelected: boolean) => {
-    // Add this to your modelSection logic to handle trait changes
     console.log(`Model ${modelId}: ${traitName} ${isSelected ? 'enabled' : 'disabled'}`);
-    // Implement the actual state change in your model
   };
 
   return (
@@ -29,65 +26,49 @@ function ModelSidebarSection({ modelSection }: Props) {
         </Button>
       </div>
 
-      {/* Model list with custom scrollbar */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-2 pb-4 overflow-x-visible">
         {modelSection.models.map((model) => (
-          <div
-            key={model.id}
-            className="border border-neutral bg-neutral rounded-md overflow-hidden mb-4"
-          >
-            <div className="flex items-center justify-between p-3 bg-neutral text-foreground">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => modelSection.toggleModelExpansion(model.id)}
-                >
-                  {model.expanded ? (
-                    <ChevronDown className="h-5 w-5" />
-                  ) : (
-                    <ChevronRight className="h-5 w-5" />
-                  )}
+          <div key={model.id} className="border border-neutral bg-neutral rounded-md overflow-hidden mb-4">
+            <div className="flex items-center justify-between p-3 bg-neutral text-foreground flex-wrap">
+              <div className="flex items-center gap-2 flex-1 flex-wrap">
+                <button type="button" onClick={() => modelSection.toggleModelExpansion(model.id)}>
+                  {model.expanded ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
                 </button>
-
-                <div className="flex items-center gap-2">
-                  <Input
-                    value={modelSection.editingModels[model.id] ?? model.name}
-                    onChange={(e) =>
-                      modelSection.setEditingModels((prev) => ({
-                        ...prev,
-                        [model.id]: e.target.value,
-                      }))
-                    }
-                    className="h-8 bg-background border-neutral"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        modelSection.updateModelName(
-                          model.id,
-                          modelSection.editingModels[model.id] ?? model.name
-                        );
-                      } else if (e.key === "Escape") {
-                        modelSection.setEditingModels((prev) => {
-                          const updated = { ...prev };
-                          delete updated[model.id];
-                          return updated;
-                        });
+                <div className="flex flex-1 flex-col gap-2 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Input
+                      value={modelSection.editingModels[model.id] ?? model.name}
+                      onChange={(e) =>
+                        modelSection.setEditingModels((prev) => ({
+                          ...prev,
+                          [model.id]: e.target.value,
+                        }))
                       }
-                    }}
-                  />
-                  {/* Add the traits dropdown here */}
-                  <TraitsDropdown 
-                    modelId={model.id} 
-                    onTraitToggle={handleTraitToggle} 
-                  />
+                      className="h-8 bg-background border-neutral flex-1"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          modelSection.updateModelName(
+                            model.id,
+                            modelSection.editingModels[model.id] ?? model.name
+                          );
+                        } else if (e.key === "Escape") {
+                          modelSection.setEditingModels((prev) => {
+                            const updated = { ...prev };
+                            delete updated[model.id];
+                            return updated;
+                          });
+                        }
+                      }}
+                    />
+                    <div className="w-24 flex-shrink-0 min-w-0">
+                      <TraitsDropdown modelId={model.id} onTraitToggle={handleTraitToggle} />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => modelSection.deleteModel(model.id)}
-                  className=" hover:text-red-500"
-                >
+              <div className="flex items-center gap-2 ml-4">
+                <button type="button" onClick={() => modelSection.deleteModel(model.id)} className="hover:text-red-500">
                   <Trash2 className="h-5 w-5" />
                 </button>
               </div>
@@ -95,10 +76,7 @@ function ModelSidebarSection({ modelSection }: Props) {
 
             {model.expanded && (
               <div className="p-3 bg-neutral">
-                <h3 className="text-sm font-medium text-muted-foreground mb-3">
-                  Properties
-                </h3>
-
+                <h3 className="text-sm font-medium text-muted-foreground mb-3">Properties</h3>
                 <div className="grid grid-cols-12 gap-1 text-xs font-medium text-muted-foreground mb-2 bg-background px-2 py-3">
                   <div className="col-span-5">Name</div>
                   <div className="col-span-4">Datatype</div>
@@ -114,29 +92,15 @@ function ModelSidebarSection({ modelSection }: Props) {
                     dataType={property.dataType}
                     isKey={property.isKey}
                     onNameChange={(propertyId, value) =>
-                      modelSection.updatePropertyName(
-                        model.id,
-                        propertyId,
-                        value
-                      )
+                      modelSection.updatePropertyName(model.id, propertyId, value)
                     }
                     onDataTypeChange={(propertyId, value) =>
-                      modelSection.updatePropertyDataType(
-                        model.id,
-                        propertyId,
-                        value
-                      )
+                      modelSection.updatePropertyDataType(model.id, propertyId, value)
                     }
                     onKeyChange={(propertyId, value) =>
-                      modelSection.updatePropertyKey(
-                        model.id,
-                        propertyId,
-                        value
-                      )
+                      modelSection.updatePropertyKey(model.id, propertyId, value)
                     }
-                    onDelete={(propertyId) =>
-                      modelSection.deleteProperty(model.id, propertyId)
-                    }
+                    onDelete={(propertyId) => modelSection.deleteProperty(model.id, propertyId)}
                   />
                 ))}
 
@@ -154,4 +118,5 @@ function ModelSidebarSection({ modelSection }: Props) {
     </div>
   );
 }
+
 export const MemoizedModelSidebarSection = memo(ModelSidebarSection);

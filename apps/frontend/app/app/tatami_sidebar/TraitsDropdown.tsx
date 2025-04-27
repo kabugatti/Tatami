@@ -1,93 +1,96 @@
-import { useState, useRef, useEffect } from "react";
-import { CheckIcon, InfoIcon } from "lucide-react";
+import React, { useState, useRef, useEffect } from 'react'; 
+import { ChevronDown, Check } from 'lucide-react';
 
-// Define the traits structure
-type Trait = {
-  name: string;
-  selected: boolean;
-  description?: string;
-};
-
-// Define props interface for the component
 interface TraitsDropdownProps {
   modelId: string;
-  onTraitToggle: (modelId: string, traitName: string, isSelected: boolean) => void;
+  onTraitToggle: (modelId: string, traitId: string, isEnabled: boolean) => void;
 }
 
-// Component for the traits dropdown
-export function TraitsDropdown({ modelId, onTraitToggle }: TraitsDropdownProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [traits, setTraits] = useState<Trait[]>([
-    { name: "Copy", selected: false, description: "Makes entity copyable" },
-    { name: "Drop", selected: true, description: "Makes entity droppable" },
-    { name: "Serde", selected: false, description: "Enables serialization" },
-    { name: "IntrospectPacked", selected: true, description: "Enables introspection" },
-    { name: "Debug", selected: true, description: "Enables debug output" },
-  ]);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+interface Trait {
+  id: string;
+  name: string;
+  icon: string;
+}
 
-  // Close dropdown when clicking outside
+const availableTraits: Trait[] = [
+  { id: '1', name: 'Copy', icon: '👁️' },
+  { id: '2', name: 'Drop', icon: '🔍' },
+  { id: '3', name: 'Serde', icon: '💻' },
+  { id: '4', name: 'IntrospectPacked', icon: '📁' },
+  { id: '5', name: 'Debug', icon: '📁📁' }
+];
+
+const TuneIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1.5">
+    <g clipPath="url(#clip0_917_310)">
+      <path d="M3 17V19H9V17H3ZM3 5V7H13V5H3ZM13 21V19H21V17H13V15H11V21H13ZM7 9V11H3V13H7V15H9V9H7ZM21 13V11H11V13H21ZM15 9H17V7H21V5H17V3H15V9Z" fill="currentColor"/>
+    </g>
+    <defs>
+      <clipPath id="clip0_917_310">
+        <rect width="24" height="24" fill="currentColor"/>
+      </clipPath>
+    </defs>
+  </svg>
+);
+
+const TraitsDropdown: React.FC<TraitsDropdownProps> = ({ modelId, onTraitToggle }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedTraits, setSelectedTraits] = useState<string[]>(['1', '2', '3']);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    selectedTraits.forEach(traitId => onTraitToggle(modelId, traitId, true));
+  }, [modelId, onTraitToggle]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
-    }
-    
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const toggleTrait = (index: number) => {
-    const newTraits = [...traits];
-    newTraits[index].selected = !newTraits[index].selected;
-    setTraits(newTraits);
-    
-    // Call parent handler if provided
-    if (onTraitToggle) {
-      onTraitToggle(modelId, newTraits[index].name, newTraits[index].selected);
-    }
+  const toggleTrait = (traitId: string) => {
+    const isSelected = selectedTraits.includes(traitId);
+    setSelectedTraits(isSelected ? selectedTraits.filter(id => id !== traitId) : [...selectedTraits, traitId]);
+    onTraitToggle(modelId, traitId, !isSelected);
   };
 
+
+
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative inline-block flex-wrap" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-1 px-2 py-1 bg-black text-white rounded h-8"
+        className="relative hover:bg-foreground/95 bg-foreground text-background font-medium gap-1 flex items-center justify-center h-8 px-3 border border-neutral rounded transition-colors"
       >
-        <svg
-          className="w-4 h-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M20 7L12 15L4 7" />
-        </svg>
-        <span>Traits</span>
+        <span className="truncate mr-1">Traits</span>
+        <ChevronDown className="h-4 w-4 ml-1" />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-1 w-52 bg-white border border-gray-200 rounded shadow-lg">
-          <div className="py-1 px-3 font-medium text-black">Traits</div>
-          
-          <div className="max-h-60 overflow-y-auto">
-            {traits.map((trait, index) => (
+        <div className="absolute right-0 mt-1 w-56 bg-background border border-neutral rounded shadow-lg z-20">
+          <div className="px-4 py-1 border-b border-neutral font-medium flex items-center">
+            <TuneIcon />
+            <span>Traits</span>
+          </div>
+          <div className="py-0 max-h-72 overflow-y-auto">
+            {availableTraits.map((trait) => (
               <div 
-                key={trait.name} 
-                className="px-3 py-2 flex items-center justify-between hover:bg-gray-100 cursor-pointer"
-                onClick={() => toggleTrait(index)}
+                key={trait.id}
+                className="flex items-center justify-between px-4 py-1.5 hover:bg-neutral-100 cursor-pointer"
+                onClick={() => toggleTrait(trait.id)}
               >
-                <div className="flex items-center gap-2">
-                  <span>{trait.name}</span>
+                <div className="flex items-center">
+                  <span className="mr-2">{trait.icon}</span>
+                  <span className="text-sm">{trait.name}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 flex items-center justify-center">
-                    {trait.selected && <CheckIcon className="w-4 h-4" />}
-                  </div>
-                  {trait.description && (
-                    <InfoIcon className="w-4 h-4 text-gray-500" />
-                  )}
+                <div className="w-4 h-4 flex items-center justify-center border border-neutral rounded bg-foreground text-background">
+                  {selectedTraits.includes(trait.id) && <Check className="h-3 w-3" />}
                 </div>
               </div>
             ))}
@@ -96,4 +99,6 @@ export function TraitsDropdown({ modelId, onTraitToggle }: TraitsDropdownProps) 
       )}
     </div>
   );
-}
+};
+
+export default TraitsDropdown;
