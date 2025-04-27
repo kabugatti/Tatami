@@ -153,7 +153,6 @@ export const useModelSection = () => {
     modelStateService.updateModel(modelId, updatedModel);
   };
 
-  // Nueva función para actualizar los traits
   const updateModelTraits = (
     modelId: string,
     trait: string,
@@ -164,13 +163,10 @@ export const useModelSection = () => {
     
     const currentTraits = modelToUpdate.traits || [];
     
-    // Si el trait está seleccionado y no existe en el array, lo añadimos
-    // Si no está seleccionado y existe, lo eliminamos
     const updatedTraits = isSelected
       ? [...currentTraits, trait]
       : currentTraits.filter(t => t !== trait);
     
-    // Asegurarnos de no duplicar traits
     const uniqueTraits = [...new Set(updatedTraits)];
     
     const updatedModel = {
@@ -194,6 +190,6 @@ export const useModelSection = () => {
     addProperty,
     editingModels,
     setEditingModels,
-    updateModelTraits, // Añadimos la nueva función al objeto retornado
+    updateModelTraits,
   };
 };
