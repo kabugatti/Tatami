@@ -1,64 +1,51 @@
 {
   "models": [
     {
-      "id": "model_1745634276444",
-      "name": "Beast",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1745634276444",
-          "name": "beast_id",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ]
-    },
-    {
-      "id": "model_1745634279586",
-      "name": "BeastMan",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1745634279586",
-          "name": "beast_id",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ]
-    },
-    {
-      "id": "model_1745634279979",
-      "name": "BeastStatus",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1745634279979",
-          "name": "beast_id",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ]
-    },
-    {
-      "id": "model_1745634280367",
+      "id": "model_1745998629423",
       "name": "beast",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1745634280367",
-          "name": "beast_id",
+          "id": "prop_1745998629423",
+          "name": "beast",
           "dataType": "u32",
           "isKey": true
         }
       ]
     },
     {
-      "id": "model_1745635228617",
-      "name": "New Model 5",
+      "id": "model_1745998631825",
+      "name": "New Model 2",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1745635228617",
+          "id": "prop_1745998631825",
+          "name": "",
+          "dataType": "u32",
+          "isKey": true
+        }
+      ]
+    },
+    {
+      "id": "model_1745998632488",
+      "name": "New Model 3",
+      "expanded": true,
+      "properties": [
+        {
+          "id": "prop_1745998632489",
+          "name": "",
+          "dataType": "u32",
+          "isKey": true
+        }
+      ]
+    },
+    {
+      "id": "model_1745998633911",
+      "name": "New Model 4",
+      "expanded": true,
+      "properties": [
+        {
+          "id": "prop_1745998633911",
           "name": "",
           "dataType": "u32",
           "isKey": true
