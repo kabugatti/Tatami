@@ -90,25 +90,6 @@ export function CodeDiagramSection() {
     return () => subscription.unsubscribe();
   }, [hasCustomEdits]);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch("/api/models")
-      .then((res) => res.json())
-      .then((data) => {
-        const generatedCode = generateCairoCode(data.models || []);
-        setCode(generatedCode);
-        setEditedCode(generatedCode); // Initialize editedCode with the same value
-        setEntities(generateEntities(data.models || []));
-        
-        // Detect and set model relationships
-        const relationships = detectModelRelationships(data.models || []);
-        setModelRelationships(relationships);
-        
-        setLoading(false);
-      })
-      .catch((err) => console.error("Error loading models:", err));
-  }, []);
-
   // Handle relationship visibility toggle
   const handleToggleRelationships = (visible: boolean) => {
     setShowRelationships(visible);
