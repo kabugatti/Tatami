@@ -30,6 +30,12 @@ export default function MetricsPage() {
   })
 
   const handleSetEndpoint = (url: string) => {
+    if (url !== endpoint) {
+      setHasFetched(false)
+      setModelsData(null)
+      setTransactionsData(null)
+    }
+
     setEndpoint(url)
     connect(url)
   }
