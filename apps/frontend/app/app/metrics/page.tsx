@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from "react"
+import { gql } from "@apollo/client"
 
 import { GraphQLEndpointForm } from "@/app/app/metrics/graphql-endpoint-form"
 import { GraphiQLInterface } from "@/app/app/metrics/graphiql-interface"
@@ -10,7 +11,7 @@ import { useGraphQLConnection } from "@/hooks/use-graphql-connection"
 import { useToast } from "@/hooks/use-toast"
 import { createApolloClient } from "@/lib/apollo-client"
 import { GET_ALL_MODELS_DATA, GET_TRANSACTIONS } from "@/lib/graphql/metrics.queries"
-import type { ModelDataItem, TransactionDataPoint } from "@/types/charts"
+import type { ModelDataItem, ModelInfo, TransactionDataPoint } from "@/types/charts"
 import clsx from "clsx"
 
 export default function MetricsPage() {
@@ -20,7 +21,6 @@ export default function MetricsPage() {
   const [endpoint, setEndpoint] = useState<string>("")
 
   const { toast } = useToast()
-
   const { connect, fetcher } = useGraphQLConnection((msg) => {
     toast({
       title: "Connection Error",
@@ -47,28 +47,58 @@ export default function MetricsPage() {
     const client = createApolloClient(endpoint)
 
     try {
-      const results = await Promise.all([
-        client.query({ query: GET_ALL_MODELS_DATA }),
-        client.query({ query: GET_TRANSACTIONS }),
-      ])
+      // Get all models (name + namespace)
+      const modelsResult = await client.query({ query: GET_ALL_MODELS_DATA })
+      const modelsList: ModelInfo[] = modelsResult.data.models.edges.map((edge: any): ModelInfo => ({
+        name: edge.node.name,
+        namespace: edge.node.namespace,
+      }))
 
-      // Extract real data
-      const modelsResponse = results[0].data // GET_All_MODELS_DATA
-      const transactionsResponse = results[1].data // GET_TRANSACTIONS
+      // Create and run a query per model to fetch totalCount
+      const modelQueries = modelsList.map(async ({ name, namespace }: ModelInfo) => {
+        const modelKey = `${namespace}${name}Models`
 
-      const modelsData = [
-        { name: modelsResponse.models.edges[3].node.name, value: modelsResponse.tamagotchiPlayerModels.totalCount, color: "#FEB913" },
-        { name: modelsResponse.models.edges[1].node.name, value: modelsResponse.tamagotchiBeastModels.totalCount, color: "#FFCB47" },
-        { name: modelsResponse.models.edges[2].node.name, value: modelsResponse.tamagotchiFoodModels.totalCount, color: "#FFD670" },
-        { name: modelsResponse.models.edges[0].node.name, value: modelsResponse.tamagotchiBeastStatusModels.totalCount, color: "#FFE299" },
-      ]
+        const dynamicQuery = gql`
+          query {
+            ${modelKey} {
+              totalCount
+            }
+          }
+        `
 
-      setModelsData(modelsData)
+        const res = await client.query({ query: dynamicQuery })
+        return ({
+          name,
+          key: modelKey,
+          value: res.data?.[modelKey]?.totalCount ?? 0,
+        })
+      })
+
+      const resolvedModelData = await Promise.all(modelQueries)
+
+      // Format modelsData for chart
+      const generatedModelsData: ModelDataItem[] = resolvedModelData.map((model, index) => {
+        const hue = 47
+        const saturation = 93
+        const lightness = 53 + index * 7 // Slight variation in lightness
+
+        return {
+          name: model.name,
+          value: model.value,
+          color: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+        }
+      })
+
+      setModelsData(generatedModelsData)
+
+      // Fetch and transform transaction data
+      const transactionsResult = await client.query({ query: GET_TRANSACTIONS })
+      const transactionsResponse = transactionsResult.data
 
       const transformedTransactions = transactionsResponse.transactions.edges.map((edge: any) => ({
-        date: edge.node.id.slice(0, 6), // only to simulate
+        date: edge.node.id.slice(0, 6), // Simplified ID as date
         value: parseInt(edge.node.calldata?.length ?? 0),
-      })).slice(0, 12) // we take 12 values
+      })).slice(0, 12) // Limit to 12 entries
 
       setTransactionsData(transformedTransactions)
       setHasFetched(true)
