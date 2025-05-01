@@ -17,6 +17,7 @@ export default function MetricsPage() {
   const [modelsData, setModelsData] = useState<ModelDataItem[] | null>(null)
   const [transactionsData, setTransactionsData] = useState<TransactionDataPoint[] | null>(null)
   const [hasFetched, setHasFetched] = useState(false)
+  const [endpoint, setEndpoint] = useState<string>("")
 
   const { toast } = useToast()
 
@@ -28,8 +29,22 @@ export default function MetricsPage() {
     })
   })
 
+  const handleSetEndpoint = (url: string) => {
+    setEndpoint(url)
+    connect(url)
+  }
+
   const onLoadMetrics = async () => {
-    const client = createApolloClient("https://api.cartridge.gg/x/hhbbb/torii/graphql")
+    if (!endpoint) {
+      toast({
+        title: "Missing Endpoint",
+        description: "Please provide a valid API URL before loading metrics.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    const client = createApolloClient(endpoint)
 
     try {
       const results = await Promise.all([
@@ -68,7 +83,7 @@ export default function MetricsPage() {
 
   return (
     <main className="space-y-6 px-4">
-      <GraphQLEndpointForm connect={connect} onLoadMetrics={onLoadMetrics} />
+      <GraphQLEndpointForm onSetEndpoint={handleSetEndpoint} onLoadMetrics={onLoadMetrics} />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 pb-4 xl:pb-0 gap-6">
         <div
