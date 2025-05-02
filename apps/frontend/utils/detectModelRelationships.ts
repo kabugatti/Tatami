@@ -12,7 +12,10 @@ export interface ModelRelationship {
 }
 
 /**
- * Detects relationships between models based on matching key fields
+ * Detects relationships between models based on matching key fields.
+ * IMPORTANT: Only fields marked as keys (isKey === true) are considered for relationships
+ * as relationships in data modeling should only be established between primary keys.
+ * 
  * @param models Array of models to check for relationships
  * @returns Array of detected relationships
  */
@@ -25,16 +28,16 @@ export function detectModelRelationships(models: Model[]): ModelRelationship[] {
       const modelA = models[i];
       const modelB = models[j];
       
-      // Extract key fields from both models
-      const fieldsA = modelA.properties;
-      const fieldsB = modelB.properties;
+      // Extract only key fields from both models (isKey is true)
+      const keyFieldsA = modelA.properties.filter(prop => prop.isKey);
+      const keyFieldsB = modelB.properties.filter(prop => prop.isKey);
       
       // Find matching key fields
       const matches: { sourceField: string; targetField: string }[] = [];
       
-      // For each field in Model A, check if there's a matching field in Model B
-      fieldsA.forEach(fieldA => {
-        fieldsB.forEach(fieldB => {
+      // For each key field in Model A, check if there's a matching key field in Model B
+      keyFieldsA.forEach(fieldA => {
+        keyFieldsB.forEach(fieldB => {
           // Check for exact field name match (e.g., beast_id to beast_id)
           if (fieldA.name === fieldB.name) {
             matches.push({
