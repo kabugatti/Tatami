@@ -18,6 +18,32 @@
 [tg-badge]: https://img.shields.io/endpoint?color=neon&logo=telegram&label=chat&style=flat-square&url=https%3A%2F%2Ftg.sumanjay.workers.dev%2Fdojoengine
 [tg-url]: https://t.me/dojoengine
 
+# 🔧 Setup
+## Install prerequisites:
+
+follow installation guide in dojo documentation https://www.dojoengine.org/installation
+
+Rust: curl https://sh.rustup.rs -sSf | sh
+Scarb (Cairo): curl https://setup.swmansion.com | bash
+DojoUp: curl -L https://install.dojoengine.org | bash
+
+### Add Dojo binaries to PATH:
+export PATH="$HOME/.dojo/bin:$PATH"
+
+### Install Dojo tools:
+dojoup install
+
+| Tool     | Purpose                            | Run Command      |
+| -------- | ---------------------------------- | ---------------- |
+| `dojoup` | Installs Dojo tools                | `dojoup install` |
+| `katana` | Local Starknet devnet              | `katana`         |
+| `torii`  | Event/state indexer                | `torii`          |
+| `sozo`   | Contract deploy and migration tool | `sozo migrate`   |
+| `scarb`  | Cairo package manager              | `scarb build`    |
+
+
+follow guide in dojo documentation https://www.dojoengine.org/tutorial/dojo-starter
+
 # Dojo Starter: Official Guide
 
 A quickstart guide to help you build and deploy your first Dojo provable game.
@@ -57,6 +83,33 @@ You can start stack using docker compose. [Here are the installation instruction
 docker compose up
 ```
 You'll get all services logs in the same terminal instance. Whenever you want to stop just ctrl+c
+
+---
+
+## Updating Cairo Version
+If your project runs into errors due to a mismatch in Cairo versions, follow these steps to update:
+
+### 1. Check Your Cairo Version
+Compare cairo version with the version required by the project (often specified in Scarb.toml or implicitly required by Dojo).
+
+### 2. Update Scarb.toml
+Edit the Cairo version in your Scarb.toml file:
+
+
+[package]
+name = "dojo_starter"
+version = "0.1.0"
+cairo-version = "2.5.4" # Change to match your installed version
+
+Replace 2.5.4 with the correct version installed on your system.
+
+### 3. Rebuild the Project
+After updating the version:
+
+```bash
+scarb build
+```
+If errors persist, ensure all packages in [dependencies] are compatible with the new Cairo version.
 
 ---
 
