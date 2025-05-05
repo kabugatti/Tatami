@@ -14,6 +14,8 @@ import { GET_ALL_MODELS_DATA, GET_TRANSACTIONS } from "@/lib/graphql/metrics.que
 import type { ModelDataItem, ModelInfo, TransactionDataPoint } from "@/types/charts"
 import clsx from "clsx"
 
+import { mockModelsResponse, mockTransactionsResponse } from "./mock-metrics"
+
 export default function MetricsPage() {
   const [modelsData, setModelsData] = useState<ModelDataItem[] | null>(null)
   const [transactionsData, setTransactionsData] = useState<TransactionDataPoint[] | null>(null)
@@ -53,62 +55,73 @@ export default function MetricsPage() {
     const client = createApolloClient(endpoint)
 
     try {
-      // Get all models (name + namespace)
-      const modelsResult = await client.query({ query: GET_ALL_MODELS_DATA })
-      const modelsList: ModelInfo[] = modelsResult.data.models.edges.map((edge: any): ModelInfo => ({
-        name: edge.node.name,
-        namespace: edge.node.namespace,
-      }))
+      // MODELS
+      let generatedModelsData: ModelDataItem[] = []
 
-      // Create and run a query per model to fetch totalCount
-      const modelQueries = modelsList.map(async ({ name, namespace }: ModelInfo) => {
-        const modelKey = `${namespace}${name}Models`
+      try {
+        const modelsResult = await client.query({ query: GET_ALL_MODELS_DATA })
+        const modelsEdges = modelsResult.data.models.edges
 
-        const dynamicQuery = gql`
-          query {
-            ${modelKey} {
-              totalCount
-            }
+        if (modelsEdges.length === 0) throw new Error("Empty models edges")
+
+        const modelsList: ModelInfo[] = modelsEdges.map((edge: any) => ({
+          name: edge.node.name,
+          namespace: edge.node.namespace,
+        }))
+
+        const modelQueries = modelsList.map(async ({ name, namespace }: ModelInfo, index: number) => {
+          const modelKey = `${namespace}${name}Models`
+          const dynamicQuery = gql`query { ${modelKey} { totalCount } }`
+          const res = await client.query({ query: dynamicQuery })
+          return {
+            name,
+            value: res.data?.[modelKey]?.totalCount ?? 0,
+            color: `hsl(47, 93%, ${53 + index * 7}%)`,
           }
-        `
-
-        const res = await client.query({ query: dynamicQuery })
-        return ({
-          name,
-          key: modelKey,
-          value: res.data?.[modelKey]?.totalCount ?? 0,
         })
-      })
 
-      const resolvedModelData = await Promise.all(modelQueries)
-
-      // Format modelsData for chart
-      const generatedModelsData: ModelDataItem[] = resolvedModelData.map((model, index) => {
-        const hue = 47
-        const saturation = 93
-        const lightness = 53 + index * 7 // Slight variation in lightness
-
-        return {
-          name: model.name,
-          value: model.value,
-          color: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
-        }
-      })
+        generatedModelsData = await Promise.all(modelQueries)
+      } catch {
+        const mockEdges = mockModelsResponse.data.models.edges
+        generatedModelsData = mockEdges.map((edge: any, index: number) => {
+          const modelKey = `${edge.node.namespace}${edge.node.name}Models`
+          const value = (mockModelsResponse.data as any)[modelKey]?.totalCount ?? 0
+          return {
+            name: edge.node.name,
+            value,
+            color: `hsl(47, 93%, ${53 + index * 7}%)`,
+          }
+        })
+      }
 
       setModelsData(generatedModelsData)
 
-      // Fetch and transform transaction data
-      const transactionsResult = await client.query({ query: GET_TRANSACTIONS })
-      const transactionsResponse = transactionsResult.data
+      // TRANSACTIONS
+      try {
+        const transactionsResult = await client.query({ query: GET_TRANSACTIONS })
+        const txEdges = transactionsResult.data.transactions.edges
 
-      const transformedTransactions = transactionsResponse.transactions.edges.map((edge: any) => ({
-        date: edge.node.id.slice(0, 6), // Simplified ID as date
-        value: parseInt(edge.node.calldata?.length ?? 0),
-      })).slice(0, 12) // Limit to 12 entries
+        const txSource = txEdges.length > 0
+          ? txEdges
+          : mockTransactionsResponse.data.transactions.edges
 
-      setTransactionsData(transformedTransactions)
+        const transformedTransactions = txSource.map((edge: any) => ({
+          date: edge.node.id.slice(0, 7),
+          value: parseInt(edge.node.calldata?.length ?? 0),
+        })).slice(0, 12)
+
+        setTransactionsData(transformedTransactions)
+      } catch {
+        const fallbackTransactions = mockTransactionsResponse.data.transactions.edges.map((edge: any) => ({
+          date: edge.node.id.slice(0, 7),
+          value: parseInt(edge.node.calldata?.length ?? 0),
+        }))
+
+        setTransactionsData(fallbackTransactions)
+      }
+
       setHasFetched(true)
-    } catch (error) {
+    } catch {
       toast({
         title: "Error loading metrics",
         description: "Something went wrong while fetching metrics.",
