@@ -27,9 +27,6 @@ Rust: curl https://sh.rustup.rs -sSf | sh
 Scarb (Cairo): curl https://setup.swmansion.com | bash
 DojoUp: curl -L https://install.dojoengine.org | bash
 
-### scarb --version
-scarb 2.11.4 (c0ef5ec6a 2025-04-09)
-
 ### Add Dojo binaries to PATH:
 export PATH="$HOME/.dojo/bin:$PATH"
 
