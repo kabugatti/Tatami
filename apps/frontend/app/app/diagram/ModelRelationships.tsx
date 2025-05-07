@@ -11,96 +11,106 @@ interface ModelPosition {
 
 interface ModelRelationshipsProps {
   relationships: ModelRelationship[];
+  diagramContainerElement: HTMLDivElement | null; // The container holding the EntityCards
 }
 
-export function ModelRelationships({ relationships }: ModelRelationshipsProps) {
+export function ModelRelationships({ relationships, diagramContainerElement }: ModelRelationshipsProps) {
   const [modelPositions, setModelPositions] = useState<ModelPosition[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // This is the SVG's direct wrapper
 
-  // Update model positions when the component mounts or window resizes
   useEffect(() => {
     const updatePositions = () => {
-      // Find all model cards in the DOM by their data-model-id attribute
-      const modelCards = document.querySelectorAll('[data-model-id]');
-      const positions: ModelPosition[] = [];
+      if (!diagramContainerElement && !document.body.contains(containerRef.current?.parentElement || document.body) ) {
+        // If the diagram container isn't there, or if our SVG wrapper is detached, bail.
+        setModelPositions([]);
+        return;
+      }
 
-      modelCards.forEach(card => {
+      // Query for model cards. If diagramContainerElement is available, scope the query.
+      const cardElements = diagramContainerElement
+        ? diagramContainerElement.querySelectorAll<HTMLElement>('[data-model-id]')
+        : document.querySelectorAll<HTMLElement>('[data-model-id]'); // Fallback, less ideal
+
+      const positions: ModelPosition[] = [];
+      cardElements.forEach(card => {
         const modelId = card.getAttribute('data-model-id');
         if (modelId) {
           positions.push({
             id: modelId,
-            element: card as HTMLElement,
+            element: card,
             rect: card.getBoundingClientRect()
           });
         }
       });
-
       setModelPositions(positions);
 
-      // Update SVG dimensions based on container
       if (containerRef.current) {
-        const containerRect = containerRef.current.getBoundingClientRect();
+        // SVG dimensions should be based on its own wrapper (containerRef),
+        // which is styled to fill the diagram area.
         setSvgDimensions({
-          width: containerRect.width,
-          height: containerRect.height
+          width: containerRef.current.clientWidth,
+          height: containerRef.current.clientHeight
         });
       }
     };
 
-    // Initial position calculation
     updatePositions();
 
-    // Set up resize observer for container
     const resizeObserver = new ResizeObserver(updatePositions);
-    if (containerRef.current) {
+    if (containerRef.current) { // Observe the SVG's wrapper for resize
       resizeObserver.observe(containerRef.current);
     }
 
-    // Set up mutation observer to detect when model cards are added/removed/moved
+    // The MutationObserver should observe the diagramContainerElement for changes
+    // to the cards (e.g., style attribute changes like left/top).
     const mutationObserver = new MutationObserver(updatePositions);
-    if (containerRef.current) {
-      mutationObserver.observe(containerRef.current, {
+    if (diagramContainerElement) {
+      mutationObserver.observe(diagramContainerElement, {
         childList: true,
         subtree: true,
         attributes: true,
-        attributeFilter: ['style', 'class']
+        attributeFilter: ['style', 'class'] // Crucial for detecting position changes
       });
     }
 
-    // Clean up observers
+    // Also, listen to window resize as card positions can be affected.
+    window.addEventListener('resize', updatePositions);
+
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
+      window.removeEventListener('resize', updatePositions);
     };
-  }, [relationships]);
+  }, [relationships, diagramContainerElement]); // diagramContainerElement is a key dependency
 
   // Function to calculate path between two model cards
   const calculatePath = (sourceId: string, targetId: string): string => {
     const sourcePosition = modelPositions.find(pos => pos.id === sourceId);
     const targetPosition = modelPositions.find(pos => pos.id === targetId);
 
-    if (!sourcePosition || !targetPosition) return '';
+    if (!sourcePosition || !targetPosition || !containerRef.current) return '';
 
     const sourceRect = sourcePosition.rect;
     const targetRect = targetPosition.rect;
 
-    // Calculate center points relative to the container
-    const containerRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 };
+    // The SVG's (0,0) is the top-left of containerRef.current.
+    // Card rects are relative to the viewport. We need to make them relative to containerRef.current.
+    const svgContainerRect = containerRef.current.getBoundingClientRect();
     
-    const sourceX = sourceRect.left + sourceRect.width / 2 - containerRect.left;
-    const sourceY = sourceRect.top + sourceRect.height / 2 - containerRect.top;
-    const targetX = targetRect.left + targetRect.width / 2 - containerRect.left;
-    const targetY = targetRect.top + targetRect.height / 2 - containerRect.top;
+    // Calculate midpoints of cards relative to the SVG container
+    const sourceMidX = sourceRect.left + sourceRect.width / 2 - svgContainerRect.left;
+    const sourceMidY = sourceRect.top + sourceRect.height / 2 - svgContainerRect.top;
+    const targetMidX = targetRect.left + targetRect.width / 2 - svgContainerRect.left;
+    const targetMidY = targetRect.top + targetRect.height / 2 - svgContainerRect.top;
 
-    // Find the closest points on the edges of the rectangles
-    // This creates a better visual by connecting to edges rather than centers
+    // Calculate points on the edges of the rectangles, relative to the SVG container
     const sourcePoint = findClosestPointOnRectangle(
-      sourceX, sourceY, sourceRect.width, sourceRect.height, targetX, targetY
+      sourceMidX, sourceMidY, sourceRect.width, sourceRect.height, targetMidX, targetMidY
     );
     const targetPoint = findClosestPointOnRectangle(
-      targetX, targetY, targetRect.width, targetRect.height, sourceX, sourceY
+      targetMidX, targetMidY, targetRect.width, targetRect.height, sourceMidX, sourceMidY
     );
 
     // Create a curved path
@@ -116,7 +126,7 @@ export function ModelRelationships({ relationships }: ModelRelationshipsProps) {
     targetX: number,
     targetY: number
   ) => {
-    const halfWidth = rectWidth / 2;
+    const halfWidth = rectWidth / 2; // These are dimensions, not coordinates
     const halfHeight = rectHeight / 2;
     
     // Rectangle bounds
@@ -145,10 +155,15 @@ export function ModelRelationships({ relationships }: ModelRelationshipsProps) {
     const yTime2 = ndy !== 0 ? (bottom - rectCenterY) / ndy : Infinity;
     
     // Find minimum positive time
-    const times = [xTime1, xTime2, yTime1, yTime2].filter(t => t > 0);
+    const times = [xTime1, xTime2, yTime1, yTime2].filter(t => t > 0 && isFinite(t));
+    if (times.length === 0) { // Should not happen if target is outside and dx/dy are not both zero
+        return { x: rectCenterX, y: rectCenterY }; // Fallback to center
+    }
     const minTime = Math.min(...times);
     
     return {
+      // rectCenterX, rectCenterY are already relative to SVG container
+      // ndx, ndy are direction, minTime is distance scalar
       x: rectCenterX + ndx * minTime,
       y: rectCenterY + ndy * minTime
     };
@@ -160,30 +175,34 @@ export function ModelRelationships({ relationships }: ModelRelationshipsProps) {
         ref={svgRef}
         width={svgDimensions.width}
         height={svgDimensions.height}
-        className="absolute top-0 left-0 pointer-events-none"
+        className="absolute top-0 left-0 pointer-events-none" // SVG itself should not capture pointer events
       >
         {relationships.map((relation, index) => {
           const path = calculatePath(relation.sourceModelId, relation.targetModelId);
+          if (!path) return null; // Don't render if path couldn't be calculated
+
           return (
             <g key={`${relation.sourceModelId}-${relation.targetModelId}-${index}`}>
               <path
                 d={path}
                 fill="none"
-                stroke="#FFFFFF"
+                stroke="#FFFFFF" // Ensure this color is visible on your background
                 strokeWidth="2"
                 strokeDasharray="4,4"
-                className="relationship-line"
+                className="relationship-line" // This class is used by DiagramControls
+                markerEnd={`url(#arrowhead-${index})`} // Apply arrowhead
               />
-              {/* Arrow head */}
               <marker
                 id={`arrowhead-${index}`}
-                markerWidth="10"
-                markerHeight="7"
-                refX="9"
-                refY="3.5"
-                orient="auto"
+                viewBox="0 0 10 10" // Adjusted viewBox for better scaling
+                refX="8" // Adjusted refX for better arrow positioning on the line end
+                refY="5"
+                markerUnits="strokeWidth"
+                markerWidth="8" // Adjusted size
+                markerHeight="6"// Adjusted size
+                orient="auto-start-reverse" // Ensures arrow points correctly
               >
-                <polygon points="0 0, 10 3.5, 0 7" fill="#FFFFFF" />
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFFFFF" /> {/* Simpler path for arrow */}
               </marker>
               
               {/* Tooltip to show relationship details on hover */}
