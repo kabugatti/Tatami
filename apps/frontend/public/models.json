@@ -1,12 +1,12 @@
 {
   "models": [
     {
-      "id": "model_1746649556275",
+      "id": "model_1746894292819",
       "name": "New Model 1",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746649556275",
+          "id": "prop_1746894292819",
           "name": "",
           "dataType": "u32",
           "isKey": true
@@ -15,12 +15,12 @@
       "traits": []
     },
     {
-      "id": "model_1746649556489",
+      "id": "model_1746894293643",
       "name": "New Model 2",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746649556489",
+          "id": "prop_1746894293643",
           "name": "",
           "dataType": "u32",
           "isKey": true
@@ -29,110 +29,12 @@
       "traits": []
     },
     {
-      "id": "model_1746649556727",
+      "id": "model_1746894315038",
       "name": "New Model 3",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746649556727",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649556922",
-      "name": "New Model 4",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649556922",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649583090",
-      "name": "New Model 5",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649583090",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649585925",
-      "name": "New Model 6",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649585925",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649586987",
-      "name": "New Model 7",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649586987",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649587932",
-      "name": "New Model 8",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649587932",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649588716",
-      "name": "New Model 9",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649588716",
-          "name": "",
-          "dataType": "u32",
-          "isKey": true
-        }
-      ],
-      "traits": []
-    },
-    {
-      "id": "model_1746649589588",
-      "name": "New Model 10",
-      "expanded": true,
-      "properties": [
-        {
-          "id": "prop_1746649589589",
+          "id": "prop_1746894315038",
           "name": "",
           "dataType": "u32",
           "isKey": true
