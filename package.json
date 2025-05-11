@@ -37,6 +37,7 @@
     "i18next": "^24.2.3",
     "react-draggable": "^4.4.6",
     "react-i18next": "^15.4.1",
+    "react-xarrows": "^2.0.2",
     "rxjs": "^7.8.2",
     "tailwind-scrollbar": "^4.0.1"
   }

@@ -1,12 +1,12 @@
 {
   "models": [
     {
-      "id": "model_1746894292819",
+      "id": "model_1746958366607",
       "name": "New Model 1",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746894292819",
+          "id": "prop_1746958366607",
           "name": "",
           "dataType": "u32",
           "isKey": true
@@ -15,12 +15,12 @@
       "traits": []
     },
     {
-      "id": "model_1746894293643",
+      "id": "model_1746958367703",
       "name": "New Model 2",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746894293643",
+          "id": "prop_1746958367703",
           "name": "",
           "dataType": "u32",
           "isKey": true
@@ -29,12 +29,12 @@
       "traits": []
     },
     {
-      "id": "model_1746894315038",
+      "id": "model_1746958369042",
       "name": "New Model 3",
       "expanded": true,
       "properties": [
         {
-          "id": "prop_1746894315038",
+          "id": "prop_1746958369042",
           "name": "",
           "dataType": "u32",
           "isKey": true
