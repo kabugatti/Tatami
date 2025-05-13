@@ -1,29 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Expand, Minus, Plus, GitBranch } from "lucide-react";
-import { useState } from "react";
 
 interface DiagramControlsProps {
-  onToggleRelationships?: (visible: boolean) => void;
+  relationshipsVisible: boolean;
+  onToggleRelationships: (visible: boolean) => void;
 }
 
-export function DiagramControls({ onToggleRelationships }: DiagramControlsProps) {
-  const [relationshipsVisible, setRelationshipsVisible] = useState(true);
-
+export function DiagramControls({
+  relationshipsVisible,
+  onToggleRelationships,
+}: DiagramControlsProps) {
   const toggleRelationships = () => {
-    const newState = !relationshipsVisible;
-    setRelationshipsVisible(newState);
-    if (onToggleRelationships) {
-      onToggleRelationships(newState);
-    }
-    
-    // Toggle class on relationship lines for visibility
-    document.querySelectorAll('.relationship-line').forEach(line => {
-      if (newState) {
-        line.classList.remove('opacity-0');
-      } else {
-        line.classList.add('opacity-0');
-      }
-    });
+    onToggleRelationships(!relationshipsVisible);
   };
 
   return (
@@ -37,25 +25,15 @@ export function DiagramControls({ onToggleRelationships }: DiagramControlsProps)
       >
         <GitBranch className="h-4 w-4" />
       </Button>
-      
       <div className="flex items-center">
-        <Button
-          size="icon"
-          variant="ghost"
-        >
+        <Button size="icon" variant="ghost">
           <Plus className="h-4 w-4" />
         </Button>
         <span className="font-semibold">25%</span>
-        <Button
-          size="icon"
-          variant="ghost"
-        >
+        <Button size="icon" variant="ghost">
           <Minus className="h-4 w-4" />
         </Button>
-        <Button
-          size="icon"
-          variant="ghost"
-        >
+        <Button size="icon" variant="ghost">
           <Expand className="h-4 w-4" />
         </Button>
       </div>
