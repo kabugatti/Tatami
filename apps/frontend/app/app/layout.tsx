@@ -19,7 +19,7 @@ export default function AppLayout({
   const setMainContent = (content: React.ReactNode) => {
     setLoading(true);
     setMainContentRaw(content);
-    setTimeout(() => setLoading(false), 8000); 
+    setTimeout(() => setLoading(false), 1000); 
   };
 
   return (
