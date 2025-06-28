@@ -4,6 +4,7 @@ pub mod systems {
 
 pub mod models {
     pub mod user;
+    pub mod project;
 }
 
 pub mod tests {
