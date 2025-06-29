@@ -9,6 +9,7 @@ pub mod models {
     pub mod position;
     pub mod position_count;
     pub mod vec2;
+    pub mod user;
 }
 
 pub mod tests {
