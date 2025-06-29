@@ -8,7 +8,10 @@ mod tests {
     };
 
     use dojo_starter::systems::actions::{actions, IActionsDispatcher, IActionsDispatcherTrait};
-    use dojo_starter::models::{Position, m_Position, Moves, m_Moves, Direction};
+    use dojo_starter::models::position::{Position, m_Position};
+    use dojo_starter::models::moves::{Moves, m_Moves};
+    use dojo_starter::models::direction::Direction;
+    use dojo_starter::models::vec2::Vec2;
 
     fn namespace_def() -> NamespaceDef {
         let ndef = NamespaceDef {
@@ -49,11 +52,13 @@ mod tests {
         let mut position: Position = world.read_model(caller);
         assert(position.vec.x == 0 && position.vec.y == 0, 'initial position wrong');
 
-        // Test write_model_test
-        position.vec.x = 122;
-        position.vec.y = 88;
+        // Test write_model_test - create new position with updated values
+        let new_position = Position {
+            player: caller,
+            vec: Vec2 { x: 122, y: 88 },
+        };
 
-        world.write_model_test(@position);
+        world.write_model_test(@new_position);
 
         let mut position: Position = world.read_model(caller);
         assert(position.vec.y == 88, 'write_value_from_id failed');
@@ -90,7 +95,13 @@ mod tests {
         let right_dir_felt: felt252 = Direction::Right(()).into();
 
         assert(moves.remaining == initial_moves.remaining - 1, 'moves is wrong');
-        assert(moves.last_direction.unwrap().into() == right_dir_felt, 'last direction is wrong');
+        
+        // Fix the unwrap issue by using match instead
+        let last_direction_felt = match moves.last_direction {
+            Option::Some(dir) => dir.into(),
+            Option::None => 0,
+        };
+        assert(last_direction_felt == right_dir_felt, 'last direction is wrong');
 
         let new_position: Position = world.read_model(caller);
         assert(new_position.vec.x == initial_position.vec.x + 1, 'position x is wrong');
