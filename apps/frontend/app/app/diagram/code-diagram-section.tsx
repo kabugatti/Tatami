@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Editor from "@monaco-editor/react";
+import { DynamicEditor } from "@/components/editor/DynamicEditor";
 import { EntityCard, type EntityField } from "@/app/app/diagram/EntityCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -34,9 +34,7 @@ export function CodeDiagramSection() {
   const [entityPositions, setEntityPositions] = useState<
     Record<string, { x: number; y: number }>
   >({});
-  const editorRef = useRef<
-    import("monaco-editor").editor.IStandaloneCodeEditor | null
-  >(null);
+  const editorRef = useRef<any | null>(null);
   const diagramContainerRef = useRef<HTMLDivElement>(null);
 
   // --- Drag state for mouse-based dragging ---
@@ -47,9 +45,7 @@ export function CodeDiagramSection() {
   const [diagramHeight, setDiagramHeight] = useState<number>(600); // px
   const resizingRef = useRef(false);
 
-  function handleEditorDidMount(
-    editor: import("monaco-editor").editor.IStandaloneCodeEditor
-  ): void {
+  function handleEditorDidMount(editor: any): void {
     editorRef.current = editor;
   }
 
@@ -300,13 +296,12 @@ export function CodeDiagramSection() {
                   </button>
                 </div>
               </div>
-              <Editor
-                height="70vh"
-                className="bg-black"
-                defaultLanguage="rust"
+              <DynamicEditor
                 value={displayCode}
-                onChange={handleEditorChange}
+                language="rust"
+                height="70vh"
                 onMount={handleEditorDidMount}
+                onChange={handleEditorChange}
                 options={{
                   readOnly: !isEditing,
                   scrollBeyondLastLine: false,
@@ -347,7 +342,6 @@ export function CodeDiagramSection() {
                     bottom: 12,
                   },
                 }}
-                theme="hc-black"
               />
             </div>
           )
