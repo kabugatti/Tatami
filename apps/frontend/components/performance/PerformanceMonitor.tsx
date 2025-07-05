@@ -26,9 +26,9 @@ export const usePerformanceMetrics = () => {
       );
 
       setMetrics({
-        loadTime: navigation.loadEventEnd - navigation.navigationStart,
+        loadTime: navigation.loadEventEnd - navigation.startTime,
         domContentLoaded:
-          navigation.domContentLoadedEventEnd - navigation.navigationStart,
+          navigation.domContentLoadedEventEnd - navigation.startTime,
         firstContentfulPaint: fcp?.startTime || 0,
         largestContentfulPaint: 0, // Will be updated by LCP observer
       });
