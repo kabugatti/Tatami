@@ -34,7 +34,7 @@ const Loader: React.FC<LoaderProps> = ({
         setCurrentMessage(loadingMessages[nextIndex]);
         return nextIndex;
       });
-    }, 800);
+    }, 600); // Faster message cycling for quicker loading feel
 
     return () => clearInterval(interval);
   }, [message]);

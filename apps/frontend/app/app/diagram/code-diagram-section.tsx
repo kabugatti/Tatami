@@ -39,7 +39,10 @@ export function CodeDiagramSection() {
 
   // --- Drag state for mouse-based dragging ---
   const [draggingId, setDraggingId] = useState<string | null>(null);
-  const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
 
   // --- Diagram vertical resizing ---
   const [diagramHeight, setDiagramHeight] = useState<number>(600); // px
@@ -192,7 +195,8 @@ export function CodeDiagramSection() {
   useEffect(() => {
     const handleResizeMouseMove = (e: MouseEvent) => {
       if (resizingRef.current && diagramContainerRef.current) {
-        const containerRect = diagramContainerRef.current.getBoundingClientRect();
+        const containerRect =
+          diagramContainerRef.current.getBoundingClientRect();
         const minHeight = 300;
         const maxHeight = window.innerHeight - 100;
         let newHeight = e.clientY - containerRect.top;
@@ -221,8 +225,13 @@ export function CodeDiagramSection() {
     setEntityPositions((prev) => {
       const updated = { ...prev };
       let changed = false;
-      let x = 40, y = 40, col = 0, row = 0;
-      const colWidth = 260, rowHeight = 160, maxCols = 3;
+      let x = 40,
+        y = 40,
+        col = 0,
+        row = 0;
+      const colWidth = 260,
+        rowHeight = 160,
+        maxCols = 3;
       for (const entity of entities) {
         if (!updated[entity.modelId]) {
           updated[entity.modelId] = { x, y };
@@ -300,6 +309,7 @@ export function CodeDiagramSection() {
                 value={displayCode}
                 language="rust"
                 height="70vh"
+                theme="hc-black"
                 onMount={handleEditorDidMount}
                 onChange={handleEditorChange}
                 options={{
@@ -349,7 +359,11 @@ export function CodeDiagramSection() {
           <div
             ref={diagramContainerRef}
             className="bg-neutral p-10 overflow-auto w-full relative"
-            style={{ height: diagramHeight, minHeight: 300, transition: "height 0.1s" }}
+            style={{
+              height: diagramHeight,
+              minHeight: 300,
+              transition: "height 0.1s",
+            }}
           >
             {entities.map(({ title, fields, modelId }) => {
               const position = entityPositions[modelId];
@@ -367,7 +381,8 @@ export function CodeDiagramSection() {
                       zIndex: draggingId === modelId ? 30 : 20,
                       cursor: draggingId === modelId ? "grabbing" : "grab",
                       minWidth: 220,
-                      pointerEvents: draggingId && draggingId !== modelId ? "none" : "auto",
+                      pointerEvents:
+                        draggingId && draggingId !== modelId ? "none" : "auto",
                     }}
                     onMouseDown={(e) => handleCardMouseDown(e, modelId)}
                   />

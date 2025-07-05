@@ -4,9 +4,9 @@ import { Suspense, lazy, memo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy load Monaco Editor to improve initial load time
-const Editor = lazy(() => 
-  import("@monaco-editor/react").then(module => ({
-    default: module.default
+const Editor = lazy(() =>
+  import("@monaco-editor/react").then((module) => ({
+    default: module.default,
   }))
 );
 
@@ -14,6 +14,7 @@ interface DynamicEditorProps {
   value: string;
   language?: string;
   height?: string;
+  theme?: string;
   options?: any;
   onMount?: (editor: any) => void;
   onChange?: (value: string | undefined) => void;
@@ -49,7 +50,7 @@ export const DynamicEditor: React.FC<DynamicEditorProps> = memo((props) => {
     renderWhitespace: "selection",
     wordWrap: "on",
     automaticLayout: true,
-    theme: "vs-dark",
+    // Don't set theme here - let parent control it
     ...props.options,
   };
 
@@ -58,7 +59,7 @@ export const DynamicEditor: React.FC<DynamicEditorProps> = memo((props) => {
       <Editor
         height={props.height || "400px"}
         language={props.language || "rust"}
-        theme="vs-dark"
+        theme={props.theme || "vs-dark"} // Use parent's theme preference
         options={defaultOptions}
         loading={<EditorSkeleton />}
         {...props}

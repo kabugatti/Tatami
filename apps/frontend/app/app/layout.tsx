@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import AppNavbar from "@/app/app/navbar/app-navbar";
 import { useState, useEffect, lazy, Suspense } from "react";
 import Loader from "@/components/loader/Loader";
-import { PerformanceMonitor } from "@/components/performance/PerformanceMonitor";
 import { usePathname } from "next/navigation";
 
 // Lazy load the main app page for faster initial load
@@ -41,15 +40,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     setLoading(true);
     setMainContentRaw(content);
     setCurrentSection(sectionKey);
-    // Shorter transition for better UX
-    setTimeout(() => setLoading(false), 600);
+    // Faster transition for better UX
+    setTimeout(() => setLoading(false), 300);
   };
 
   // Initial loading sequence
   useEffect(() => {
     const initialLoadTimer = setTimeout(() => {
       setLoading(false);
-    }, 1200); // Show initial loader for app startup
+    }, 600); // Reduced from 1200ms to 600ms for faster first load
 
     return () => clearTimeout(initialLoadTimer);
   }, []);
@@ -59,7 +58,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     if (!loading) {
       // Only show route change loading if not in initial load
       setLoading(true);
-      const timeout = setTimeout(() => setLoading(false), 400);
+      const timeout = setTimeout(() => setLoading(false), 200); // Faster route changes
       return () => clearTimeout(timeout);
     }
   }, [pathname]);
@@ -88,7 +87,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 {mainContent}
               </Suspense>
               <Toaster />
-              <PerformanceMonitor />
+              {/* Performance monitor disabled by default */}
+              {/* <PerformanceMonitor /> */}
             </div>
           </div>
         </SidebarProvider>
