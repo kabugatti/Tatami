@@ -1,10 +1,10 @@
 "use client";
 
-import Image, { ImageProps } from 'next/image';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import Image, { ImageProps } from "next/image";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
-interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
+interface OptimizedImageProps extends Omit<ImageProps, "onLoad" | "onError"> {
   fallbackSrc?: string;
   showLoader?: boolean;
   loaderClassName?: string;

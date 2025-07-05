@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface PerformanceMetrics {
   loadTime: number;
@@ -13,17 +13,22 @@ export const usePerformanceMetrics = () => {
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const measurePerformance = () => {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      const paintEntries = performance.getEntriesByType('paint');
-      
-      const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
-      
+      const navigation = performance.getEntriesByType(
+        "navigation"
+      )[0] as PerformanceNavigationTiming;
+      const paintEntries = performance.getEntriesByType("paint");
+
+      const fcp = paintEntries.find(
+        (entry) => entry.name === "first-contentful-paint"
+      );
+
       setMetrics({
         loadTime: navigation.loadEventEnd - navigation.navigationStart,
-        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.navigationStart,
+        domContentLoaded:
+          navigation.domContentLoadedEventEnd - navigation.navigationStart,
         firstContentfulPaint: fcp?.startTime || 0,
         largestContentfulPaint: 0, // Will be updated by LCP observer
       });
@@ -33,25 +38,29 @@ export const usePerformanceMetrics = () => {
     const lcpObserver = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1];
-      
-      setMetrics(prev => prev ? {
-        ...prev,
-        largestContentfulPaint: lastEntry.startTime
-      } : null);
+
+      setMetrics((prev) =>
+        prev
+          ? {
+              ...prev,
+              largestContentfulPaint: lastEntry.startTime,
+            }
+          : null
+      );
     });
 
-    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+    lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
 
     // Wait for page load to complete
-    if (document.readyState === 'complete') {
+    if (document.readyState === "complete") {
       measurePerformance();
     } else {
-      window.addEventListener('load', measurePerformance);
+      window.addEventListener("load", measurePerformance);
     }
 
     return () => {
       lcpObserver.disconnect();
-      window.removeEventListener('load', measurePerformance);
+      window.removeEventListener("load", measurePerformance);
     };
   }, []);
 
@@ -62,8 +71,8 @@ interface PerformanceMonitorProps {
   showMetrics?: boolean;
 }
 
-export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({ 
-  showMetrics = process.env.NODE_ENV === 'development' 
+export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
+  showMetrics = process.env.NODE_ENV === "development",
 }) => {
   const metrics = usePerformanceMetrics();
 
@@ -74,8 +83,12 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
       <div className="font-bold mb-2">⚡ Performance Metrics</div>
       <div>Load Time: {Math.round(metrics.loadTime)}ms</div>
       <div>DOM Content Loaded: {Math.round(metrics.domContentLoaded)}ms</div>
-      <div>First Contentful Paint: {Math.round(metrics.firstContentfulPaint)}ms</div>
-      <div>Largest Contentful Paint: {Math.round(metrics.largestContentfulPaint)}ms</div>
+      <div>
+        First Contentful Paint: {Math.round(metrics.firstContentfulPaint)}ms
+      </div>
+      <div>
+        Largest Contentful Paint: {Math.round(metrics.largestContentfulPaint)}ms
+      </div>
     </div>
   );
 };

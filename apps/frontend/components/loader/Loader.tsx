@@ -15,12 +15,14 @@ const loadingMessages = [
   "Almost ready...",
 ];
 
-const Loader: React.FC<LoaderProps> = ({ 
-  message, 
-  progress, 
-  showProgress = true 
+const Loader: React.FC<LoaderProps> = ({
+  message,
+  progress,
+  showProgress = true,
 }) => {
-  const [currentMessage, setCurrentMessage] = useState(message || loadingMessages[0]);
+  const [currentMessage, setCurrentMessage] = useState(
+    message || loadingMessages[0]
+  );
   const [messageIndex, setMessageIndex] = useState(0);
 
   useEffect(() => {
@@ -41,9 +43,9 @@ const Loader: React.FC<LoaderProps> = ({
     <div className="tatami-loader-overlay">
       <div className="tatami-loader-content">
         <div className="tatami-logo-container">
-          <Image 
-            src="/Primary Logo_Primary Color.svg" 
-            alt="Tatami Logo" 
+          <Image
+            src="/Primary Logo_Primary Color.svg"
+            alt="Tatami Logo"
             width={96}
             height={96}
             className="tatami-logo animate-pulse"
@@ -53,11 +55,11 @@ const Loader: React.FC<LoaderProps> = ({
         <span className="tatami-loader-text">{currentMessage}</span>
         {showProgress && (
           <div className="tatami-progress-bar">
-            <div 
+            <div
               className="tatami-progress-fill"
-              style={{ 
+              style={{
                 width: progress ? `${progress}%` : undefined,
-                animation: progress ? 'none' : undefined 
+                animation: progress ? "none" : undefined,
               }}
             ></div>
           </div>
@@ -67,4 +69,4 @@ const Loader: React.FC<LoaderProps> = ({
   );
 };
 
-export default Loader; 
+export default Loader;

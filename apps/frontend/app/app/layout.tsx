@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { AppSidebar } from "@/app/app/tatami_sidebar/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "../globals.css";
@@ -22,11 +22,7 @@ const MainContentSkeleton = () => (
   </div>
 );
 
-export default function AppLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mainContent, setMainContentRaw] = useState<React.ReactNode>(
     <Suspense fallback={<MainContentSkeleton />}>
       <AppPage />
@@ -60,7 +56,8 @@ export default function AppLayout({
 
   // Route change loading
   useEffect(() => {
-    if (!loading) { // Only show route change loading if not in initial load
+    if (!loading) {
+      // Only show route change loading if not in initial load
       setLoading(true);
       const timeout = setTimeout(() => setLoading(false), 400);
       return () => clearTimeout(timeout);
@@ -70,7 +67,15 @@ export default function AppLayout({
   return (
     <html lang="en" className="dark">
       <body>
-        {loading && <Loader message={currentSection === "models" ? "Loading Tatami..." : `Loading ${currentSection}...`} />}
+        {loading && (
+          <Loader
+            message={
+              currentSection === "models"
+                ? "Loading Tatami..."
+                : `Loading ${currentSection}...`
+            }
+          />
+        )}
         <AppNavbar />
         <SidebarProvider defaultOpen={false} className="overflow-hidden">
           <div className="relative flex w-full overflow-x-hidden">
