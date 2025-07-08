@@ -1,3 +1,18 @@
 {
-  "models": []
+  "models": [
+    {
+      "id": "model_1751976484887",
+      "name": "New Model 1",
+      "expanded": true,
+      "properties": [
+        {
+          "id": "prop_1751976484887",
+          "name": "",
+          "dataType": "u32",
+          "isKey": true
+        }
+      ],
+      "traits": []
+    }
+  ]
 }
