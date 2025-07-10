@@ -13,7 +13,6 @@ import { generateEntities } from "@/utils/generateEntities";
 import { detectModelRelationships } from "@/utils/detectModelRelationships";
 import { modelStateService } from "@/services/ModelStateService";
 
-// 💡 CORREGIDO: era `hasCustomsEdits` (incorrecto), debe ser `hasCustomEdits`
 interface ModelStateType {
   code: string;
   editedCode: string;
@@ -29,6 +28,7 @@ interface ModelStateType {
   setEntityPosition: (id: string, position: { x: number; y: number }) => void;
   activeSections: "code" | "diagram";
   setActiveSection: (section: "code" | "diagram") => void;
+  updateCurrentModels: (updatedModels: any[]) => void;
 }
 
 const CreateModelStateContext = createContext<ModelStateType | undefined>(
@@ -70,54 +70,69 @@ export const ModelStateProvider = ({
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    const sub = modelStateService.models$.subscribe((models) => {
-      if (!initializedRef.current) {
-        setInitialModels(models);
-        initializedRef.current = true;
-      }
+    const persisted =
+      typeof window !== "undefined"
+        ? localStorage.getItem(LOCAL_STORAGE_KEY)
+        : null;
 
-      setCurrentModels(models);
-      const genCode = generateCairoCode(models);
-
-      if (!hasCustomEdits) {
-        setCode(genCode);
-        setEditedCode(genCode);
-      }
-
-      setEntities(generateEntities(models));
-      setRelationships(detectModelRelationships(models));
-      setLoading(false);
-    });
-
-    modelStateService.initialize();
-
-    return () => sub.unsubscribe();
-  }, [hasCustomEdits]);
-
-  useEffect(() => {
-    const persisted = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (persisted) {
       try {
         const parsed = JSON.parse(persisted);
-        if (parsed.editedCode) setEditedCode(parsed.editedCode);
-        if (typeof parsed.hasCustomEdits === "boolean")
-          setHasCustomEdits(parsed.hasCustomEdits);
-        if (typeof parsed.pendingChanges === "boolean")
-          setPendingChanges(parsed.pendingChanges);
-      } catch {}
+        if (parsed.models) {
+          setInitialModels(parsed.models);
+          setCurrentModels(parsed.models);
+          const genCode = generateCairoCode(parsed.models);
+          setCode(genCode);
+          setEditedCode(parsed.editedCode ?? genCode);
+          setEntities(generateEntities(parsed.models));
+          setRelationships(detectModelRelationships(parsed.models));
+          setHasCustomEdits(parsed.hasCustomEdits ?? false);
+          setPendingChanges(parsed.pendingChanges ?? false);
+          setLoading(false);
+          initializedRef.current = true;
+        }
+      } catch (error) {
+        console.error("Error parsing localStorage data:", error);
+      }
+    }
+
+    if (!initializedRef.current) {
+      const subscribe = modelStateService.models$.subscribe((models) => {
+        setInitialModels(models);
+        setCurrentModels(models);
+      });
+
+      modelStateService.initialize();
+      return () => subscribe.unsubscribe();
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(
-      LOCAL_STORAGE_KEY,
-      JSON.stringify({
-        editedCode,
-        hasCustomEdits,
-        pendingChanges,
-      })
-    );
-  }, [editedCode, hasCustomEdits, pendingChanges]);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify({
+          editedCode,
+          hasCustomEdits,
+          pendingChanges,
+          models: currentModels,
+        })
+      );
+    }
+  }, [editedCode, hasCustomEdits, pendingChanges, currentModels]);
+
+  useEffect(() => {
+    if (!hasCustomEdits) {
+      const genCode = generateCairoCode(currentModels);
+      setCode(genCode);
+      setEditedCode(genCode);
+    }
+  }, [currentModels, hasCustomEdits]);
+
+  useEffect(() => {
+    setEntities(generateEntities(currentModels));
+    setRelationships(detectModelRelationships(currentModels));
+  }, [currentModels]);
 
   const updateEditedCode = (newCode: string) => {
     setEditedCode(newCode);
@@ -148,7 +163,16 @@ export const ModelStateProvider = ({
     setInitialModels(currentModels);
     setHasCustomEdits(false);
     setPendingChanges(false);
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify({
+        editedCode,
+        hasCustomEdits: false,
+        pendingChanges: false,
+        models: currentModels,
+      })
+    );
+
     toast({
       title: "Guardado",
       description: "Cambios aplicados a los modelos",
@@ -162,7 +186,6 @@ export const ModelStateProvider = ({
     }
     return true;
   };
-
   const modelStateValue: ModelStateType = {
     code,
     editedCode,
@@ -178,6 +201,18 @@ export const ModelStateProvider = ({
     setEntityPosition,
     activeSections,
     setActiveSection,
+    updateCurrentModels: (updatedModels: any[]) => {
+      setCurrentModels(updatedModels);
+      const genCode = generateCairoCode(updatedModels);
+      setEntities(generateEntities(updatedModels));
+      setRelationships(detectModelRelationships(updatedModels));
+
+      if (!hasCustomEdits) {
+        setCode(genCode);
+        setEditedCode(genCode);
+      }
+      setPendingChanges(true);
+    },
   };
 
   return (
