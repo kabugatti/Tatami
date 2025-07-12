@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Editor from "@monaco-editor/react";
+import { DynamicEditor } from "@/components/editor/DynamicEditor";
 import { EntityCard, type EntityField } from "@/app/app/diagram/EntityCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
@@ -11,33 +11,35 @@ import { ActionButtons } from "./action-buttons";
 import { DiagramControls } from "./diagram-controls";
 import { modelStateService } from "@/services/ModelStateService";
 import { ModelRelationships } from "./ModelRelationships";
-import { ModelRelationship, detectModelRelationships } from "@/utils/detectModelRelationships";
 import { useModelStateContext } from "@/hooks/useModelState";
-
+import {
+  ModelRelationship,
+  detectModelRelationships,
+} from "@/utils/detectModelRelationships";
 
 export function CodeDiagramSection() {
   const {
-    code,
     editedCode,
     hasCustomEdits,
     loading,
     entities,
     relationships,
-    updatedEditedCode,
+    isEditing,
+    setIsEditing,
+    toggleEditMode,
     restoreInitialModel,
-    saveChanges,
-    confirmBeforeNavigation,
+    copyToClipboard,
+    downloadCode,
+    updatedEditedCode,
     activeSections,
     setActiveSection,
-    entityPositions,
-    setEntityPosition,
   } = useModelStateContext();
-  const [isEditing, setIsEditing] = useState(false);
   const [relationshipsVisible, setRelationshipsVisible] = useState(true);
   const { toast } = useToast();
-  const editorRef = useRef<
-    import("monaco-editor").editor.IStandaloneCodeEditor | null
-  >(null);
+  const [entityPositions, setEntityPositions] = useState<
+    Record<string, { x: number; y: number }>
+  >({});
+  const editorRef = useRef<any | null>(null);
   const diagramContainerRef = useRef<HTMLDivElement>(null);
 
   // --- Drag state for mouse-based dragging ---
@@ -51,60 +53,17 @@ export function CodeDiagramSection() {
   const [diagramHeight, setDiagramHeight] = useState<number>(600); // px
   const resizingRef = useRef(false);
 
-  function handleEditorDidMount(
-    editor: import("monaco-editor").editor.IStandaloneCodeEditor
-  ): void {
+  function handleEditorDidMount(editor: any): void {
     editorRef.current = editor;
   }
 
   function handleEditorChange(value: string | undefined): void {
     if (isEditing && value !== undefined) {
-      updatedEditedCode(value)
+      updatedEditedCode(value);
     }
   }
 
-  const toggleEditMode = () => {
-    if (isEditing && hasCustomEdits) {
-      toast({
-        title: "Changes saved",
-        description: "Your code changes have been saved",
-        duration: 2000,
-        style: { color: "white" },
-      });
-    }
-
-    setIsEditing(!isEditing);
-    toast({
-      title: isEditing ? "Edit mode disabled" : "Edit mode enabled",
-      description: isEditing
-        ? "The editor is now in read-only mode"
-        : "You can now edit the code directly",
-      duration: 2000,
-      style: { color: "white" },
-    });
-  };
-
-  const displayCode = hasCustomEdits ? editedCode : code;
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(displayCode);
-    toast({
-      title: "Code copied",
-      description: "The code has been copied to your clipboard",
-      duration: 2000,
-      style: { color: "white" },
-    });
-  };
-
-  const downloadCode = () => {
-    const blob = new Blob([displayCode], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "models.cairo";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  const displayCode = editedCode;
 
   const resetToGenerated = restoreInitialModel;
 
@@ -133,7 +92,10 @@ export function CodeDiagramSection() {
     newX = Math.max(0, Math.min(newX, diagramRect.width - 220));
     newY = Math.max(0, Math.min(newY, diagramRect.height - 80));
 
-    setEntityPosition(draggingId, { x: newX, y: newY });
+    setEntityPositions((prev) => ({
+      ...prev,
+      [draggingId]: { x: newX, y: newY },
+    }));
   };
 
   const handleMouseUp = () => {
@@ -194,40 +156,43 @@ export function CodeDiagramSection() {
   // --- Always assign absolute positions for all cards when entering diagram view ---
   useEffect(() => {
     if (activeSections !== "diagram") return;
-    let x = 40,
-      y = 40,
-      col = 0,
-      row = 0;
-    const colWidth = 260,
-      rowHeight = 160,
-      maxCols = 3;
-
-    for (const entity of entities) {
-      const id = entity.modelId;
-      if (!entityPositions[id]) {
-        setEntityPosition(id, { x, y });
-        col++;
-        if (col >= maxCols) {
-          col = 0;
-          row++;
-          x = 40;
-          y = 40 + row * rowHeight;
-        } else {
-          x += colWidth;
+    setEntityPositions((prev) => {
+      const updated = { ...prev };
+      let changed = false;
+      let x = 40,
+        y = 40,
+        col = 0,
+        row = 0;
+      const colWidth = 260,
+        rowHeight = 160,
+        maxCols = 3;
+      for (const entity of entities) {
+        const id = entity.modelId;
+        if (typeof id === "string" && !updated[id]) {
+          updated[id] = { x, y };
+          changed = true;
+          col++;
+          if (col >= maxCols) {
+            col = 0;
+            row++;
+            x = 40;
+            y = 40 + row * rowHeight;
+          } else {
+            x += colWidth;
+          }
         }
       }
-    }
-
+      return changed ? updated : prev;
+    });
   }, [activeSections, entities]);
 
   return (
     <section className="bg-neutral text-foreground rounded-xl shadow-md flex flex-col">
       <ActionButtons
         activeSection={activeSections}
-        onToggleSection={() => {
-          if (!confirmBeforeNavigation()) return;
-          setActiveSection(activeSections === "code" ? "diagram" : "code");
-        }}
+        onToggleSection={() =>
+          setActiveSection(activeSections === "code" ? "diagram" : "code")
+        }
         onCopy={copyToClipboard}
         onDownload={downloadCode}
       />
@@ -266,21 +231,21 @@ export function CodeDiagramSection() {
                   <button
                     onClick={toggleEditMode}
                     className={`text-xs px-3 py-1 rounded ${isEditing
-                      ? "bg-green-500 text-white"
-                      : "bg-blue-500 text-white"
+                        ? "bg-green-500 text-white"
+                        : "bg-blue-500 text-white"
                       }`}
                   >
                     {isEditing ? "Save" : "Edit Code"}
                   </button>
                 </div>
               </div>
-              <Editor
-                height="70vh"
-                className="bg-black"
-                defaultLanguage="rust"
+              <DynamicEditor
                 value={displayCode}
-                onChange={handleEditorChange}
+                language="rust"
+                height="70vh"
+                theme="hc-black"
                 onMount={handleEditorDidMount}
+                onChange={handleEditorChange}
                 options={{
                   readOnly: !isEditing,
                   scrollBeyondLastLine: false,
@@ -321,7 +286,6 @@ export function CodeDiagramSection() {
                     bottom: 12,
                   },
                 }}
-                theme="hc-black"
               />
             </div>
           )
@@ -410,3 +374,5 @@ export function CodeDiagramSection() {
     </section>
   );
 }
+
+

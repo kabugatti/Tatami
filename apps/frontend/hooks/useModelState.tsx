@@ -3,37 +3,34 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { useToast } from "./use-toast";
-import { useDiagramStore } from "./useDiagramStore";
 import { generateCairoCode } from "@/utils/generateCairoCode";
 import { generateEntities } from "@/utils/generateEntities";
-import { detectModelRelationships } from "@/utils/detectModelRelationships";
+import { detectModelRelationships, ModelRelationship } from "@/utils/detectModelRelationships";
 import { modelStateService } from "@/services/ModelStateService";
+import { EntityCardProps } from "@/app/app/diagram/EntityCard";
 
 interface ModelStateType {
-  code: string;
+  entities: EntityCardProps[];
+  relationships: ModelRelationship[];
   editedCode: string;
+  isEditing: boolean;
   hasCustomEdits: boolean;
   loading: boolean;
-  entities: any[];
-  relationships: any[];
   updatedEditedCode: (newCode: string) => void;
   restoreInitialModel: () => void;
-  saveChanges: () => void;
-  confirmBeforeNavigation: () => boolean;
-  entityPositions: Record<string, { x: number; y: number }>;
-  setEntityPosition: (id: string, position: { x: number; y: number }) => void;
+  toggleEditMode: () => void;
+  copyToClipboard: () => void;
+  downloadCode: () => void;
+  setIsEditing?: (value: boolean) => void;
   activeSections: "code" | "diagram";
   setActiveSection: (section: "code" | "diagram") => void;
-  updateCurrentModels: (updatedModels: any[]) => void;
+  importModelData?: (data: { models: any[] }) => void;
 }
 
-const CreateModelStateContext = createContext<ModelStateType | undefined>(
-  undefined
-);
+const CreateModelStateContext = createContext<ModelStateType | undefined>(undefined);
 
 export const useModelStateContext = () => {
   const context = useContext(CreateModelStateContext);
@@ -45,66 +42,89 @@ export const useModelStateContext = () => {
 
 const LOCAL_STORAGE_KEY = "modelStatePersistence";
 
-export const ModelStateProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const { toast } = useToast();
-
-  const entityPositions = useDiagramStore((state) => state.entityPositions);
-  const setEntityPosition = useDiagramStore((state) => state.setEntityPosition);
-  const activeSections = useDiagramStore((state) => state.activeSections);
-  const setActiveSection = useDiagramStore((state) => state.setActiveSection);
-
+export const ModelStateProvider = ({ children }: { children: React.ReactNode }) => {
   const [initialModels, setInitialModels] = useState<any[]>([]);
   const [currentModels, setCurrentModels] = useState<any[]>([]);
-  const [code, setCode] = useState("");
+  const [entities, setEntities] = useState<EntityCardProps[]>([]);
+  const [relationships, setRelationships] = useState<ModelRelationship[]>([]);
   const [editedCode, setEditedCode] = useState("");
   const [hasCustomEdits, setHasCustomEdits] = useState(false);
-  const [entities, setEntities] = useState<any[]>([]);
-  const [relationships, setRelationships] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [pendingChanges, setPendingChanges] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeSections, setActiveSection] = useState<"code" | "diagram">("code");
+  const [forceRender, setForceRender] = useState(0);
+  const { toast } = useToast();
 
-  const initializedRef = useRef(false);
+  const applyModels = (models: any[], editedCodeOverride?: string, hasCustom?: boolean) => {
+    const genCode = generateCairoCode(models);
+    const codeToUse = editedCodeOverride ?? genCode;
+    setInitialModels(models);
+    setCurrentModels(models);
+    setEntities(generateEntities(models));
+    setRelationships(detectModelRelationships(models));
+    setEditedCode(codeToUse);
+    setHasCustomEdits(hasCustom ?? false);
+  };
+
+  const importModelData = (data: { models: any[] }) => {
+    const { models } = data;
+    if (!models || !Array.isArray(models)) return;
+
+    applyModels(models);
+
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify({
+        models,
+        editedCode: generateCairoCode(models),
+        hasCustomEdits: false,
+      })
+    );
+
+    toast({ title: "Modelos cargados", description: "El código ha sido generado." });
+  };
 
   useEffect(() => {
-    const persisted =
-      typeof window !== "undefined"
-        ? localStorage.getItem(LOCAL_STORAGE_KEY)
-        : null;
+    const loadModel = async () => {
+      const persisted = typeof window !== "undefined" ? localStorage.getItem(LOCAL_STORAGE_KEY) : null;
 
-    if (persisted) {
+      if (persisted) {
+        try {
+          const parsed = JSON.parse(persisted);
+          if (parsed.models?.length) {
+            applyModels(parsed.models, parsed.editedCode, parsed.hasCustomEdits);
+            setLoading(false);
+            setForceRender((prev) => prev + 1);
+            return;
+          }
+        } catch (error) {
+          console.error("❌ Error parsing persisted model state:", error);
+        }
+      }
+
+      // ✅ Si no hay nada persistido, busca el archivo JSON
       try {
-        const parsed = JSON.parse(persisted);
-        if (parsed.models) {
-          setInitialModels(parsed.models);
-          setCurrentModels(parsed.models);
-          const genCode = generateCairoCode(parsed.models);
-          setCode(genCode);
-          setEditedCode(parsed.editedCode ?? genCode);
-          setEntities(generateEntities(parsed.models));
-          setRelationships(detectModelRelationships(parsed.models));
-          setHasCustomEdits(parsed.hasCustomEdits ?? false);
-          setPendingChanges(parsed.pendingChanges ?? false);
+        const res = await fetch("/models.json", { cache: "no-store" });
+        const data = await res.json();
+        if (data?.models?.length) {
+          applyModels(data.models);
+          localStorage.setItem(
+            LOCAL_STORAGE_KEY,
+            JSON.stringify({
+              models: data.models,
+              editedCode: generateCairoCode(data.models),
+              hasCustomEdits: false,
+            })
+          );
           setLoading(false);
-          initializedRef.current = true;
+          setForceRender((prev) => prev + 1);
         }
       } catch (error) {
-        console.error("Error parsing localStorage data:", error);
+        console.error("❌ Error loading /models.json:", error);
       }
-    }
+    };
 
-    if (!initializedRef.current) {
-      const subscribe = modelStateService.models$.subscribe((models) => {
-        setInitialModels(models);
-        setCurrentModels(models);
-      });
-
-      modelStateService.initialize();
-      return () => subscribe.unsubscribe();
-    }
+    loadModel();
   }, []);
 
   useEffect(() => {
@@ -114,105 +134,65 @@ export const ModelStateProvider = ({
         JSON.stringify({
           editedCode,
           hasCustomEdits,
-          pendingChanges,
           models: currentModels,
         })
       );
     }
-  }, [editedCode, hasCustomEdits, pendingChanges, currentModels]);
-
-  useEffect(() => {
-    if (!hasCustomEdits) {
-      const genCode = generateCairoCode(currentModels);
-      setCode(genCode);
-      setEditedCode(genCode);
-    }
-  }, [currentModels, hasCustomEdits]);
-
-  useEffect(() => {
-    setEntities(generateEntities(currentModels));
-    setRelationships(detectModelRelationships(currentModels));
-  }, [currentModels]);
+  }, [editedCode, hasCustomEdits, currentModels]);
 
   const updateEditedCode = (newCode: string) => {
     setEditedCode(newCode);
     setHasCustomEdits(true);
-    setPendingChanges(true);
   };
 
   const restoreInitialModel = () => {
-    const restoredCode = generateCairoCode(initialModels);
-    setCode(restoredCode);
-    setEditedCode(restoredCode);
-    setEntities(generateEntities(initialModels));
-    setRelationships(detectModelRelationships(initialModels));
+    const genCode = generateCairoCode(initialModels);
+    setEditedCode(genCode);
     setHasCustomEdits(false);
-    setPendingChanges(false);
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
     toast({
-      title: "Revertido",
-      description: "Modelo original restaurado",
-      duration: 2000,
+      title: "Reset",
+      description: "Restored generated code",
     });
   };
 
-  const saveChanges = () => {
-    currentModels.forEach((model) => {
-      modelStateService.updateModel(model.id, model);
-    });
-    setInitialModels(currentModels);
-    setHasCustomEdits(false);
-    setPendingChanges(false);
-    localStorage.setItem(
-      LOCAL_STORAGE_KEY,
-      JSON.stringify({
-        editedCode,
-        hasCustomEdits: false,
-        pendingChanges: false,
-        models: currentModels,
-      })
-    );
-
-    toast({
-      title: "Guardado",
-      description: "Cambios aplicados a los modelos",
-      duration: 2000,
-    });
-  };
-
-  const confirmBeforeNavigation = () => {
-    if (pendingChanges) {
-      return confirm("Tienes cambios sin guardar. ¿Deseas continuar?");
+  const toggleEditMode = () => {
+    if (isEditing && hasCustomEdits) {
+      toast({ title: "Changes saved", description: "Your edits were saved" });
     }
-    return true;
+    setIsEditing((prev) => !prev);
   };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(editedCode);
+    toast({ title: "Code copied" });
+  };
+
+  const downloadCode = () => {
+    const blob = new Blob([editedCode], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "models.cairo";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const modelStateValue: ModelStateType = {
-    code,
+    entities,
+    relationships,
     editedCode,
     hasCustomEdits,
     loading,
-    entities,
-    relationships,
     updatedEditedCode: updateEditedCode,
     restoreInitialModel,
-    saveChanges,
-    confirmBeforeNavigation,
-    entityPositions,
-    setEntityPosition,
+    toggleEditMode,
+    isEditing,
+    copyToClipboard,
+    downloadCode,
+    setIsEditing,
     activeSections,
     setActiveSection,
-    updateCurrentModels: (updatedModels: any[]) => {
-      setCurrentModels(updatedModels);
-      const genCode = generateCairoCode(updatedModels);
-      setEntities(generateEntities(updatedModels));
-      setRelationships(detectModelRelationships(updatedModels));
-
-      if (!hasCustomEdits) {
-        setCode(genCode);
-        setEditedCode(genCode);
-      }
-      setPendingChanges(true);
-    },
+    importModelData,
   };
 
   return (
