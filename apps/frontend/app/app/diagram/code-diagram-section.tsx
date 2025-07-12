@@ -374,5 +374,3 @@ export function CodeDiagramSection() {
     </section>
   );
 }
-
-

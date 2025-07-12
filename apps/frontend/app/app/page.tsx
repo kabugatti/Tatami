@@ -1,7 +1,8 @@
 import { CodeDiagramSection } from "@/app/app/diagram/code-diagram-section";
 import { ModelStateProvider } from "@/hooks/useModelState";
+import { memo } from "react";
 
-export default function AppPage() {
+const AppPage = memo(() => {
   return (
     <ModelStateProvider>
       <main className="w-full h-full p-10">
@@ -9,4 +10,8 @@ export default function AppPage() {
       </main>
     </ModelStateProvider>
   );
-}
+});
+
+AppPage.displayName = "AppPage";
+
+export default AppPage;
