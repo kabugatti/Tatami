@@ -16,6 +16,7 @@ import {
   ModelRelationship,
   detectModelRelationships,
 } from "@/utils/detectModelRelationships";
+import { Button } from "@/components/ui/button";
 
 export function CodeDiagramSection() {
   const {
@@ -231,8 +232,8 @@ export function CodeDiagramSection() {
                   <button
                     onClick={toggleEditMode}
                     className={`text-xs px-3 py-1 rounded ${isEditing
-                        ? "bg-green-500 text-white"
-                        : "bg-blue-500 text-white"
+                      ? "bg-green-500 text-white"
+                      : "bg-blue-500 text-white"
                       }`}
                   >
                     {isEditing ? "Save" : "Edit Code"}
