@@ -76,7 +76,6 @@ export const ModelStateProvider = ({ children }: { children: ReactNode }) => {
       : "// no models created yet";
     const codeToUse = editedCodeOverride ?? generatedCode;
 
-    // ❌ Evitar actualizaciones innecesarias
     if (
       isEqualJSON(currentModels, validModels) &&
       editedCode === codeToUse &&
@@ -95,7 +94,7 @@ export const ModelStateProvider = ({ children }: { children: ReactNode }) => {
     if (!Array.isArray(data?.models)) return;
     applyModels(data.models);
     persistToLocalStorage(data.models, generateCairoCode(data.models), false);
-    toast({ title: "Modelos cargados", description: "El código ha sido generado." });
+    toast({ title: "Loaded models", description: "The code has been generated." });
   };
 
   const fetchModelsFromJSON = async () => {
@@ -109,7 +108,6 @@ export const ModelStateProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // 🚀 Auto-refresh cada X segundos
   useEffect(() => {
     const interval = setInterval(async () => {
       const models = await fetchModelsFromJSON();
@@ -121,7 +119,6 @@ export const ModelStateProvider = ({ children }: { children: ReactNode }) => {
       if (!hasCustomEdits && newCode !== currentCode && !isEqualJSON(models, currentModels)) {
         applyModels(models);
         persistToLocalStorage(models, newCode, false);
-        // ❌ No toast para evitar spam
       }
     }, AUTO_REFRESH_INTERVAL);
 
@@ -175,19 +172,19 @@ export const ModelStateProvider = ({ children }: { children: ReactNode }) => {
     setEditedCode(restoredCode);
     setHasCustomEdits(false);
 
-    toast({ title: "Reset", description: "Se restauró el código generado." });
+    toast({ title: "Reset", description: "The generated code was restored." });
   };
 
   const toggleEditMode = () => {
     if (isEditing && hasCustomEdits) {
-      toast({ title: "Cambios guardados", description: "Tus ediciones fueron guardadas." });
+      toast({ title: "Saved changes", description: "Your edits were saved." });
     }
     setIsEditing((prev) => !prev);
   };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(editedCode);
-    toast({ title: "Código copiado al portapapeles" });
+    toast({ title: "Code copied to clipboard" });
   };
 
   const downloadCode = () => {
