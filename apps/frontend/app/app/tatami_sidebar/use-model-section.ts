@@ -2,6 +2,7 @@ import type { Model } from "@/types/models";
 import { useEffect, useState } from "react";
 import { modelStateService } from "@/services/ModelStateService";
 import { generateSimpleTest } from "@/utils/generateSimpleTest";
+import { toSnakeCase } from "@/lib/utils";
 
 export const useModelSection = () => {
   const [models, setModels] = useState<Model[]>([]);
@@ -188,7 +189,7 @@ export const useModelSection = () => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${model.name.toLowerCase()}_test.cairo`;
+      a.download = `${toSnakeCase(model.name)}_test.cairo`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
